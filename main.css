@@ -3,3 +3,14 @@ img.centered {
     margin-right: auto;
     display: block;
 }
+.header-text {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color:snow;
+    text-align: center;
+}
+.header-color {
+    background: maroon;
+}
+body {
+    background-color: slategray;
+}
