@@ -5,7 +5,7 @@ First opening the website directs you to an interactive map of UMass's campus. T
 The list view page will simply be another way to view all of the recent reports made on campus, with a scrolling feed that shows the most recent report at the top. Each report shown on the feed will include all of the info that the user submitted in the report, unlike the map view where you need to click on a report to view details. Users will be able to scroll down in order to view older reports, as well as search through the list with filters.
 
 ## Wireframes
-![Map Page Wireframe]("Wireframes/mapFrame.png")
+![Map Page Wireframe](mapFrame.png)
 
 ## HTML/CSS Screenshots
 
