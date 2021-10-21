@@ -7,10 +7,19 @@ img.centered {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     color:snow;
     text-align: center;
+    margin-left: 30px;
 }
 .header-color {
     background: maroon;
 }
-body {
+.body-color {
     background-color: slategray;
+}
+.link-text {
+    margin-left: 20px;
+    color: snow;
+    margin-right: 20px;
+    font-size: 25px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    
 }
