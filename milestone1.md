@@ -6,6 +6,7 @@ The list view page will simply be another way to view all of the recent reports 
 
 ## Wireframes
 ![Map Page Wireframe](mapFrame.png)
+![List View Wireframe](wireframe 1.png)
 
 ## HTML/CSS Screenshots
 
