@@ -12,7 +12,7 @@ The Report page will be the way students/users can submit reports that go onto t
 
 ## HTML/CSS Screenshots
 ### Map View
-![Map View of Reports](Resources/mapComplete.png)
+![Map View of Reports](mapComplete.PNG)
 
 ### List View
 ![List View of Reports](listViewPage1.PNG)
