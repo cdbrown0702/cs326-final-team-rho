@@ -1,8 +1,17 @@
-# Project API Planning
+# Milestone 2
 
-# Back-end Skeleton Code
+## Project API Planning
 
-# Front-end Implementation
+## Back-end Skeleton Code
 
-# Division of Labor
+## Front-end Implementation
 
+## Division of Labor
+
+Group work:
+API planning and Back-end Skeleton
+
+Individual work:
+- Connor: Front-end for map
+- James: Front-end for list
+- Nitant: Front-end for submission
