@@ -3,17 +3,48 @@ let center    = L.latLng(42.38922, -72.52650),
     northEast = L.latLng(42.39892, -72.51576),
     mapBounds = L.latLngBounds(southWest, northEast);
 
-let map = L.map('map').setView(center, 16);
+L.mapbox.accessToken = 'pk.eyJ1IjoiY2Ricm93bjA3MDIiLCJhIjoiY2t2anRnOWI0MDQ3djJ1cW5sY2tnNjVkNCJ9.JII6kT21_W_G7O_Lvpww2g';
 
-L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    maxZoom: 18,
-    minZoom: 15,
+let map = L.mapbox.map('map', null, {
     maxBounds: mapBounds,
-    id: 'mapbox/streets-v11',
-    tileSize: 512,
-    zoomOffset: -1,
-    accessToken: 'pk.eyJ1IjoiY2Ricm93bjA3MDIiLCJhIjoiY2t2anRnOWI0MDQ3djJ1cW5sY2tnNjVkNCJ9.JII6kT21_W_G7O_Lvpww2g'
-}).addTo(map);
+    maxZoom: 18,
+    minZoom: 15
+}).setView(center, 16)
+  .addLayer(L.mapbox.styleLayer('mapbox://styles/mapbox/streets-v11'));
 
 map.fitBounds(mapBounds);
+
+const geoJSON = {
+  type: 'FeatureCollection',
+  features: [
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [42.393570, -72.530834]
+      },
+      properties: {
+        title: 'Car Crash',
+        description: 'Car flipped and this mf died lol'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [42.38984, -72.52480]
+      },
+      properties: {
+        title: 'Arson',
+        description: 'Theta Chi burnt down Morrill????'
+      }
+    }
+  ]
+};
+
+for (const feature of geoJSON.features) {
+  const newDiv = document.createElement('div');
+  newDiv.className = 'marker';
+
+  new mapboxgl.Marker(newDiv).setLngLat(feature.geometry.coordinates).addTo(map);
+}
