@@ -16,9 +16,12 @@
         <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
             integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
             crossorigin=""></script>
+        <!-- Mapbox implementation for map tiles -->
+        <script src='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js'></script>
+        <link href='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css' rel='stylesheet' />
     </head>
     <body class="body-color">
-        <header class="header-color d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+        <header class="header-color d-flex flex-wrap justify-content-center py-3 border-bottom">
             <a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
                 <span class="header-text fs-4">UAlert - Stay Aware of your Surroundings</span>
             </a>
@@ -36,5 +39,18 @@
             </ul>
         </header>
         <div id="map"></div>
+        <script>
+            let map = L.map('map').setView([42.38922, -72.52650], 15);
+            L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                maxZoom: 17,
+                minZoom: 13,
+                id: 'mapbox/streets-v11',
+                tileSize: 512,
+                zoomOffset: -1,
+                accessToken: 'pk.eyJ1IjoiY2Ricm93bjA3MDIiLCJhIjoiY2t2anRnOWI0MDQ3djJ1cW5sY2tnNjVkNCJ9.JII6kT21_W_G7O_Lvpww2g'
+            }).addTo(map);
+            map.fitBounds()
+        </script>
     </body>
 </html>
