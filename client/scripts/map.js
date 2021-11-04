@@ -27,6 +27,11 @@ currEvents = [{
   'date': 'November 28 2016',
   'coords': [-72.52480, 42.38984],
   'desc': 'Theta Chi literally just burnt Morrill down what the heck?'
+}, {
+  'name': 'The Monkey Lab',
+  'date': 'forever',
+  'coords': [-72.52951, 42.38785],
+  'desc': 'This is the Monkey Lab (eternally).'
 }];
 
 // Iterates through all submitted reports, creating popups and a marker for each
