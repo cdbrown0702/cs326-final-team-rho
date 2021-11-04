@@ -15,6 +15,8 @@ const map = new mapboxgl.Map({
   maxBounds: mapBounds
 });
 
+// Defines the current, submitted reports
+// TODO connect this to a database/JSON file
 currEvents = [{
   'name': 'Car Accident',
   'date': '3 Dec 2016',
@@ -27,22 +29,13 @@ currEvents = [{
   'desc': 'Theta Chi literally just burnt Morrill down what the heck?'
 }];
 
+// Iterates through all submitted reports, creating popups and a marker for each
 for (let i = 0, l = currEvents.length; i < l; i++) {
   let e = currEvents[i];
-
   let popup = new mapboxgl.Popup({offset: 25}).setHTML(
     'Name: ' + e['name'] + '<br>Date: ' + e['date'] + '<br>Description: ' + e['desc'] 
   );
-
   new mapboxgl.Marker({
     color: 'black'
   }).setLngLat(e['coords']).setPopup(popup).addTo(map);
 }
-
-// const popup = new mapboxgl.Popup({offset: 25}).setText(
-//   'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-// );
-
-// const marker = new mapboxgl.Marker({
-//   color: 'black'
-// }).setLngLat([-72.52480, 42.38984]).setPopup(popup).addTo(map);
