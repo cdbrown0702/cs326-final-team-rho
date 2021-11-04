@@ -1,41 +1,42 @@
-// make some number of divs
-// for each div...
-// image on left
-// header top right
-// description bottom right
-
 const listGroup = document.getElementById("list-group");
 console.log(listGroup);
-for (let i = 0; i < 3; i++) {
-    const div = document.createElement("div");
-    div.classList = "list-group-item";
-    const img = document.createElement("img");
-    img.classList = "list-image";
-    img.src = "https://static01.nyt.com/images/2021/09/30/multimedia/30xp-umass/30xp-umass-jumbo.jpg";
-    const header = document.createElement("h1");
-    header.textContent = "Title";
-    const description = document.createElement("p");
-    description.textContent = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Molestie nunc non blandit massa enim nec dui. Quis ipsum suspendisse ultrices gravida. Dui ut ornare lectus sit amet est. Purus sit amet luctus venenatis. Quis enim lobortis scelerisque fermentum dui faucibus in ornare. Risus ultricies tristique nulla aliquet enim tortor.";
-    div.appendChild(img);
-    div.appendChild(header);
-    div.appendChild(description);
-    listGroup.appendChild(div);
+for (let i = 0; i < 10; i++) {
+    // init divs
+    const text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+    addReport("https://www.umass.edu/ipo/sites/default/files/styles/simplecrop/public/11_018_073_6.jpg", "test", text);
+    addReport("https://static01.nyt.com/images/2021/09/30/multimedia/30xp-umass/30xp-umass-mobileMasterAt3x.jpg", "test", text);
 }
 
-function addReport(imageURL, title, desc) {
-    const div = document.createElement("div");
-    div.classList = "list-group-item";
+function addReport(imageURL, title, descText) {
+    // init divs
+    const container = document.createElement("div");
+    const row = document.createElement("div");
+    const col1 = document.createElement("div");
+    const col2 = document.createElement("div");
     const img = document.createElement("img");
-    img.classList = "list-image";
+    const body = document.createElement("div");
+    const header = document.createElement("h2");
+    const desc = document.createElement("p");
+    const time = document.createElement("p");
+    // add stuff to divs
+container.classList = "list-group-item";
+    row.classList = "row";
+    col1.classList = "col-auto";
+    col2.classList = "col";
     img.src = imageURL;
-    const header = document.createElement("h1");
+    img.classList = "list-image";
     header.textContent = title;
-    const description = document.createElement("p");
-    description.textContent = desc;
-    div.appendChild(img);
-    div.appendChild(header);
-    div.appendChild(description);
-    listGroup.appendChild(div);
+    desc.textContent = descText;
+    time.textContent = "5 minutes ago";
+    time.classList = "text-muted";
+    // put divs together
+    body.appendChild(header);
+    body.appendChild(desc);
+    body.appendChild(time);
+    col1.appendChild(img);
+    col2.appendChild(body);
+    row.appendChild(col1);
+    row.appendChild(col2);
+    container.appendChild(row);
+    listGroup.appendChild(container);
 }
-
-addReport("https://www.umass.edu/ipo/sites/default/files/styles/simplecrop/public/11_018_073_6.jpg", "test", "hello world");
