@@ -11,7 +11,7 @@
     <body class="body-color">
         <header class="header-color d-flex flex-wrap justify-content-center py-3 border-bottom">
             <a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-                <span class="header-text fs-4">Create Report</span>
+                <span class="header-text fs-4">UAlert - Stay Aware</span>
             </a>
             <ul class="centered nav nav-pills">
                 <li class="nav-item">
@@ -28,26 +28,39 @@
         </header>
         <ul class="list-group" id="list-group">
         </ul>
-        <form class="form-inline">
-            <h3>Create</h3>
-            <div class="form-row">
-                <label for="exampleInput" class="form-label">Event name</label>
-                <input type="email" class="form-control" id="eventName" aria-describedby="emailHelp"/>
+        <div class="modal position-static d-block bg-secondary py-5" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content rounded-5 shadow">
+                    <div class="modal-header p-5 pb-4 border-bottom-0">
+                        <h2 class="fw-bold mb-0">Submit a Report</h2>
+                    </div>
+                        <div class="modal-body p-5 pt-0">
+                            <form class="form-inline">
+                                <div class="form-row">
+                                    <label for="exampleInput" class="form-label">Event name</label>
+                                    <input type="text" class="form-control" id="eventName" placeholder="Brief Name for Alert" aria-describedby="emailHelp"/>
+                                </div>
+                                <br>
+                                <div class="form-row"> 
+                                    <label for="exampleInput" class="form-label">Date</label>
+                                    <input type="date" class="form-control" id="dateInput" placeholder="MM/DD/YYYY" aria-describedby="emailHelp"/>
+                                </div>
+                                <br>
+                                <div class="form-row">
+                                    <label for="exampleInput" class="form-label">Location</label>
+                                    <h3>insert map here</h3>
+                                </div>
+                                <br>
+                                <div class="form-row">
+                                    <label for="exampleInput" class="form-label">Description</label>
+                                    <input type="email" class="form-control" id="descriptInput" placeholder="Please describe what happened..." aria-describedby="emailHelp"/>
+                                </div>
+                                <br>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                </div>
             </div>
-            <div class="form-row"> 
-                <label for="exampleInput" class="form-label">Date</label>
-                <input type="email" class="form-control" id="dateInput" aria-describedby="emailHelp"/>
-            </div>
-            <div class="form-row">
-                <label for="exampleInput" class="form-label">Location</label>
-                <input type="email" class="form-control" id="exampleInput" aria-describedby="emailHelp"/>
-            </div>
-            <div class="form-row">
-                <label for="exampleInput" class="form-label">Description</label>
-                <input type="email" class="form-control" id="descriptInput" aria-describedby="emailHelp"/>
-            </div>
-            
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+        </div>
     </body>
 </html>
