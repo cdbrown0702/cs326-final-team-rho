@@ -9,7 +9,6 @@
 - /report/new -- allows for a new report to be added to the collection of reports when a request is sent to this endpoint (contains ID (generated), name, date, description and location)
 - /report/ID  -- viewing endpoint which returns the fields of the report
 - /report/delete -- deletes the report
-- /report/update -- lets you change a previous report
 
 ## Front-end Implementation
 
