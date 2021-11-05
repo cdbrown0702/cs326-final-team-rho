@@ -14,9 +14,12 @@
 - /user/ID/submit/view -- returns all reports of the given user
 - /user/ID/submit/delete?id=1234 -- deletes the given report ID for a SPECIFIC user
 
-## Back-end Skeleton Code
-
 ## Front-end Implementation
+
+- Read: Below, you will see the map (main) view of the site; the map reads our inputted data by fetching from a local JSON file (pre-database), then displaying the events submitted using a marker format, where even marker can be clicked on to view details. Each marker is colored by the category submitted (yellow for hazards, black for general awareness, etc.)
+
+![Map View Illustrating READ](mapCRUD.PNG)
+
 
 ## Division of Labor
 
