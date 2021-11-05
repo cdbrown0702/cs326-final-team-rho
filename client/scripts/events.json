@@ -2,18 +2,21 @@
     {
         "name": "Car Accident",
         "date": "03/12/2016",
+        "category": "red",
         "coords": [-72.52695, 42.39506],
         "desc": "There was a major car accident near the northern rotary on campus, someone is dead"
     },
     {
         "name": "Morrill Fire",
         "date": "28/11/2016",
+        "category": "yellow",
         "coords": [-72.52480, 42.38984],
         "desc": "Theta Chi literally just burnt Morrill down what the heck?"
     },
     {
         "name": "The Monkey Lab",
         "date": "forever",
+        "category": "black",
         "coords": [-72.52951, 42.38785],
         "desc": "This is the Monkey Lab (eternally)."
     }

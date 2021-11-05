@@ -15,6 +15,7 @@ const map = new mapboxgl.Map({
   maxBounds: mapBounds
 });
 
+// Fetches all input events from a local JSON file, creating markers with ind. popups
 fetch('./scripts/events.json')
     .then(response => response.json())
     .then(data => {
@@ -24,7 +25,7 @@ fetch('./scripts/events.json')
           'Name: ' + e['name'] + '<br>Date: ' + e['date'] + '<br>Description: ' + e['desc'] 
         );
         new mapboxgl.Marker({
-          color: 'black'
+          color: e['category']
         }).setLngLat(e['coords']).setPopup(popup).addTo(map);
       }
     });

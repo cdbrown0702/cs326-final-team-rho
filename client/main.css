@@ -37,7 +37,7 @@ img.centered {
 }
 #map {
     position: absolute;
-    height: 720px;
+    height: 1080px;
     width: 100%;
 }
 .mapboxgl-popup {
