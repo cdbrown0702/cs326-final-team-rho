@@ -8,11 +8,8 @@
 
 - /report/new -- allows for a new report to be added to the collection of reports when a request is sent to this endpoint (contains ID (generated), name, date, description and location)
 - /report/ID  -- viewing endpoint which returns the fields of the report
-- /user/new OR /register -- allows a new user to be created
-- /login -- allows any user to login and edit their submissions
-- /user/ID/submit/new?ID=1234 -- creates a submission object for the given user and report ID
-- /user/ID/submit/view -- returns all reports of the given user
-- /user/ID/submit/delete?id=1234 -- deletes the given report ID for a SPECIFIC user
+- /report/delete -- deletes the report
+- /report/update -- lets you change a previous report
 
 ## Front-end Implementation
 
