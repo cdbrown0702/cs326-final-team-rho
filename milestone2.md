@@ -16,7 +16,8 @@
 
 ## Front-end Implementation
 
-
+![Create](/crud-screenshots/create.png)
+![Update and Delete](/crud-screenshots/updateAndDelete.png)
 
 ## Deployment
 
