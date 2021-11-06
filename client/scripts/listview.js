@@ -21,12 +21,13 @@ function addReport(imageURL, title, descText, location, date) {
     const loc = document.createElement("p");
     const dateText = document.createElement("p");
     const deleteBtn = document.createElement("button");
+    const updateBtn = document.createElement("button");
     // add stuff to divs
     container.classList = "list-group-item";
     row.classList = "row";
     col1.classList = "col-auto";
     col2.classList = "col";
-    col3.classList = "col-auto";
+    col3.classList = "col-1";
     img.src = imageURL;
     img.classList = "list-image";
     header.textContent = title;
@@ -35,8 +36,10 @@ function addReport(imageURL, title, descText, location, date) {
     loc.classList = "text-muted";
     dateText.textContent = date;
     dateText.classList = "text-muted";
-    deleteBtn.classList = "btn btn-danger";
+    deleteBtn.classList = "btn btn-danger mb-1";
     deleteBtn.textContent = "Delete Report";
+    updateBtn.classList = "btn btn-primary";
+    updateBtn.textContent = "Update Report";
     // put divs together
     body.appendChild(header);
     body.appendChild(desc);
@@ -45,6 +48,7 @@ function addReport(imageURL, title, descText, location, date) {
     col1.appendChild(img);
     col2.appendChild(body);
     col3.appendChild(deleteBtn);
+    col3.appendChild(updateBtn);
     row.appendChild(col1);
     row.appendChild(col2);
     row.appendChild(col3);

@@ -14,9 +14,16 @@
 - /user/ID/submit/view -- returns all reports of the given user
 - /user/ID/submit/delete?id=1234 -- deletes the given report ID for a SPECIFIC user
 
-## Back-end Skelet  Code
-
 ## Front-end Implementation
+
+![Create](/crud-screenshots/create.PNG)
+On this page you can submit a new report which will be displayed on the map and feed.
+![Update and Delete](/crud-screenshots/updateAndDelete.PNG)
+On the feed page you can update and delete individual reports.
+
+## Deployment
+
+link here: ....
 
 ## Division of Labor
 
