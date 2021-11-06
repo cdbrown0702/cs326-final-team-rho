@@ -14,12 +14,10 @@ const map = new mapboxgl.Map({
   maxZoom: 18,
   maxBounds: mapBounds
 });
-let coor = new mapboxgl.Marker({ color: 'black', draggable=true }).setLngLat(campus).addTo(map);
-
-function returnCoor(){
-  coor.getLngLat()
-}
 
 
 //------
-
+document.getElementById('sub').addEventListener('click', () => {
+  let coor = new mapboxgl.Marker({ color: 'black', draggable=true }).setLngLat(campus).addTo(map);
+  coor.getLngLat()
+});

@@ -71,15 +71,15 @@ server.on('req', async (req, res) => {
         req.on('data', data => body += data);
         req.on('end', () => {
             const data = JSON.parse(body);
-            us.ID
-            //wordScores.push({name: data.name, word: data.word, score: data.score});
+            us.ID = "ID".
+            wordScores.push({name: data.name, word: data.word, score: data.score});
         });
     } if (options.pathname === "/delete?id=1234") {
         let body = '';
         req.on('data', data => body += data);
         req.on('end', () => {
             const data = JSON.parse(body);
-            evthing.gameScores.push({name: data.name, score: data.score});    
+            us.gameScores.push({name: data.name, score: data.score});    
         });
     } if (options.pathname === "/view") {
         res.end(JSON.stringify(
