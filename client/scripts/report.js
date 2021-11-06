@@ -14,3 +14,4 @@ const map = new mapboxgl.Map({
   maxZoom: 18,
   maxBounds: mapBounds
 });
+
