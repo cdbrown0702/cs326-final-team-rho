@@ -15,3 +15,6 @@ const map = new mapboxgl.Map({
   maxBounds: mapBounds
 });
 
+
+let coor = new mapboxgl.Marker({ color: 'black', draggable=true }).setLngLat(campus).addTo(map);
+
