@@ -17,7 +17,9 @@
 ## Front-end Implementation
 
 ![Create](/crud-screenshots/create.PNG)
+On this page you can submit a new report which will be displayed on the map and feed.
 ![Update and Delete](/crud-screenshots/updateAndDelete.PNG)
+On the feed page you can update and delete individual reports.
 
 ## Deployment
 
