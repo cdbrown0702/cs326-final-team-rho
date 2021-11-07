@@ -53,9 +53,9 @@ let fs = require('fs');
 // - /user/ID/submit/new?ID=1234 -- creates a submission object for the given user and report ID
 // - /user/ID/submit/view -- returns all reports of the given user
 // - /user/ID/submit/delete?id=1234 -- deletes the given report ID for a SPECIFIC user
-let rep = {ID: 0, name: "", date: 0, description: "", location:[]};
-let us = {name: "", ID: 0, email: "", password: "", listReports:""};
-let sub = {reportID: 0, UserID: 0, date: 0}
+let rep = {ID: [], name: [], date: 0, description: "", location:[]};
+let us = {name: [], ID: [], email: [], password: [], listReports: []};
+let sub = {reportID: [], UserID: [], date: []};
 
 let server = http.createServer();
 server.on('req', async (req, res) => {
@@ -71,15 +71,16 @@ server.on('req', async (req, res) => {
         req.on('data', data => body += data);
         req.on('end', () => {
             const data = JSON.parse(body);
-            us.ID = "ID".
-            wordScores.push({name: data.name, word: data.word, score: data.score});
+            us.ID = "ID";
         });
     } if (options.pathname === "/delete?id=1234") {
         let body = '';
         req.on('data', data => body += data);
         req.on('end', () => {
             const data = JSON.parse(body);
-            us.gameScores.push({name: data.name, score: data.score});    
+            if(us.ID === id){
+                sub.UserID = [];
+            }   
         });
     } if (options.pathname === "/view") {
         res.end(JSON.stringify(
