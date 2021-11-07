@@ -84,9 +84,6 @@ server.on('req', async (req, res) => {
     } if (options.pathname === "/view") {
         res.end(JSON.stringify(
             us.listReports));
-    } if (options.pathname === "/highestGameScores") {
-        res.end(JSON.stringify(
-            evthing.gameScores.sort((a, b) => b.score - a.score).filter((v, x) => x < 10)));
     } else {
         res.end();
     }
