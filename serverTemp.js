@@ -100,8 +100,8 @@ serv.use(exp.static('client'));
 
 serv.get('*', (req,res) => {
     res.send('Error');
-})
+});
 
 serv.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
-})
+});
