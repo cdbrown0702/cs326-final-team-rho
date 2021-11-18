@@ -94,7 +94,6 @@ serv.get('/login',
 	(req, res) => res.sendFile('client/login.html',
 				   { 'root' : __dirname }));
 
-
 // sets our directory to client
 serv.use(exp.static('client'));
 
