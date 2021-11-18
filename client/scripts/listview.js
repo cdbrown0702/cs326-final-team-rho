@@ -1,13 +1,16 @@
 const listGroup = document.getElementById("list-group");
-console.log(listGroup);
+console.log(listGroup)
+// adding random reports to test
+/*
 for (let i = 0; i < 10; i++) {
     // init divs
     const text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
     addReport("https://www.umass.edu/ipo/sites/default/files/styles/simplecrop/public/11_018_073_6.jpg", "test", text, "42 -73", "11/4/21");
     addReport("https://static01.nyt.com/images/2021/09/30/multimedia/30xp-umass/30xp-umass-mobileMasterAt3x.jpg", "test", text, "42 -73", "11/4/21");
 }
+*/
 
-function addReport(imageURL, title, descText, location, date) {
+function addReport(id, imageURL, title, descText, location, date) {
     // init divs
     const container = document.createElement("div");
     const row = document.createElement("div");
@@ -21,9 +24,12 @@ function addReport(imageURL, title, descText, location, date) {
     const loc = document.createElement("p");
     const dateText = document.createElement("p");
     const deleteBtn = document.createElement("button");
+    deleteBtn.id = `deleteBtn${id}`;
     const updateBtn = document.createElement("button");
+    updateBtn.id = `updateBtn${id}`;
     // add stuff to divs
-    container.classList = "list-group-item";
+    container.id = id;
+    container.classList = `list-group-item ${id}`;
     row.classList = "row";
     col1.classList = "col-auto";
     col2.classList = "col";
@@ -54,6 +60,9 @@ function addReport(imageURL, title, descText, location, date) {
     row.appendChild(col3);
     container.appendChild(row);
     listGroup.appendChild(container);
+    console.log("report added with id " + id);
+    console.log("delete button id is " + deleteBtn.id);
+    console.log(document.getElementById("deleteBtn0"));
 }
 
 // gets reports from JSON file
@@ -65,6 +74,18 @@ fetch('./scripts/events.json')
       for (let i = 0, l = data.length; i < l; i++) {
         let e = data[i];
         let locString = `${e['coords'][0]}, ${e['coords'][1]}`;
-        addReport("https://www.umass.edu/ipo/sites/default/files/styles/simplecrop/public/11_018_073_6.jpg", e['name'], e['desc'], locString, e['date']);
+        console.log(e['id']);
+        addReport(e['id'], "https://www.umass.edu/ipo/sites/default/files/styles/simplecrop/public/11_018_073_6.jpg", e['name'], e['desc'], locString, e['date']);
+        document.getElementById(`deleteBtn${e['id']}`).addEventListener('click', () => {
+          console.log("delete now!");
+          document.getElementById(e['id']).remove();
+        });
+
+        document.getElementById(`updateBtn${e['id']}`).addEventListener('click', () => {
+          console.log("update now!");
+          document.getElementById(e['id']).remove();
+          window.location = "/pageReport.html";
+        });
       }
-    });
+
+  });
