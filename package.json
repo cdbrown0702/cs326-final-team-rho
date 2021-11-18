@@ -1,1 +1,29 @@
-{}
+{
+  "name": "package",
+  "version": "1.0.0",
+  "main": "serverTemp.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cdbrown0702/cs326-final-team-rho.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cdbrown0702/cs326-final-team-rho/issues"
+  },
+  "homepage": "https://github.com/cdbrown0702/cs326-final-team-rho#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.2",
+    "passport": "^0.5.0",
+    "passport-local": "^1.0.0"
+  },
+  "description": ""
+}
