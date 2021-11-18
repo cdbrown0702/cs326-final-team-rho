@@ -43,7 +43,7 @@ serv.use(exp.json());
 serv.use(exp.urlencoded({'extended': true}));
 
 // for testing purposes
-let users = { 'cbrown': 'test' }
+let users = { 'cbrown': 'test' };
 
 function findUs(user) {
     if (!users[user]) {
@@ -51,17 +51,17 @@ function findUs(user) {
     } else {
         return true;
     }
-}
+};
 
 function valPass(user, pwd) {
-    if (!findUser(user)) {
+    if (!findUs(user)) {
         return false;
     }
     if (users[user] !== pwd) {
         return false;
     }
     return true;
-}
+};
 
 function addUs(user, pwd) {
     if (!users[user]) {
@@ -69,7 +69,7 @@ function addUs(user, pwd) {
         return true;
     }
     return false;
-}
+};
 
 function checkLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
@@ -87,12 +87,30 @@ serv.get('/',
 
 serv.post('/login',
     passport.authenticate('local' , {     // use username/password authentication
-        'successRedirect' : 'client/map.html',   // when we login, go to /html 
+        'successRedirect' : '/client/map.html',   // when we login, go to /html 
         'failureRedirect' : '/login'      // otherwise, back to login
     }));
 serv.get('/login',
 	(req, res) => res.sendFile('client/login.html',
 				   { 'root' : __dirname }));
+
+serv.post('/register',
+(req, res) => {
+    const username = req.body['username'];
+    const password = req.body['password'];
+    // TODO
+    // Check if we successfully added the user.
+    let result = addUs(username, password);
+    // If so, redirect to '/login'
+    if (result) { res.redirect('/login'); }
+    // If not, redirect to '/register'.
+    if (!result) { res.redirect('/register'); }
+});
+
+// Register URL
+serv.get('/register',
+(req, res) => res.sendFile('html/register.html',
+                { 'root' : __dirname }));
 
 // sets our directory to client
 serv.use(exp.static('client'));
