@@ -26,4 +26,6 @@ Datetype: User
 
 ## Heroku link
 
-Link: 
+This is a link to our main login page -- please register and log in -- your report submissions will not be successful without having a valid account.
+
+- Link: https://ualert.herokuapp.com/login.html )
