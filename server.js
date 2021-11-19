@@ -200,8 +200,8 @@ checkLoggedIn,
 // sets our directory to client
 serv.use(exp.static('client'));
 
-serv.get('*', (req,res) => {
-    res.send('Error');
+serv.post('/', (req,res) => {
+    res.redirect('/login');
 });
 
 serv.listen(port, () => {
