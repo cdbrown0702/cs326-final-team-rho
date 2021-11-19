@@ -172,7 +172,7 @@ checkLoggedIn,
     if (userInd === -1) {
         res.redirect('/login'); 
     } else {
-        userID = users[userInd]['uid';]
+        userID = users[userInd]['uid'];
     }
     let body = '';
     req.on('data', data => body += data);
@@ -190,7 +190,7 @@ checkLoggedIn,
     if (userInd === -1) {
         res.redirect('/login'); 
     } else {
-        userID = users[userInd]['uid';]
+        userID = users[userInd]['uid'];
     }
     let body = '';
     req.on('data', data => body += data);
