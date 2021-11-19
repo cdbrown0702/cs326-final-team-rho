@@ -42,10 +42,15 @@
                         <h2 class="fw-bold mb-0">Submit an Alert</h2>
                     </div>
                         <div class="modal-body p-5 pt-0">
-                            <label for="exampleInput" class="form-label">Location</label>
-                            <div id="map-small"></div>
-                            <script src="scripts/report.js"></script>
                             <form class="form-inline">
+                                <div class="form-row">
+                                    <label class="form-label">Location (<i>drag the cursor</i>)</label>
+                                    <div id="map-small"></div>
+                                    <label class="form-label">Latitude: <span id="lat">42.38922</span></label>
+                                    <br>
+                                    <label class="form-label">Longitude: <span id="long">-72.52650</span></label>
+                                </div>
+                                <br>
                                 <div class="form-row">
                                     <label for="exampleInput" class="form-label">Event name</label>
                                     <input type="text" class="form-control" id="eventName" placeholder="Brief Name for Alert" aria-describedby="emailHelp"/>
@@ -53,8 +58,8 @@
                                 <br>
                                 <div class="form-row">
                                     <label for="catInput" class="form-label">Category</label>
-                                    <select class="form-select">
-                                        <option selected>Choose a category</option>
+                                    <select id="category" class="form-select">
+                                        <option value="unselected" selected>Choose a category</option>
                                         <option value="yellow">Hazard</option>
                                         <option value="red">Car Accident</option>
                                         <option value="green">General Event</option>
@@ -66,7 +71,7 @@
                                 <br>
                                 <div class="form-row"> 
                                     <label for="exampleInput" class="form-label">Date</label>
-                                    <input type="date" class="form-control" id="dateInput" placeholder="MM/DD/YYYY" aria-describedby="emailHelp"/>
+                                    <input type="date" class="form-control" id="dateInput"  aria-describedby="emailHelp"/>
                                 </div>
                                 <br>
                                 <div class="form-row">
@@ -74,11 +79,12 @@
                                     <textarea type="area" class="form-control" id="descriptInput" placeholder="Please describe what happened..." aria-describedby="emailHelp"></textarea>
                                 </div>
                                 <br>
-                                <button type="submit" id = "sub" class="btn btn-primary">Submit</button>
+                                <button type="submit" id="sub" class="btn btn-primary">Submit</button>
                             </form>
                         </div>
                 </div>
             </div>
         </div>
+        <script src="scripts/report.js"></script>
     </body>
 </html>

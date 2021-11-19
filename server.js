@@ -1,5 +1,19 @@
 'use strict'
 
+const fs = require('fs');
+let database;
+if (fs.existsSync("client/scripts/events.json")) {
+    database = JSON.parse(fs.readFileSync("client/scripts/events.json"));
+} else {
+    database = [];
+}
+let users;
+if (fs.existsSync("client/scripts/users.json")) {
+    users = JSON.parse(fs.readFileSync("client/scripts/users.json"));
+} else {
+    users = [];
+}
+
 // Pulls in necessary pieces for server functionality
 //require('dotenv').config();
 const exp = require('express');
@@ -13,7 +27,7 @@ const ses = {
     secret: process.env.SECRET || 'secret',
     resave: false,
     saveUninitialized: false
-}
+};
 
 // constructs Passport for username authentication
 const strat = new LocalStrategy(
@@ -27,7 +41,7 @@ const strat = new LocalStrategy(
         }
         return done(null, username);
     }
-)
+);
 
 serv.use(session(ses));
 passport.use(strat);
@@ -42,29 +56,33 @@ passport.deserializeUser((uid, done) => {
 serv.use(exp.json());
 serv.use(exp.urlencoded({'extended': true}));
 
-// for testing purposes
-let users = { 'cbrown': 'test' };
-
+// Authentication Functions
 function findUs(user) {
-    if (!users[user]) {
-        return false;
-    } else {
-        return true;
+    for (let i = 0; i < users.length; i++) {
+        if (users[i]['user'] === user) {
+            return i;
+        }
     }
+    return 0;
 };
-
 function valPass(user, pwd) {
-    if (!findUs(user)) {
+    let i = findUs(user);
+    if (i === 0) {
         return false;
     }
-    if (users[user] !== pwd) {
+    if (users[i]['pwd'] !== pwd) {
         return false;
     }
     return true;
 };
 function addUs(user, pwd) {
-    if (!users[user]) {
-        users[user] = pwd;
+    if (findUs(user) === 0) {
+        users.push({'uid' : users.length + 1, 'user' : user, 'pwd': pwd});
+        fs.writeFile("client/scripts/users.json", JSON.stringify(users), err => {
+            if (err) {
+                console.err(err);
+            }
+        });
         return true;
     }
     return false;
@@ -76,13 +94,12 @@ function checkLoggedIn(req, res, next) {
         res.redirect('/login');
     }
 }
-
+// Authentication Endpoints
 serv.get('/',
     checkLoggedIn,
     (req, res) => {
         res.send("logged");
     });
-
 serv.post('/login',
     passport.authenticate('local' , {     // use username/password authentication
         'successRedirect' : '/map.html',   // when we login, go to /html 
@@ -91,7 +108,6 @@ serv.post('/login',
 serv.get('/login',
 	(req, res) => res.sendFile('client/login.html',
 				   { 'root' : __dirname }));
-
 serv.post('/register',
 (req, res) => {
     const username = req.body['username'];
@@ -104,11 +120,38 @@ serv.post('/register',
     // If not, redirect to '/register'.
     if (!result) { res.redirect('/register'); }
 });
-
-// Register URL
 serv.get('/register',
-(req, res) => res.sendFile('html/register.html',
+(req, res) => res.sendFile('client/register.html',
                 { 'root' : __dirname }));
+
+serv.post('/createReport',
+(req, res) => {
+    let newID;
+    if (database.length === 0) {
+        newID = 1;
+    } else {
+        newID = database.length + 1;
+    }
+    let body = '';
+    req.on('data', data => body += data);
+    req.on('end', () => {
+        const data = JSON.parse(body);
+        database.push({
+            'rid': newID,
+            'name': data.name,
+            'category': data.category,
+            'date': data.date,
+            'desc': data.desc,
+            'coords': data.coords
+
+        });
+        fs.writeFile("client/scripts/events.json", JSON.stringify(database), err => {
+            if (err) {
+                console.err(err);
+            }
+        });
+    });
+});
 
 // sets our directory to client
 serv.use(exp.static('client'));
