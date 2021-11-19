@@ -94,11 +94,6 @@ function checkLoggedIn(req, res, next) {
     }
 }
 // Authentication Endpoints
-serv.get('/',
-    checkLoggedIn,
-    (req, res) => {
-        res.send("logged");
-    });
 serv.post('/login',
     passport.authenticate('local' , {     // use username/password authentication
         'successRedirect' : '/map.html',   // when we login, go to /html 
