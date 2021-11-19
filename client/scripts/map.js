@@ -15,6 +15,11 @@ const map = new mapboxgl.Map({
   maxBounds: mapBounds
 });
 
+fetch('/checkLog')
+  .then(data => {
+    document.getElementsByID('login').innerHTML(`<a href="/logout" class="text-decoration-none"><span class="link-text">Logout</span></a>`);
+  });
+
 // Fetches all input events from a local JSON file, creating markers with ind. popups
 fetch('./scripts/events.json')
     .then(response => response.json())

@@ -119,7 +119,6 @@ serv.post('/register',
     // Check if we successfully added the user.
     let result = addUs(username, password);
     // If so, redirect to '/login'
-    console.log(result);
     if (result) { res.redirect('/login'); }
     // If not, redirect to '/register'.
     if (!result) { res.redirect('/register'); }
@@ -127,12 +126,6 @@ serv.post('/register',
 serv.get('/register',
 (req, res) => res.sendFile('client/register.html',
                 { 'root' : __dirname }));
-serv.get('/client/map.html',
-    checkLoggedIn,
-    (req, res) => {
-        document.getElementsByID('login').innerHTML(`<a href="/logout" class="text-decoration-none"><span class="link-text">Logout</span></a>`)
-        res.redirect('/client/map.html');
-    });
 // Creates report
 serv.post('/createReport',
 checkLoggedIn,
@@ -206,6 +199,7 @@ checkLoggedIn,
         // redirect to submit with fields auto-filled... HANG ON TO PREVIOUS REPORT ID SO YOU CAN UPDATE 
     })
 }
+
 // READ is within map.js and listview.js
 // sets our directory to client
 serv.use(exp.static('client'));
