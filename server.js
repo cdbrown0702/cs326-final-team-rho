@@ -1,5 +1,6 @@
 'use strict'
 
+// Imports necessary users and events
 const fs = require('fs');
 let database;
 if (fs.existsSync("client/scripts/events.json")) {
@@ -42,7 +43,6 @@ const strat = new LocalStrategy(
         return done(null, username);
     }
 );
-
 serv.use(session(ses));
 passport.use(strat);
 serv.use(passport.initialize());
@@ -67,7 +67,7 @@ function findUs(user) {
 };
 function valPass(user, pwd) {
     let i = findUs(user);
-    if (i === 0) {
+    if (i === -1) {
         return false;
     }
     if (users[i]['pwd'] !== pwd) {
@@ -76,7 +76,7 @@ function valPass(user, pwd) {
     return true;
 };
 function addUs(user, pwd) {
-    if (findUs(user) === 0) {
+    if (findUs(user) === -1) {
         users.push({'uid' : users.length + 1, 'user' : user, 'pwd': pwd});
         fs.writeFile("client/scripts/users.json", JSON.stringify(users), err => {
             if (err) {
@@ -108,6 +108,10 @@ serv.post('/login',
 serv.get('/login',
 	(req, res) => res.sendFile('client/login.html',
 				   { 'root' : __dirname }));
+serv.get('/logout', (req, res) => {
+    req.logout(); // Logs us out!
+    res.redirect('/login'); // back to login
+});
 serv.post('/register',
 (req, res) => {
     const username = req.body['username'];
@@ -123,10 +127,18 @@ serv.post('/register',
 serv.get('/register',
 (req, res) => res.sendFile('client/register.html',
                 { 'root' : __dirname }));
-
+// Creates report
 serv.post('/createReport',
+checkLoggedIn,
 (req, res) => {
-    let newID;
+    let newID, userID;
+    let userInd = findUs(req.user);
+    if (userInd === -1) {
+        alert("You're not logged in!");
+        res.redirect('/login');
+    } else {
+        userID = users[userInd]['uid'];
+    }
     if (database.length === 0) {
         newID = 1;
     } else {
@@ -137,13 +149,13 @@ serv.post('/createReport',
     req.on('end', () => {
         const data = JSON.parse(body);
         database.push({
+            'uid': userID,
             'rid': newID,
             'name': data.name,
             'category': data.category,
             'date': data.date,
-            'desc': data.desc,
-            'coords': data.coords
-
+            'coords': data.coords,
+            'desc': data.desc
         });
         fs.writeFile("client/scripts/events.json", JSON.stringify(database), err => {
             if (err) {
@@ -152,7 +164,43 @@ serv.post('/createReport',
         });
     });
 });
-
+serv.post('/delete',
+checkLoggedIn,
+(req, res) => {
+    let userInd = findUs(req.user);
+    let userID;
+    if (userInd === -1) {
+        res.redirect('/login'); 
+    } else {
+        userID = users[userInd]['uid';]
+    }
+    let body = '';
+    req.on('data', data => body += data);
+    req.on('end', () => {
+        const data = JSON.parse(body);
+        // insert code to check if userid = uid in the report they want to delete
+        // Give them a baby modal saying are you sure or something
+    })
+});
+serv.post('/update'),
+checkLoggedIn,
+(req, res) => {
+    let userInd = findUs(req.user);
+    let userID;
+    if (userInd === -1) {
+        res.redirect('/login'); 
+    } else {
+        userID = users[userInd]['uid';]
+    }
+    let body = '';
+    req.on('data', data => body += data);
+    req.on('end', () => {
+        const data = JSON.parse(body);
+        // insert code to check if userid = uid in the report they want to update,
+        // redirect to submit with fields auto-filled... HANG ON TO PREVIOUS REPORT ID SO YOU CAN UPDATE 
+    })
+}
+// READ is within map.js and listview.js
 // sets our directory to client
 serv.use(exp.static('client'));
 
