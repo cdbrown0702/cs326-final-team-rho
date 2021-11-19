@@ -37,7 +37,6 @@ const strat = new LocalStrategy(
             return done(null, false, { 'message': 'Incorrect Username' });
         }
         if (!valPass(username, password)) {
-            await new Promise((r) >= setTimeout(r, 2000));
             return done(null, false, { 'message': 'Incorrect Password'});
         }
         return done(null, username);
@@ -63,7 +62,7 @@ function findUs(user) {
             return i;
         }
     }
-    return 0;
+    return -1;
 };
 function valPass(user, pwd) {
     let i = findUs(user);
@@ -120,6 +119,7 @@ serv.post('/register',
     // Check if we successfully added the user.
     let result = addUs(username, password);
     // If so, redirect to '/login'
+    console.log(result);
     if (result) { res.redirect('/login'); }
     // If not, redirect to '/register'.
     if (!result) { res.redirect('/register'); }
@@ -127,6 +127,12 @@ serv.post('/register',
 serv.get('/register',
 (req, res) => res.sendFile('client/register.html',
                 { 'root' : __dirname }));
+serv.get('/client/map.html',
+    checkLoggedIn,
+    (req, res) => {
+        document.getElementsByID('login').innerHTML(`<a href="/logout" class="text-decoration-none"><span class="link-text">Logout</span></a>`)
+        res.redirect('/client/map.html');
+    });
 // Creates report
 serv.post('/createReport',
 checkLoggedIn,
