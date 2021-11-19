@@ -62,7 +62,6 @@ function valPass(user, pwd) {
     }
     return true;
 };
-
 function addUs(user, pwd) {
     if (!users[user]) {
         users[user] = pwd;
@@ -70,7 +69,6 @@ function addUs(user, pwd) {
     }
     return false;
 };
-
 function checkLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
         next();
@@ -87,7 +85,7 @@ serv.get('/',
 
 serv.post('/login',
     passport.authenticate('local' , {     // use username/password authentication
-        'successRedirect' : '/client/map.html',   // when we login, go to /html 
+        'successRedirect' : '/map.html',   // when we login, go to /html 
         'failureRedirect' : '/login'      // otherwise, back to login
     }));
 serv.get('/login',
