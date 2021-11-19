@@ -108,8 +108,9 @@ serv.get('/login',
 	(req, res) => res.sendFile('client/login.html',
 				   { 'root' : __dirname }));
 serv.get('/logout', (req, res) => {
-    req.logout(); // Logs us out!
-    res.redirect('/login'); // back to login
+    req.session.destroy(function (err) {
+        res.redirect('/login');
+    });
 });
 serv.post('/register',
 (req, res) => {
@@ -132,9 +133,9 @@ checkLoggedIn,
 (req, res) => {
     let newID, userID;
     let userInd = findUs(req.user);
-    if (userInd === -1) {
+    if (userInd === -1) { // if not logged in, no submission
         alert("You're not logged in!");
-        res.redirect('/login');
+        res.sendFile('client/login.html');
     } else {
         userID = users[userInd]['uid'];
     }
