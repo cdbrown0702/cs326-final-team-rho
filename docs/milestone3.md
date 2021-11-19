@@ -1,18 +1,29 @@
 ## Documentation for Database
 
 Datatype: Report
-
 {  
-  + id: <ObjectId1>,  
-  + category: String, // color that shows urgency of event    
-  + title: String, // basic description of event  
+  + uid: <ObjectId1>, // id of the user who submitted
+  + rid: <ObjectId2>, // id of the report
+  + title: String, // basic description of event 
+  + category: String, // color that shows urgency of event (corresponds to a category)    
+  + date: String, // date of the event
+  + location: Float Array[] // latitude and longitude (in [lng,lat] format) of event which can be displayed on the map 
   + description: String, // more detailed description of event with further info  
-  + imageURL: String, // URL linking to image of event that can be displayed in the feed  
-  + location: String // latitude and longitude of event which can be displayed on the map    
+}
+
+Datetype: User
+{
+  + uid: <ObjectId1>, // id of the user
+  + user: String, // username of the user
+  + pwd: String, // password of the user
 }
 
 ## Division of Labor
 
+- Connor: Fixed up issues from previous milestone, rewrote server in Express for easier database implementation, added authentication
+- James: Fixed issues in listview, finished connecting Update/Delete endpoints, database implementation
+- Nitant: Database implementation, endpoint work
 
+## Heroku link
 
-
+Link: 
