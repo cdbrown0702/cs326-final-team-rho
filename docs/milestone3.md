@@ -21,8 +21,8 @@ Datetype: User
 ## Division of Labor
 
 - Connor: Fixed up issues from previous milestone, rewrote server in Express for easier database implementation, added authentication
-- James: Fixed issues in listview, finished connecting Update/Delete endpoints, database implementation
-- Nitant: Database implementation, endpoint work
+- James: Fixed issues in listview, finished connecting Update/Delete endpoints
+- Nitant: Database implementation
 
 ## Heroku link
 
