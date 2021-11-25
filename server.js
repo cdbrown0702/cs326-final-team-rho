@@ -143,10 +143,10 @@ checkLoggedIn,
     } else {
         userID = users[userInd]['uid'];
     }
-    if (database.length === 0) {
+    if (await client.db("test").collection("Submission").length === 0) {
         newID = 1;
     } else {
-        newID = database.length + 1;
+        newID = await client.db("test").collection("Submission").length + 1;
     }
     let body = '';
     req.on('data', data => body += data);
@@ -199,7 +199,8 @@ checkLoggedIn,
             // if the user ID of the report is the same as the user ID that made the request
             // then report can be deleted
             // filter database in order to remove report with matching RID, then set it equal to the database again
-            database = database.filter(report => report['rid'] !== rid);
+            await client.db("test").collection("Submission").deleteOne(report => report['rid'] !== rid);
+            
             // refresh page so the deletion shows up
             res.sendFile('client/listview.html', { 'root' : __dirname });
         } else {
@@ -233,7 +234,8 @@ checkLoggedIn,
             // go to submitReport page with fields autofilled
             // how to do that?
             // go to submitReport
-
+            //
+            await client.db("test").collection("Submission").findOneAndUpdate()
         } else {
             // don't update
             alert("cannot update reports made by other users!");
