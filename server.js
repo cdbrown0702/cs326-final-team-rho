@@ -173,8 +173,21 @@ checkLoggedIn,
     req.on('data', data => body += data);
     req.on('end', () => {
         const data = JSON.parse(body);
-        // insert code to check if userid = uid in the report they want to delete
-        // Give them a baby modal saying are you sure or something
+        // data needs to contain user ID to make sure the user isn't deleting someone else's report
+        // also needs to contain report ID in order to remove it from the database
+        let uid = data['uid'];
+        let rid = data['rid'];
+        if (uid == userID) {
+            // if the user ID of the report is the same as the user ID that made the request
+            // then report can be deleted
+            // filter database in order to remove report with matching RID, then set it equal to the database again
+            database = database.filter(report => report['rid'] !== rid);
+            // refresh page so the deletion shows up
+            res.sendFile('client/listview.html', { 'root' : __dirname });
+        } else {
+            // don't delete
+            alert("cannot delete reports made by other users!");
+        }
     })
 });
 serv.post('/update'),
@@ -193,6 +206,21 @@ checkLoggedIn,
         const data = JSON.parse(body);
         // insert code to check if userid = uid in the report they want to update,
         // redirect to submit with fields auto-filled... HANG ON TO PREVIOUS REPORT ID SO YOU CAN UPDATE 
+        // TODO
+        let uid = data['uid'];
+        let rid = data['rid'];
+        if (uid == userID) {
+            // if the user ID of the report is the same as the user ID that made the request
+            // then report can be updated
+            // go to submitReport page with fields autofilled
+            // how to do that?
+            // go to submitReport
+
+        } else {
+            // don't update
+            alert("cannot update reports made by other users!");
+        }
+
     })
 }
 
