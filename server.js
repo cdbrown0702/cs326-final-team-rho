@@ -152,7 +152,21 @@ checkLoggedIn,
     req.on('data', data => body += data);
     req.on('end', () => {
         const data = JSON.parse(body);
-        database.push({
+        // database.push({
+        //     'uid': userID,
+        //     'rid': newID,
+        //     'name': data.name,
+        //     'category': data.category,
+        //     'date': data.date,
+        //     'coords': data.coords,
+        //     'desc': data.desc
+        // });
+        // fs.writeFile("client/scripts/events.json", JSON.stringify(database), err => {
+        //     if (err) {
+        //         console.err(err);
+        //     }
+        // });
+        await client.db("test").collection("Submission").insertOne({
             'uid': userID,
             'rid': newID,
             'name': data.name,
@@ -160,11 +174,6 @@ checkLoggedIn,
             'date': data.date,
             'coords': data.coords,
             'desc': data.desc
-        });
-        fs.writeFile("client/scripts/events.json", JSON.stringify(database), err => {
-            if (err) {
-                console.err(err);
-            }
         });
     });
 });
