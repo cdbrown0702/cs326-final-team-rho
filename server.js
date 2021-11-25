@@ -15,6 +15,15 @@ if (fs.existsSync("client/scripts/users.json")) {
     users = [];
 }
 
+import { MongoClient } from 'mongodb';
+const uri = "mongodb+srv://hello:<password>@cluster0.ewjrn.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+client.connect(err => {
+
+
+    //client.close();
+  });
+
 // Pulls in necessary pieces for server functionality
 //require('dotenv').config();
 const exp = require('express');
