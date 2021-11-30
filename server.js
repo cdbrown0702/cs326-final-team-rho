@@ -15,8 +15,8 @@
 //     users = [];
 // }
 
-import { MongoClient } from 'mongodb';
-const uri = "mongodb+srv://hello:RuXO2nH2YI09cMIA@cluster0.ewjrn.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const MongoClient = requires('mongodb').MongoClient;
+const uri = process.env.MONGO_URL;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
 
