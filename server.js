@@ -1,22 +1,22 @@
 'use strict'
 
-// Imports necessary users and events
-const fs = require('fs');
-let database;
-if (fs.existsSync("client/scripts/events.json")) {
-    database = JSON.parse(fs.readFileSync("client/scripts/events.json"));
-} else {
-    database = [];
-}
-let users;
-if (fs.existsSync("client/scripts/users.json")) {
-    users = JSON.parse(fs.readFileSync("client/scripts/users.json"));
-} else {
-    users = [];
-}
+// // Imports necessary users and events
+// const fs = require('fs');
+// let database;
+// if (fs.existsSync("client/scripts/events.json")) {
+//     database = JSON.parse(fs.readFileSync("client/scripts/events.json"));
+// } else {
+//     database = [];
+// }
+// let users;
+// if (fs.existsSync("client/scripts/users.json")) {
+//     users = JSON.parse(fs.readFileSync("client/scripts/users.json"));
+// } else {
+//     users = [];
+// }
 
 import { MongoClient } from 'mongodb';
-const uri = "mongodb+srv://hello:<password>@cluster0.ewjrn.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const uri = "mongodb+srv://hello:RuXO2nH2YI09cMIA@cluster0.ewjrn.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
 
