@@ -114,7 +114,7 @@ function checkLoggedIn(req, res, next) {
     }
 }
 // Authentication Endpoints
-serv.post('/', (req,res) => {
+serv.get('/', (req,res) => {
     res.redirect('/login');
 });
 serv.post('/login',
