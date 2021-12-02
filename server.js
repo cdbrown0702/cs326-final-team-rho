@@ -1,6 +1,6 @@
 'use strict'
 
-const MongoClient = requires('mongodb').MongoClient;
+const MongoClient = require('mongodb').MongoClient;
 const uri = process.env.MONGO_URL;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 let r, u;
