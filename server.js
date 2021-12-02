@@ -4,41 +4,45 @@ const MongoClient = require('mongodb').MongoClient;
 const uri = process.env.MONGO_URL;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-async function getUsers() {
+async function connect() {
     try {
         await client.connect();
+    } catch (err) {
+        console.error(err);
+    }
+}
+async function close(){
+    await client.close();
+}
+
+async function getUsers() {
+    try {
         let u = client.db("Users").collection("UserList");
         let ret = await u.find({}).toArray();
-        await client.close();
         return ret;
     } catch (err) { console.error(err); }
 }
 async function getReports() {
     try {
-        await client.connect();
         let r = client.db("Reports").collection("Submission");
         let ret = await r.find({}).toArray();
-        await client.close();
         return ret;
     } catch (err) { console.error(err); }
 }
 async function addReport(r) {
     try {
-        await client.connect();
         let r = client.db("Reports").collection("Submission");
         await r.insertOne(r);
-        await client.close();
     } catch (err) { console.error(err); }
 }
 async function deleteReport(id) {
     try {
-        await client.connect();
         let r = client.db("Reports").collection("Submission");
         await r.deleteOne( {"rid": id} );
-        await client.close();
     } catch (err) { console.error(err); }
 }
 
+connect();
 
 // Pulls in necessary pieces for server functionality
 //require('dotenv').config();
@@ -108,7 +112,7 @@ async function addUs(user, pwd) {
         await client.connect();
         await u.insertOne(newUser);
         await client.close();
-        
+
         return true;
     }
     return false;
@@ -262,3 +266,5 @@ serv.use(exp.static('client'));
 serv.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
 });
+
+close();
