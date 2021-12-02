@@ -4,48 +4,38 @@ const MongoClient = require('mongodb').MongoClient;
 const uri = process.env.MONGO_URL;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-async function connect() {
-    try {
-        await client.connect();
-        await client.db("Reports").command({ ping: 1 });
-        console.log("Connected Successfully");
-    } catch (err) { console.error(err); }
-}
-async function close() {
-    await client.close();
-}
 async function getUsers() {
     try {
-        connect();
+        await client.connect();
         let u = client.db("Users").collection("UserList");
         let ret = await u.find({}).toArray();
-        close();
+        client.close();
         return ret;
     } catch (err) { console.error(err); }
 }
 async function getReports() {
     try {
-        connect();
+        await client.connect();
         let r = client.db("Reports").collection("Submission");
         let ret = await r.find({}).toArray();
-        close();
+        client.close();
         return ret;
     } catch (err) { console.error(err); }
 }
 async function addReport(r) {
     try {
-        connect();
+        await client.connect();
         let r = client.db("Reports").collection("Submission");
         await r.insertOne(r);
-        close();
+        client.close();
     } catch (err) { console.error(err); }
 }
 async function deleteReport(id) {
     try {
-        connect();
+        await client.connect();
         let r = client.db("Reports").collection("Submission");
         await r.deleteOne( {"rid": id} );
-        close();
+        client.close();
     } catch (err) { console.error(err); }
 }
 
@@ -114,7 +104,9 @@ async function addUs(user, pwd) {
     let users = getUsers();
     if (findUs(user) === -1) {
         let newUser = {'uid': users.length + 1, 'user': user, 'pwd': pwd};
+        await client.connect();
         await u.insertOne(newUser);
+        client.close();
         return true;
     }
     return false;
@@ -195,7 +187,9 @@ serv.post('/delete',
 checkLoggedIn,
 (req, res) => {
     let userInd = findUs(req.user);
-    let userID, users = getUsers();
+    let userID; 
+    let users = getUsers();
+
     if (userInd === -1) {
         res.redirect('/login'); 
     } else {
@@ -227,7 +221,10 @@ serv.post('/update'),
 checkLoggedIn,
 (req, res) => {
     let userInd = findUs(req.user);
-    let userID, users = getUsers(), reports = getReports();
+    let userID; 
+    let users = getUsers();
+    let reports = getReports();
+
     if (userInd === -1) {
         res.redirect('/login'); 
     } else {
