@@ -7,6 +7,9 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function connect() {
     try {
         await client.connect();
+
+        await client.db("Reports").command({ ping: 1 });
+        console.log("connected");
         let r = client.db("Reports").collection("Submission");
         let u = client.db("Users").collection("UserList");
         return r, u;
