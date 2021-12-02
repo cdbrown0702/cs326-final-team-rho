@@ -114,6 +114,9 @@ function checkLoggedIn(req, res, next) {
     }
 }
 // Authentication Endpoints
+serv.post('/', (req,res) => {
+    res.redirect('/login');
+});
 serv.post('/login',
     passport.authenticate('local' , {     // use username/password authentication
         'successRedirect' : '/map.html',   // when we login, go to /html 
@@ -244,11 +247,6 @@ checkLoggedIn,
 // READ is within map.js and listview.js
 // sets our directory to client
 serv.use(exp.static('client'));
-
-serv.post('/', (req,res) => {
-    res.redirect('/login');
-});
-
 serv.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
 });
