@@ -45,7 +45,7 @@ async function deleteReport(id) {
     } catch (err) { console.error(err); }
 }
 
-connect();
+// connect();
 
 // Pulls in necessary pieces for server functionality
 //require('dotenv').config();
