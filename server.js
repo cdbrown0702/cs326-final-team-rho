@@ -3,35 +3,35 @@
 const MongoClient = require('mongodb').MongoClient;
 const uri = process.env.MONGO_URL;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-let r, u;
 
 async function connect() {
     await client.connect();
-    r = client.db("Reports").collection("Submission");
-    u = client.db("Users").collection("UserList");
+    let r = client.db("Reports").collection("Submission");
+    let u = client.db("Users").collection("UserList");
+    return r, u;
 }
 async function close() {
     await client.close();
 }
 async function getUsers() {
-    connect();
+    r,u = connect();
     let ret = await u.findMany();
     close();
     return ret;
 }
 async function getReports() {
-    connect();
+    r,u = connect();
     let ret = await r.findMany();
     close();
     return ret;
 }
 async function addReport(r) {
-    connect();
+    r,u = connect();
     await r.insertOne(r);
     close();
 }
 async function deleteReport(id) {
-    connect();
+    r,u = connect();
     await r.deleteOne( {"rid": id} );
     close();
 }
