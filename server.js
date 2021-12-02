@@ -7,7 +7,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function connect() {
     try {
         await client.connect();
-        console.log(await client.db("Reports").collection("Submission").toArray());
+        console.log(await client.db("Reports").collection("Submission").find({}).toArray());
     } catch (err) {
         console.error(err);
     }
