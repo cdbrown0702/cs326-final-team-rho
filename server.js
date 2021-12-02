@@ -14,18 +14,28 @@ async function close() {
     await client.close();
 }
 async function getUsers() {
-    return await u.findMany();
+    connect();
+    let ret = await u.findMany();
+    close();
+    return ret;
 }
 async function getReports() {
-    return await r.findMany();
+    connect();
+    let ret = await r.findMany();
+    close();
+    return ret;
 }
 async function addReport(r) {
+    connect();
     await r.insertOne(r);
+    close();
 }
 async function deleteReport(id) {
+    connect();
     await r.deleteOne( {"rid": id} );
+    close();
 }
-connect();
+
 
 // Pulls in necessary pieces for server functionality
 //require('dotenv').config();
@@ -242,5 +252,3 @@ serv.post('/', (req,res) => {
 serv.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
 });
-
-close();
