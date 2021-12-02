@@ -8,6 +8,7 @@ async function connect() {
     try {
         await client.connect();
         console.log(await client.db("Reports").collection("Submission").find({}).toArray());
+        console.log(await client.db("Users").collection("UserList").find({}).toArray());
     } catch (err) {
         console.error(err);
     }
