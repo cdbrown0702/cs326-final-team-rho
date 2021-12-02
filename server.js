@@ -9,7 +9,7 @@ async function getUsers() {
         await client.connect();
         let u = client.db("Users").collection("UserList");
         let ret = await u.find({}).toArray();
-        client.close();
+        await client.close();
         return ret;
     } catch (err) { console.error(err); }
 }
@@ -18,7 +18,7 @@ async function getReports() {
         await client.connect();
         let r = client.db("Reports").collection("Submission");
         let ret = await r.find({}).toArray();
-        client.close();
+        await client.close();
         return ret;
     } catch (err) { console.error(err); }
 }
@@ -27,7 +27,7 @@ async function addReport(r) {
         await client.connect();
         let r = client.db("Reports").collection("Submission");
         await r.insertOne(r);
-        client.close();
+        await client.close();
     } catch (err) { console.error(err); }
 }
 async function deleteReport(id) {
@@ -35,7 +35,7 @@ async function deleteReport(id) {
         await client.connect();
         let r = client.db("Reports").collection("Submission");
         await r.deleteOne( {"rid": id} );
-        client.close();
+        await client.close();
     } catch (err) { console.error(err); }
 }
 
@@ -104,9 +104,11 @@ async function addUs(user, pwd) {
     let users = getUsers();
     if (findUs(user) === -1) {
         let newUser = {'uid': users.length + 1, 'user': user, 'pwd': pwd};
+
         await client.connect();
         await u.insertOne(newUser);
-        client.close();
+        await client.close();
+        
         return true;
     }
     return false;
