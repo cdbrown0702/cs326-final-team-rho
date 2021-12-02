@@ -7,12 +7,8 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function connect() {
     try {
         await client.connect();
-
         await client.db("Reports").command({ ping: 1 });
-        console.log("connected");
-        let r = client.db("Reports").collection("Submission");
-        let u = client.db("Users").collection("UserList");
-        return r, u;
+        console.log("Connected Successfully");
     } catch (err) { console.error(err); }
 }
 async function close() {
@@ -20,30 +16,34 @@ async function close() {
 }
 async function getUsers() {
     try {
-        let r,u = connect();
-        let ret = await u.find({});
+        connect();
+        let u = client.db("Users").collection("UserList");
+        let ret = await u.find({}).toArray();
         close();
         return ret;
     } catch (err) { console.error(err); }
 }
 async function getReports() {
     try {
-        let r,u = connect();
-        let ret = await r.find({});
+        connect();
+        let r = client.db("Reports").collection("Submission");
+        let ret = await r.find({}).toArray();
         close();
         return ret;
     } catch (err) { console.error(err); }
 }
 async function addReport(r) {
     try {
-        let r,u = connect();
+        connect();
+        let r = client.db("Reports").collection("Submission");
         await r.insertOne(r);
         close();
     } catch (err) { console.error(err); }
 }
 async function deleteReport(id) {
     try {
-        let r,u = connect();
+        connect();
+        let r = client.db("Reports").collection("Submission");
         await r.deleteOne( {"rid": id} );
         close();
     } catch (err) { console.error(err); }
