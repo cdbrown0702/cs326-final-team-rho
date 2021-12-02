@@ -18,7 +18,7 @@ async function close() {
 async function getUsers() {
     try {
         let r,u = connect();
-        let ret = await u.findMany();
+        let ret = await u.find({});
         close();
         return ret;
     } catch (err) { console.error(err); }
@@ -26,7 +26,7 @@ async function getUsers() {
 async function getReports() {
     try {
         let r,u = connect();
-        let ret = await r.findMany();
+        let ret = await r.find({});
         close();
         return ret;
     } catch (err) { console.error(err); }
