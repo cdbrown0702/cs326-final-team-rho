@@ -161,6 +161,8 @@ serv.post('/createReport',
 checkLoggedIn,
 (req, res) => {
     let newID, userID, users = getUsers(), reports = getReports();
+    console.log(users);
+    console.log(reports);
     let userInd = findUs(req.user);
     if (userInd === -1) { // if not logged in, no submission
         alert("You're not logged in!");
