@@ -21,6 +21,7 @@ async function getUsers() {
     try {
         await client.connect();
         let ret = await client.db("Users").collection("UserList").find({}).toArray();
+        console.log(ret);
         await client.close();
         return ret;
     } catch (err) { console.error(err); }
