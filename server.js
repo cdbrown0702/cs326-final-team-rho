@@ -162,7 +162,7 @@ checkLoggedIn,
 (req, res) => {
     let newID, userID, users = getUsers(), reports = getReports();
     console.log(users);
-    console.log(reports);
+    console.log("testest");
     let userInd = findUs(req.user);
     if (userInd === -1) { // if not logged in, no submission
         alert("You're not logged in!");
