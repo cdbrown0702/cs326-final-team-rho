@@ -7,8 +7,6 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function connect() {
     try {
         await client.connect();
-        // console.log(await client.db("Reports").collection("Submission").find({}).toArray());
-        // console.log(await client.db("Users").collection("UserList").find({}).toArray());
     } catch (err) {
         console.error(err);
     }
@@ -19,17 +17,13 @@ async function close(){
 
 async function getUsers() {
     try {
-        // await client.connect();
         let ret = await client.db("Users").collection("UserList").find({}).toArray();
-        // console.log(ret);
-        // await client.close();
         return ret;
     } catch (err) { console.error(err); }
 }
 async function getReports() {
     try {
-        let r = client.db("Reports").collection("Submission");
-        let ret = await r.find({}).toArray();
+        let ret = await client.db("Reports").collection("Submission").find({}).toArray();
         return ret;
     } catch (err) { console.error(err); }
 }
@@ -46,8 +40,6 @@ async function deleteReport(id) {
     } catch (err) { console.error(err); }
 }
 
-// connect();
-
 // Pulls in necessary pieces for server functionality
 //require('dotenv').config();
 const exp = require('express');
@@ -56,7 +48,6 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const serv = exp();
 const port = process.env.PORT || 3000;
-
 const ses = {
     secret: process.env.SECRET || 'secret',
     resave: false,
@@ -75,6 +66,8 @@ const strat = new LocalStrategy(
         return done(null, username);
     }
 );
+
+// Passport setup
 serv.use(session(ses));
 passport.use(strat);
 serv.use(passport.initialize());
@@ -130,6 +123,7 @@ function checkLoggedIn(req, res, next) {
 }
 
 connect();
+
 // Authentication Endpoints
 serv.get('/', (req,res) => {
     res.redirect('/login');

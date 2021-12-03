@@ -46,12 +46,12 @@ const marker = new mapboxgl.Marker({
   draggable: true
 })
 
-// if autofill, set marker to location of previous report. otherwise leave as default
-if (autofillRID != -1) {
-  marker.setLngLat([-72.52650, 42.38922]).addTo(subMap);
-} else {
-  marker.setLngLat([e['coords'][0], e['coords'][1]]);
-}
+// // if autofill, set marker to location of previous report. otherwise leave as default
+// if (autofillRID != -1) {
+//   marker.setLngLat([-72.52650, 42.38922]).addTo(subMap);
+// } else {
+//   marker.setLngLat([e['coords'][0], e['coords'][1]]);
+// }
 
 function onDragEnd() {
   const lnglat = marker.getLngLat();
