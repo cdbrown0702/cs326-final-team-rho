@@ -136,7 +136,7 @@ serv.get('/', (req,res) => {
 });
 serv.post('/login',
     passport.authenticate('local' , {     // use username/password authentication
-        'successRedirect' : '/map.html',   // when we login, go to /html 
+        'successRedirect' : '/client/map.html',   // when we login, go to /html 
         'failureRedirect' : '/login'      // otherwise, back to login
     }));
 serv.get('/login',
