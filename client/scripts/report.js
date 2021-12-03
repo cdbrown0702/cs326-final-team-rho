@@ -45,6 +45,7 @@ const marker = new mapboxgl.Marker({
   color: 'black',
   draggable: true
 })
+marker.setLngLat([-72.52650, 42.38922]).addTo(subMap);
 
 // // if autofill, set marker to location of previous report. otherwise leave as default
 // if (autofillRID != -1) {
