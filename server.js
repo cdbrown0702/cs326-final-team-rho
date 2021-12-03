@@ -4,25 +4,25 @@ const MongoClient = require('mongodb').MongoClient;
 const uri = process.env.MONGO_URL;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-// async function connect() {
-//     try {
-//         await client.connect();
-//         console.log(await client.db("Reports").collection("Submission").find({}).toArray());
-//         console.log(await client.db("Users").collection("UserList").find({}).toArray());
-//     } catch (err) {
-//         console.error(err);
-//     }
-// }
-// async function close(){
-//     await client.close();
-// }
+async function connect() {
+    try {
+        await client.connect();
+        // console.log(await client.db("Reports").collection("Submission").find({}).toArray());
+        // console.log(await client.db("Users").collection("UserList").find({}).toArray());
+    } catch (err) {
+        console.error(err);
+    }
+}
+async function close(){
+    await client.close();
+}
 
 async function getUsers() {
     try {
-        await client.connect();
+        // await client.connect();
         let ret = await client.db("Users").collection("UserList").find({}).toArray();
-        console.log(ret);
-        await client.close();
+        // console.log(ret);
+        // await client.close();
         return ret;
     } catch (err) { console.error(err); }
 }
@@ -128,6 +128,8 @@ function checkLoggedIn(req, res, next) {
         res.redirect('/login');
     }
 }
+
+connect();
 // Authentication Endpoints
 serv.get('/', (req,res) => {
     res.redirect('/login');
@@ -249,7 +251,7 @@ checkLoggedIn,
         // TODO
         let uid = data['uid'];
         let rid = data['rid'];
-        if (uid == userID) {
+        if (uid === userID) {
             // if the user ID of the report is the same as the user ID that made the request
             // then report can be updated
             // go to submitReport page with fields autofilled
