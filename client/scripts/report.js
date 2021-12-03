@@ -1,28 +1,28 @@
-// determines whether the page should be autofilled
-// this pathway will send an ID, if ID is -1 then don't autofill anything
-// otherwise, autofill all fields with values from report
-fetch('/update').then(data => { const autofillRID = data });
+// // determines whether the page should be autofilled
+// // this pathway will send an ID, if ID is -1 then don't autofill anything
+// // otherwise, autofill all fields with values from report
+// fetch('/update').then(data => { const autofillRID = data });
 
-let e;
-if (autofillRID != -1) {
-  // get report
-  fetch('./scripts/events.json')
-    .then(response => response.json())
-    .then(data => {
-      // iterate through reports and find the one that matches the one to be autofilled
-      for (let i = 0, l = data.length; i < l; i++) {
-        e = data[i];
-        if (e['rid'] == autofillRID) {
-          // found report
-          // fill in values
-          document.getElementById('eventName').innerHTML = e["name"];
-          document.getElementById('category').innerHTML = e["category"];
-          document.getElementById('dateInput').innerHTML = e["date"];
-          document.getElementById('descriptInput').innerHTML = e["desc"];
-        }
-      }
-    });
-}
+// let e;
+// if (autofillRID != -1) {
+//   // get report
+//   fetch('./scripts/events.json')
+//     .then(response => response.json())
+//     .then(data => {
+//       // iterate through reports and find the one that matches the one to be autofilled
+//       for (let i = 0, l = data.length; i < l; i++) {
+//         e = data[i];
+//         if (e['rid'] == autofillRID) {
+//           // found report
+//           // fill in values
+//           document.getElementById('eventName').innerHTML = e["name"];
+//           document.getElementById('category').innerHTML = e["category"];
+//           document.getElementById('dateInput').innerHTML = e["date"];
+//           document.getElementById('descriptInput').innerHTML = e["desc"];
+//         }
+//       }
+//     });
+// }
 
 // Defines constants for map initialization
 const campus    = L.latLng(42.38922, -72.52650),
