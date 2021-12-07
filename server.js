@@ -4,25 +4,6 @@ const MongoClient = require('mongodb').MongoClient;
 const uri = process.env.MONGO_URL;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-async function getReports() {
-    try {
-        let ret = await client.db("Reports").collection("Submission").find({}).toArray();
-        return ret;
-    } catch (err) { console.error(err); }
-}
-async function addReport(r) {
-    try {
-        let r = client.db("Reports").collection("Submission");
-        await r.insertOne(r);
-    } catch (err) { console.error(err); }
-}
-async function deleteReport(id) {
-    try {
-        let r = client.db("Reports").collection("Submission");
-        await r.deleteOne( {"rid": id} );
-    } catch (err) { console.error(err); }
-}
-
 // Pulls in necessary pieces for server functionality
 //require('dotenv').config();
 const exp = require('express');
@@ -65,33 +46,40 @@ serv.use(exp.json());
 serv.use(exp.urlencoded({'extended': true}));
 
 // Authentication Functions
-async function findUs(user) {
-    let users = await client.db("Users").collection("UserList").find({}).toArray();
-    console.log(users);
-    for (let i = 0; i < users.length; i++) {
-        if (users[i]['name'] === user) {
-            return i;
+function findUs(user) {
+    (async() => {
+        let users = await client.db("Users").collection("UserList").find({}).toArray();
+        console.log(users);
+        for (let i = 0; i < users.length; i++) {
+            if (users[i]['name'] === user) {
+                return i;
+            }
         }
-    }
+    })();
     return -1;
 };
-async function valPass(user, pwd) {
-    let i = await findUs(user), users = await client.db("Users").collection("UserList").find({}).toArray();
-    if (i === -1) {
-        return false;
-    }
-    if (users[i]['pwd'] !== pwd) {
-        return false;
-    }
+function valPass(user, pwd) {
+    (async() => {
+        let i = findUs(user);
+        let users = await client.db("Users").collection("UserList").find({}).toArray();
+        if (i === -1) {
+            return false;
+        }
+        if (users[i]['pwd'] !== pwd) {
+            return false;
+        }
+    })();
     return true;
 };
-async function addUs(user, pwd) {
-    let users = await client.db("Users").collection("UserList").find({}).toArray();
-    if (findUs(user) === -1) {
-        let newUser = {'uid': users.length + 1, 'user': user, 'pwd': pwd};
-        await client.db("Users").collection("UserList").insertOne(newUser);
-        return true;
-    }
+function addUs(user, pwd) {
+    (async() => {
+        let users = await client.db("Users").collection("UserList").find({}).toArray();
+        if (findUs(user) === -1) {
+            let newUser = {'uid': users.length + 1, 'user': user, 'pwd': pwd};
+            await client.db("Users").collection("UserList").insertOne(newUser);
+            return true;
+        }
+    })();
     return false;
 };
 function checkLoggedIn(req, res, next) {
@@ -137,36 +125,41 @@ serv.get('/register',
 serv.post('/createReport',
 checkLoggedIn,
 (req, res) => {
-    let newID, userID//, users = getUsers(), reports = getReports();
-    console.log(users);
-    console.log("testest");
-    let userInd = findUs(req.user);
-    if (userInd === -1) { // if not logged in, no submission
-        alert("You're not logged in!");
-        res.sendFile('client/login.html');
-    } else {
-        userID = users[userInd]['uid'];
-    }
-    if (reports.length === 0) {
-        newID = 1;
-    } else {
-        newID = reports.length + 1;
-    }
-    let body = '';
-    req.on('data', data => body += data);
-    req.on('end', () => {
-        const data = JSON.parse(body);
-        let newReport = {
-            'uid': userID,
-            'rid': newID,
-            'name': data.name,
-            'category': data.category,
-            'date': data.date,
-            'coords': data.coords,
-            'desc': data.desc
+    let newID, userID;//, users = getUsers(), reports = getReports();
+
+    (async() => {
+        let users = await client.db("Users").collection("UserList").find({}).toArray();
+        let reports = await client.db("Reports").collection("Submission").find({}).toArray();
+
+        let userInd = findUs(req.user);
+
+        if (userInd === -1) { // if not logged in, no submission
+            alert("You're not logged in!");
+            res.sendFile('client/login.html');
+        } else {
+            userID = users[userInd]['uid'];
         }
-        addReport(newReport);
-    });
+        if (reports.length === 0) {
+            newID = 1;
+        } else {
+            newID = reports.length + 1;
+        }
+        let body = '';
+        req.on('data', data => body += data);
+        req.on('end', () => {
+            const data = JSON.parse(body);
+            let newReport = {
+                'uid': userID,
+                'rid': newID,
+                'name': data.name,
+                'category': data.category,
+                'date': data.date,
+                'coords': data.coords,
+                'desc': data.desc
+            }
+            addReport(newReport);
+        });
+    })();
 });
 serv.post('/delete',
 checkLoggedIn,
@@ -175,32 +168,38 @@ checkLoggedIn,
     let userID; 
     //let users = getUsers();
 
-    if (userInd === -1) {
-        res.redirect('/login'); 
-    } else {
-        userID = users[userInd]['uid'];
-    }
-    let body = '';
-    req.on('data', data => body += data);
-    req.on('end', () => {
-        const data = JSON.parse(body);
-        // data needs to contain user ID to make sure the user isn't deleting someone else's report
-        // also needs to contain report ID in order to remove it from the database
-        let uid = data['uid'];
-        let rid = data['rid'];
-        if (uid === userID) {
-            // if the user ID of the report is the same as the user ID that made the request
-            // then report can be deleted
-            // filter database in order to remove report with matching RID, then set it equal to the database again
-            deleteReport(rid);
-            
-            // refresh page so the deletion shows up
-            res.sendFile('client/listview.html', { 'root' : __dirname });
+    (async() => {
+        let users = await client.db("Users").collection("UserList").find({}).toArray();
+
+        if (userInd === -1) {
+            res.redirect('/login'); 
         } else {
-            // don't delete
-            alert("cannot delete reports made by other users!");
+            userID = users[userInd]['uid'];
         }
-    });
+        let body = '';
+        req.on('data', data => body += data);
+        req.on('end', () => {
+            const data = JSON.parse(body);
+            // data needs to contain user ID to make sure the user isn't deleting someone else's report
+            // also needs to contain report ID in order to remove it from the database
+            let uid = data['uid'];
+            let rid = data['rid'];
+            if (uid === userID) {
+                // if the user ID of the report is the same as the user ID that made the request
+                // then report can be deleted
+                // filter database in order to remove report with matching RID, then set it equal to the database again
+                try {
+                    await client.db("Reports").collection("Submission").deleteOne( {"rid": rid});
+                } catch (err) { console.error(err); }
+                
+                // refresh page so the deletion shows up
+                res.sendFile('client/listview.html', { 'root' : __dirname });
+            } else {
+                // don't delete
+                alert("cannot delete reports made by other users!");
+            }
+        });
+    })();
 });
 serv.post('/update'),
 checkLoggedIn,
@@ -210,33 +209,38 @@ checkLoggedIn,
     // let users = getUsers();
     // let reports = getReports();
 
-    if (userInd === -1) {
-        res.redirect('/login'); 
-    } else {
-        userID = users[userInd]['uid'];
-    }
-    let body = '';
-    req.on('data', data => body += data);
-    req.on('end', () => {
-        const data = JSON.parse(body);
-        // insert code to check if userid = uid in the report they want to update,
-        // redirect to submit with fields auto-filled... HANG ON TO PREVIOUS REPORT ID SO YOU CAN UPDATE 
-        // TODO
-        let uid = data['uid'];
-        let rid = data['rid'];
-        if (uid === userID) {
-            // if the user ID of the report is the same as the user ID that made the request
-            // then report can be updated
-            // go to submitReport page with fields autofilled
-            // how to do that?
-            // go to submitReport
-            //
-            // await client.db("test").collection("Submission").findOneAndUpdate()
+    (async() => {
+        let users = await client.db("Users").collection("UserList").find({}).toArray();
+        let reports = await client.db("Reports").collection("Submission").find({}).toArray();
+
+        if (userInd === -1) {
+            res.redirect('/login'); 
         } else {
-            // don't update
-            alert("cannot update reports made by other users!");
+            userID = users[userInd]['uid'];
         }
-    });
+        let body = '';
+        req.on('data', data => body += data);
+        req.on('end', () => {
+            const data = JSON.parse(body);
+            // insert code to check if userid = uid in the report they want to update,
+            // redirect to submit with fields auto-filled... HANG ON TO PREVIOUS REPORT ID SO YOU CAN UPDATE 
+            // TODO
+            let uid = data['uid'];
+            let rid = data['rid'];
+            if (uid === userID) {
+                // if the user ID of the report is the same as the user ID that made the request
+                // then report can be updated
+                // go to submitReport page with fields autofilled
+                // how to do that?
+                // go to submitReport
+                //
+                //await client.db("test").collection("Submission").findOneAndUpdate()
+            } else {
+                // don't update
+                alert("cannot update reports made by other users!");
+            }
+        });
+    })();
 }
 
 // READ is within map.js and listview.js
