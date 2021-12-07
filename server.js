@@ -65,7 +65,7 @@ serv.use(exp.json());
 serv.use(exp.urlencoded({'extended': true}));
 
 // Authentication Functions
-function findUs(user) {
+async function findUs(user) {
     let users = await client.db("Users").collection("UserList").find({}).toArray();
     console.log(users);
     for (let i = 0; i < users.length; i++) {
@@ -75,7 +75,7 @@ function findUs(user) {
     }
     return -1;
 };
-function valPass(user, pwd) {
+async function valPass(user, pwd) {
     let i = findUs(user), users = await client.db("Users").collection("UserList").find({}).toArray();
     if (i === -1) {
         return false;
