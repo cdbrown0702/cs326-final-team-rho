@@ -52,6 +52,7 @@ function findUs(user) {
         console.log(users);
         for (let i = 0; i < users.length; i++) {
             if (users[i]['name'] === user) {
+                console.log("user found");
                 return i;
             }
         }
@@ -69,12 +70,14 @@ function valPass(user, pwd) {
             return false;
         }
     })();
+    console.log("password good");
     return true;
 };
 function addUs(user, pwd) {
     (async() => {
         let users = await client.db("Users").collection("UserList").find({}).toArray();
         if (findUs(user) === -1) {
+            console.log("adding user");
             let newUser = {'uid': users.length + 1, 'user': user, 'pwd': pwd};
             await client.db("Users").collection("UserList").insertOne(newUser);
             return true;
