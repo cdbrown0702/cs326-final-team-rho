@@ -4,17 +4,6 @@ const MongoClient = require('mongodb').MongoClient;
 const uri = process.env.MONGO_URL;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-async function connect() {
-    try {
-        await client.connect();
-    } catch (err) {
-        console.error(err);
-    }
-}
-async function close(){
-    await client.close();
-}
-
 async function getUsers() {
     try {
         let ret = await client.db("Users").collection("UserList").find({}).toArray();
@@ -121,16 +110,13 @@ function checkLoggedIn(req, res, next) {
         res.redirect('/login');
     }
 }
-
-connect();
-
 // Authentication Endpoints
 serv.get('/', (req,res) => {
     res.redirect('/login');
 });
 serv.post('/login',
     passport.authenticate('local' , {     // use username/password authentication
-        'successRedirect' : '/client/map.html',   // when we login, go to /html 
+        'successRedirect' : '/map.html',   // when we login, go to /html 
         'failureRedirect' : '/login'      // otherwise, back to login
     }));
 serv.get('/login',
@@ -265,8 +251,13 @@ checkLoggedIn,
 // READ is within map.js and listview.js
 // sets our directory to client
 serv.use(exp.static('client'));
-serv.listen(port, () => {
-    console.log(`Server listening at http://localhost:${port}`);
-});
 
-// close();
+client.connect(err => {
+    if (err) {
+        console.error(err);
+    } else {
+        serv.listen(port, () => {
+            console.log(`Server listening at http://localhost:${port}`);
+        });
+    }
+})
