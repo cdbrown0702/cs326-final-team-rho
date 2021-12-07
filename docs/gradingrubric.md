@@ -10,6 +10,8 @@
 - No commented-out code, extraneous variables
 - Clear documentation for methods and important code blocks
 - Routing is done properly
+- Website is deployed on Heroku
+- Video demonstration clearly displays features of app and how it could be used by campus members
 
 ### Map View Page
 - View reports created by other users, shown on different areas of campus
