@@ -209,8 +209,6 @@ checkLoggedIn,
 (req, res) => {
     let userInd = findUs(req.user);
     let userID; 
-    // let users = getUsers();
-    // let reports = getReports();
 
     (async() => {
         let users = await client.db("Users").collection("UserList").find({}).toArray();

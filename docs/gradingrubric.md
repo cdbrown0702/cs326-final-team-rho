@@ -1,6 +1,6 @@
 # Final Rubric
 
-### General
+### General __/25
 
 - Authentication
   - Successfully register a new user
@@ -13,29 +13,30 @@
 - Website is deployed publicly on Heroku
 - Video demonstration clearly displays features of app and how it could be used by campus members
 
-### Map View Page
+### Map View Page  __/20
 - View reports created by other users, shown on different areas of campus
 - Reports are pulled from database
 - Clicking on a marker shows more information about the report
 - Can scroll around map to view all of campus
 
-### List View Page
+### List View Page  __/25
 - Reports are shown in a feed with more information (image, description, etc.), also pulled from database
 - Each report contains a delete and update button which can be clicked to either remove the report or update the fields in the submit report page
 - Reports can only be updated or deleted by the user they were created by
 
-### Submit Report Page
+### Submit Report Page __/25
+- Can only be used if you are actually logged in as a registered user
 - Contains fields where user can input information about a report
 - Once submit button is clicked, report is sent to database
 - User is sent to map view page where they can see their new report
 
-### CRUD
+### CRUD  __/5
 - Create:
-  - Users
-  - Reports
+  - Users - needed to submit/delete/update reports
+  - Reports - only by users
 - Read:
   - Reports on map view, easier to see location
-  - Reports on list view, easier to see other info
+  - Reports on list view, easier to see specific info
 - Update:
   - Edit reports via list view page, as long as you are the creator of that report
 - Delete:
