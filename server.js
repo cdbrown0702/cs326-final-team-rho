@@ -76,7 +76,7 @@ async function findUs(user) {
     return -1;
 };
 async function valPass(user, pwd) {
-    let i = findUs(user), users = await client.db("Users").collection("UserList").find({}).toArray();
+    let i = await findUs(user), users = await client.db("Users").collection("UserList").find({}).toArray();
     if (i === -1) {
         return false;
     }
@@ -86,12 +86,10 @@ async function valPass(user, pwd) {
     return true;
 };
 async function addUs(user, pwd) {
-    let users = getUsers();
+    let users = await client.db("Users").collection("UserList").find({}).toArray();
     if (findUs(user) === -1) {
         let newUser = {'uid': users.length + 1, 'user': user, 'pwd': pwd};
-
-        await u.insertOne(newUser);
-
+        await client.db("Users").collection("UserList").insertOne(newUser);
         return true;
     }
     return false;
@@ -139,7 +137,7 @@ serv.get('/register',
 serv.post('/createReport',
 checkLoggedIn,
 (req, res) => {
-    let newID, userID, users = getUsers(), reports = getReports();
+    let newID, userID//, users = getUsers(), reports = getReports();
     console.log(users);
     console.log("testest");
     let userInd = findUs(req.user);
@@ -175,7 +173,7 @@ checkLoggedIn,
 (req, res) => {
     let userInd = findUs(req.user);
     let userID; 
-    let users = getUsers();
+    //let users = getUsers();
 
     if (userInd === -1) {
         res.redirect('/login'); 
@@ -209,8 +207,8 @@ checkLoggedIn,
 (req, res) => {
     let userInd = findUs(req.user);
     let userID; 
-    let users = getUsers();
-    let reports = getReports();
+    // let users = getUsers();
+    // let reports = getReports();
 
     if (userInd === -1) {
         res.redirect('/login'); 
