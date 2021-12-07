@@ -4,13 +4,6 @@ const MongoClient = require('mongodb').MongoClient;
 const uri = process.env.MONGO_URL;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-async function getUsers() {
-    try {
-        let ret = await client.db("Users").collection("UserList").find({}).toArray();
-        console.log(ret);
-        return ret;
-    } catch (err) { console.error(err); }
-}
 async function getReports() {
     try {
         let ret = await client.db("Reports").collection("Submission").find({}).toArray();
@@ -73,7 +66,8 @@ serv.use(exp.urlencoded({'extended': true}));
 
 // Authentication Functions
 function findUs(user) {
-    let users = getUsers();
+    let users = await client.db("Users").collection("UserList").find({}).toArray();
+    console.log(users);
     for (let i = 0; i < users.length; i++) {
         if (users[i]['name'] === user) {
             return i;
@@ -82,7 +76,7 @@ function findUs(user) {
     return -1;
 };
 function valPass(user, pwd) {
-    let i = findUs(user), users = getUsers();
+    let i = findUs(user), users = await client.db("Users").collection("UserList").find({}).toArray();
     if (i === -1) {
         return false;
     }
