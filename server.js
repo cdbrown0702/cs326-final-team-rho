@@ -7,6 +7,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function getUsers() {
     try {
         let ret = await client.db("Users").collection("UserList").find({}).toArray();
+        console.log(ret);
         return ret;
     } catch (err) { console.error(err); }
 }
@@ -260,4 +261,4 @@ client.connect(err => {
             console.log(`Server listening at http://localhost:${port}`);
         });
     }
-})
+});
