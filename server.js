@@ -67,7 +67,7 @@ serv.use(exp.urlencoded({'extended': true}));
 // Authentication Functions
 function findUs(user) {
     let users = await client.db("Users").collection("UserList").find({}).toArray();
-    // console.log(users);
+    console.log(users);
     for (let i = 0; i < users.length; i++) {
         if (users[i]['name'] === user) {
             return i;
