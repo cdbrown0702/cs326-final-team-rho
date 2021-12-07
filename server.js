@@ -90,9 +90,7 @@ async function addUs(user, pwd) {
     if (findUs(user) === -1) {
         let newUser = {'uid': users.length + 1, 'user': user, 'pwd': pwd};
 
-        await client.connect();
         await u.insertOne(newUser);
-        await client.close();
 
         return true;
     }
