@@ -60,9 +60,6 @@ function addReport(id, imageURL, title, descText, location, date) {
     row.appendChild(col3);
     container.appendChild(row);
     listGroup.appendChild(container);
-    console.log("report added with id " + id);
-    console.log("delete button id is " + deleteBtn.id);
-    console.log(document.getElementById("deleteBtn0"));
 }
 
 // gets reports from JSON file
@@ -74,17 +71,17 @@ fetch('./scripts/events.json')
       for (let i = 0, l = data.length; i < l; i++) {
         let e = data[i];
         let locString = `${e['coords'][0]}, ${e['coords'][1]}`;
-        console.log(e['id']);
-        addReport(e['id'], "https://www.umass.edu/ipo/sites/default/files/styles/simplecrop/public/11_018_073_6.jpg", e['name'], e['desc'], locString, e['date']);
-        document.getElementById(`deleteBtn${e['id']}`).addEventListener('click', () => {
+        addReport(e['rid'], "https://www.umass.edu/ipo/sites/default/files/styles/simplecrop/public/11_018_073_6.jpg", e['name'], e['desc'], locString, e['date']);
+        document.getElementById(`deleteBtn${e['rid']}`).addEventListener('click', () => {
           console.log("delete now!");
-          document.getElementById(e['id']).remove();
+          fetch('/delete', {
+            method: 'POST',
+            body: JSON.stringify({'uid': e['uid'], 'rid': e['rid']})
+          });
         });
 
         document.getElementById(`updateBtn${e['id']}`).addEventListener('click', () => {
           console.log("update now!");
-          document.getElementById(e['id']).remove();
-          window.location = "/pageReport.html";
         });
       }
 
