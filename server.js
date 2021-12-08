@@ -90,7 +90,7 @@ async function addUs(user, pwd) {
             return false;
         } else {
             let newUser = {'uid': users.length + 1, 'user': user, 'pwd': pwd};
-            console.log("adding user: " + newUser);
+            console.log("adding user: " + JSON.stringify(newUser));
             await MongoUsers.insertOne(newUser);
             return true;
         }
@@ -217,7 +217,7 @@ checkLoggedIn,
                     })();
                 } else {
                     // don't delete
-                    alert("cannot delete reports made by other users!");
+                    console.log("delete failed");
                 }
             });
         } catch (err) { console.error(err); }
@@ -226,16 +226,9 @@ checkLoggedIn,
 serv.post('/update'),
 checkLoggedIn,
 (req, res) => {
-<<<<<<< HEAD
-=======
-    console.log("cant tell if posting but probably not");
-    let userInd = findUs(req.user);
-    let userID; 
-
->>>>>>> 274c033a9dad67fe263b32bd98f9fc7cec28a89f
     (async() => {
         let users = await MongoUsers.find({}).toArray();
-        let reports = await MongoReports.find({}).toArray();
+        //let reports = await MongoReports.find({}).toArray();
 
         let userID;
 
@@ -256,10 +249,10 @@ checkLoggedIn,
             let reportUID = data['uid'];
             let rid = data['rid'];
             if (reportUID === userID) {
-                res.redirect(`/submitReport?id=${reportUID}`);
+                res.redirect(`/submitReport?id=${rid}`);
             } else {
                 // don't update
-                alert("cannot update reports made by other users!");
+                console.log("update failed");
             }
         });
     });
