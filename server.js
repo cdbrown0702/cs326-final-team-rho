@@ -226,13 +226,6 @@ checkLoggedIn,
 serv.post('/update'),
 checkLoggedIn,
 (req, res) => {
-<<<<<<< HEAD
-=======
-    console.log("cant tell if posting but probably not");
-    let userInd = findUs(req.user);
-    let userID; 
-
->>>>>>> 274c033a9dad67fe263b32bd98f9fc7cec28a89f
     (async() => {
         let users = await MongoUsers.find({}).toArray();
         let reports = await MongoReports.find({}).toArray();
@@ -262,7 +255,7 @@ checkLoggedIn,
                 alert("cannot update reports made by other users!");
             }
         });
-    });
+    })();
 }
 
 // READ is within map.js and listview.js
