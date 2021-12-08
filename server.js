@@ -56,8 +56,8 @@ function findUs(user) {
                 return i;
             }
         }
-        return -1;
     })();
+    return -1;
 };
 function valPass(user, pwd) {
     (async() => {
