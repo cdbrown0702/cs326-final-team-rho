@@ -260,19 +260,13 @@ checkLoggedIn,
             let uid = data['uid'];
             let rid = data['rid'];
             if (uid === userID) {
-                // if the user ID of the report is the same as the user ID that made the request
-                // then report can be updated
-                // go to submitReport page with fields autofilled
-                // how to do that?
-                // go to submitReport
-                //
-                //await client.db("test").collection("Submission").findOneAndUpdate()
+                res.redirect(`/submitReport?id=${rid}`);
             } else {
                 // don't update
                 alert("cannot update reports made by other users!");
             }
         });
-    })();
+    });
 }
 
 // READ is within map.js and listview.js
