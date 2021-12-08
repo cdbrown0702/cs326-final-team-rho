@@ -255,7 +255,7 @@ checkLoggedIn,
                 console.log("update failed");
             }
         });
-    });
+    })();
 }
 
 // READ is within map.js and listview.js
