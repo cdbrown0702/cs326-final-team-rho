@@ -4,6 +4,9 @@ const MongoClient = require('mongodb').MongoClient;
 const uri = process.env.MONGO_URL;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
+const MongoUsers = client.db("Users").collection("UserList");
+const MongoReports = client.db("Reports").collection("Submission");
+
 // Pulls in necessary pieces for server functionality
 //require('dotenv').config();
 const exp = require('express');
@@ -49,13 +52,20 @@ serv.use(exp.urlencoded({'extended': true}));
 function findUs(user) {
     return (async() => {
         try {
-            let u = await client.db("Users").collection("UserList").find({"user": user}).toArray();
-            console.log("user we get from mongo (findus): " + u);
-            if (u === undefined) {
-                console.log("user not found");
+            let u = await MongoUsers.find({}).toArray();
+            console.log("users we get from mongo (findus): " + u);
+            if (u.length === 0) {
+                console.log("no users found");
                 return false;
             }
-            return true;
+            for (let i = 0; i < u.length; i++) {
+                if (u[i]['user'] === user) {
+                    console.log("user found: " + user);
+                    return true;
+                }
+            }
+            console.log("user not found: " user);
+            return false;
         } catch (err) { console.error(err); }
     })();
 };
@@ -65,8 +75,8 @@ function valPass(user, pwd) {
             if (!findUs(user)) {
                 return false;
             } else {
-                let u = await client.db("Users").collection("UserList").find({"user": user}).toArray();
-                if (u['pwd'] !== pwd) {
+                let u = await MongoUsers.find({}).toArray();
+                if (u[user]['pwd'] !== pwd) {
                     console.log("password bad");
                     return false;
                 }
@@ -79,12 +89,12 @@ function valPass(user, pwd) {
 function addUs(user, pwd) {
     return (async() => {
         try {
-            let users = await client.db("Users").collection("UserList").find({}).toArray();
+            let users = await MongoUsers.find({}).toArray();
             if (!findUs(user)) {
                 console.log("adding user");
                 let newUser = {'uid': users.length + 1, 'user': user, 'pwd': pwd};
                 console.log(newUser);
-                await client.db("Users").collection("UserList").insertOne(newUser);
+                await MongoUsers.insertOne(newUser);
                 return true;
             }
             console.log("this user already exists");
@@ -140,8 +150,8 @@ checkLoggedIn,
 
     (async() => {
         try {
-            let users = await client.db("Users").collection("UserList").find({}).toArray();
-            let reports = await client.db("Reports").collection("Submission").find({}).toArray();
+            let users = await MongoUsers.find({}).toArray();
+            let reports = await MongoReports.find({}).toArray();
 
             let userInd = findUs(req.user);
 
@@ -170,7 +180,7 @@ checkLoggedIn,
                     'desc': data.desc
                 }
                 (async() => {
-                    await client.db("Reports").collection("Submission").insertOne(newReport); 
+                    await MongoReports.insertOne(newReport); 
                 })();
             });
         } catch (err) { console.error(err); }
@@ -185,7 +195,7 @@ checkLoggedIn,
 
     (async() => {
         try {
-            let users = await client.db("Users").collection("UserList").find({}).toArray();
+            let users = await MongoUsers.find({}).toArray();
 
             if (userInd === -1) {
                 res.redirect('/login'); 
@@ -206,7 +216,7 @@ checkLoggedIn,
                     // filter database in order to remove report with matching RID, then set it equal to the database again
                     (async() => {
                         try {
-                            await client.db("Reports").collection("Submission").deleteOne( {"rid": rid} );
+                            await MongoReports.deleteOne( {"rid": rid} );
                         } catch (err) { console.error(err); }
                     })();
                     // refresh page so the deletion shows up
@@ -226,8 +236,8 @@ checkLoggedIn,
     let userID; 
 
     (async() => {
-        let users = await client.db("Users").collection("UserList").find({}).toArray();
-        let reports = await client.db("Reports").collection("Submission").find({}).toArray();
+        let users = await MongoUsers.find({}).toArray();
+        let reports = await MongoReports.find({}).toArray();
 
         if (userInd === -1) {
             res.redirect('/login'); 
