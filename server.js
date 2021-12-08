@@ -160,9 +160,7 @@ checkLoggedIn,
                 'coords': data.coords,
                 'desc': data.desc
             }
-            try {
-                await client.db("Reports").collection("Submission").insertOne(newReport)); 
-            }
+            await client.db("Reports").collection("Submission").insertOne(newReport)); 
         });
     })();
 });
