@@ -49,19 +49,12 @@ serv.use(exp.urlencoded({'extended': true}));
 function findUs(user) {
     return (async() => {
         try {
-            let users = await client.db("Users").collection("UserList").find({}).toArray();
-            console.log(users);
-            if (users === []) {
-                console.log("no users found");
-                return -2;
-            } 
-            for (let i = 0; i < users.length; i++) {
-                if (users[i]['name'] === user) {
-                    console.log("user found");
-                    return i;
-                }
+            let u = await client.db("Users").collection("UserList").find({"user": user}).toArray();
+            if (!u) {
+                console.log("user not found");
+                return -1;
             }
-            return -1;
+            return 0;
         } catch (err) { console.error(err); }
     })();
 };
@@ -69,20 +62,17 @@ function valPass(user, pwd) {
     return (async() => {
         try {
             let i = findUs(user);
-            let users = await client.db("Users").collection("UserList").find({}).toArray();
             if (i === -1) {
-                console.log("not a user");
                 return false;
-            } else if (i === -2) {
-                console.log("no users found");
-                return false;
+            } else {
+                let u = await client.db("Users").collection("UserList").find({"user": user}).toArray();
+                if (u['pwd'] !== pwd) {
+                    console.log("password bad");
+                    return false;
+                }
+                console.log("password good");
+                return true;
             }
-            if (users[i]['pwd'] !== pwd) {
-                console.log("password bad");
-                return false;
-            }
-            console.log("password good");
-            return true;
         } catch (err) { console.error(err); }
     })();
 };
@@ -93,12 +83,6 @@ function addUs(user, pwd) {
             if (findUs(user) === -1) {
                 console.log("adding user");
                 let newUser = {'uid': users.length + 1, 'user': user, 'pwd': pwd};
-                console.log(newUser);
-                await client.db("Users").collection("UserList").insertOne(newUser);
-                return true;
-            } else if (findUs(user) === -2) {
-                console.log("adding user");
-                let newUser = {'uid': 1, 'user': user, 'pwd': pwd};
                 console.log(newUser);
                 await client.db("Users").collection("UserList").insertOne(newUser);
                 return true;
