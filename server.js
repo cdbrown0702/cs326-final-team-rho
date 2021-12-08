@@ -51,7 +51,7 @@ function findUs(user) {
         try {
             let u = await client.db("Users").collection("UserList").find({"user": user}).toArray();
             console.log("user we get from mongo (findus): " + u);
-            if (!u) {
+            if (u === null) {
                 console.log("user not found");
                 return -1;
             }
