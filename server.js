@@ -255,7 +255,7 @@ checkLoggedIn,
             let reportUID = data['uid'];
             let rid = data['rid'];
             if (reportUID === userID) {
-                res.redirect(`/submitReport?id=${rid}`);
+                res.redirect(`/pageReport?id=${rid}`);
             } else {
                 // don't update
                 console.log("update failed");
