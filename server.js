@@ -50,24 +50,31 @@ serv.use(exp.urlencoded({'extended': true}));
 
 // Authentication Functions
 function findUs(user) {
-    return (async() => {
+    let res = false;
+
+    (async() => {
         try {
             let u = await MongoUsers.find({}).toArray();
             console.log("users we get from mongo (findus): " + u);
             if (u.length === 0) {
                 console.log("no users found");
-                return false;
+                return;
             }
             for (let i = 0; i < u.length; i++) {
                 if (u[i]['user'] === user) {
                     console.log("user found: " + user);
-                    return true;
+                    res = true;
+                    return;
                 }
             }
             console.log("user not found: " + user);
-            return false;
+            return;
         } catch (err) { console.error(err); }
     })();
+
+    console.log(res);
+
+    return res;
 };
 function valPass(user, pwd) {
     return (async() => {
