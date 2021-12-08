@@ -193,10 +193,11 @@ checkLoggedIn,
                 // if the user ID of the report is the same as the user ID that made the request
                 // then report can be deleted
                 // filter database in order to remove report with matching RID, then set it equal to the database again
-                try {
-                    await client.db("Reports").collection("Submission").deleteOne( {"rid": rid} );
-                } catch (err) { console.error(err); }
-                
+                (async() => {
+                    try {
+                        await client.db("Reports").collection("Submission").deleteOne( {"rid": rid} );
+                    } catch (err) { console.error(err); }
+                })();
                 // refresh page so the deletion shows up
                 res.sendFile('client/listview.html', { 'root' : __dirname });
             } else {
