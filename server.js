@@ -196,12 +196,12 @@ checkLoggedIn,
 (req, res) => {
     let userInd = findUs(req.user);
     let userID; 
-    //let users = getUsers();
+    console.log("do we make it here");
 
     (async() => {
         try {
             let users = await MongoUsers.find({}).toArray();
-
+            console.log("how bout here");
             if (userInd === -1) {
                 res.redirect('/login'); 
             } else {
@@ -215,6 +215,7 @@ checkLoggedIn,
                 // also needs to contain report ID in order to remove it from the database
                 let uid = data['uid'];
                 let rid = data['rid'];
+                console.log("posting " + uid + " " + rid);
                 if (uid === userID) {
                     // if the user ID of the report is the same as the user ID that made the request
                     // then report can be deleted
