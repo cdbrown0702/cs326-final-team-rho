@@ -49,65 +49,53 @@ serv.use(exp.json());
 serv.use(exp.urlencoded({'extended': true}));
 
 // Authentication Functions
-function findUs(user) {
-    let res = false;
-
-    (async() => {
-        try {
-            let u = await MongoUsers.find({}).toArray();
-            console.log("users we get from mongo (findus): " + u);
-            if (u.length === 0) {
-                console.log("no users found");
-                return;
-            }
-            for (let i = 0; i < u.length; i++) {
-                if (u[i]['user'] === user) {
-                    console.log("user found: " + user);
-                    res = true;
-                    return;
-                }
-            }
-            console.log("user not found: " + user);
-            return;
-        } catch (err) { console.error(err); }
-    })();
-
-    console.log(res);
-
-    return res;
-};
-function valPass(user, pwd) {
-    return (async() => {
-        try {
-            if (!findUs(user)) {
-                return false;
-            } else {
-                let u = await MongoUsers.find({}).toArray();
-                if (u[user]['pwd'] !== pwd) {
-                    console.log("password bad");
-                    return false;
-                }
-                console.log("password good");
-                return true;
-            }
-        } catch (err) { console.error(err); }
-    })();
-};
-function addUs(user, pwd) {
-    return (async() => {
-        try {
-            let users = await MongoUsers.find({}).toArray();
-            if (!findUs(user)) {
-                console.log("adding user");
-                let newUser = {'uid': users.length + 1, 'user': user, 'pwd': pwd};
-                console.log(newUser);
-                await MongoUsers.insertOne(newUser);
-                return true;
-            }
-            console.log("this user already exists");
+async function findUs(user) {
+    try {
+        let u = await MongoUsers.find({}).toArray();
+        console.log("users we get from mongo (findus): " + u);
+        if (u.length === 0) {
+            console.log("no users found");
             return false;
-        } catch (err) { console.error(err); }
-    })();
+        }
+        for (let i = 0; i < u.length; i++) {
+            if (u[i]['user'] === user) {
+                console.log("user found: " + user);
+                return true;
+            }
+        }
+        console.log("user not found: " + user);
+        return false;
+    } catch (err) { console.error(err); }
+};
+async function valPass(user, pwd) {
+    try {
+        if (!findUs(user)) {
+            console.log("passwords: user wasnt found");
+            return false;
+        } else {
+            let u = await MongoUsers.find({}).toArray();
+            if (u[user]['pwd'] !== pwd) {
+                console.log("password bad");
+                return false;
+            }
+            console.log("password good");
+            return true;
+        }
+    } catch (err) { console.error(err); }
+};
+async function addUs(user, pwd) {
+    try {
+        let users = await MongoUsers.find({}).toArray();
+        if (!findUs(user)) {
+            console.log("adding user");
+            let newUser = {'uid': users.length + 1, 'user': user, 'pwd': pwd};
+            console.log(newUser);
+            await MongoUsers.insertOne(newUser);
+            return true;
+        }
+        console.log("this user already exists");
+        return false;
+    } catch (err) { console.error(err); }
 };
 function checkLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
