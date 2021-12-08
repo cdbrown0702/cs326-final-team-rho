@@ -51,14 +51,14 @@ serv.use(exp.urlencoded({'extended': true}));
 // Authentication Functions
 async function findUs(user) {
     try {
-        let u = await MongoUsers.find({}).fetch();
-        console.log("users we get from mongo (findus): " + u);
+        let u = await MongoUsers.find({}).toArray();
+        console.log("users we get from mongo (findus): " + JSON.stringify(u));
         if (u.length === 0) {
             console.log("no users found");
             return false;
         }
         for (let i = 0; i < u.length; i++) {
-            if (u[i]['user'] === user) {
+            if (JSON.stringify(u)[i]['user'] === user) {
                 console.log("user found: " + user);
                 return true;
             }
@@ -73,8 +73,8 @@ async function valPass(user, pwd) {
             console.log("passwords: user wasnt found");
             return false;
         } else {
-            let u = await MongoUsers.find({}).fetch();
-            if (u[user]['pwd'] !== pwd) {
+            let u = await MongoUsers.find({}).toArray();
+            if (JSON.stringify(u)[user]['pwd'] !== pwd) {
                 console.log("password bad");
                 return false;
             }
@@ -85,7 +85,7 @@ async function valPass(user, pwd) {
 };
 async function addUs(user, pwd) {
     try {
-        let users = await MongoUsers.find({}).fetch();
+        let users = await MongoUsers.find({}).toArray();
         if (!findUs(user)) {
             console.log("adding user");
             let newUser = {'uid': users.length + 1, 'user': user, 'pwd': pwd};
