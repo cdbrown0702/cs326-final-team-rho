@@ -53,7 +53,7 @@ function findUs(user) {
             console.log(users);
             if (users = []) {
                 console.log("no users found");
-                return -1;
+                return -2;
             } 
             for (let i = 0; i < users.length; i++) {
                 if (users[i]['name'] === user) {
@@ -73,6 +73,9 @@ function valPass(user, pwd) {
             if (i === -1) {
                 console.log("not a user");
                 return false;
+            } else if (i === -2) {
+                console.log("no users found");
+                return false;
             }
             if (users[i]['pwd'] !== pwd) {
                 console.log("password bad");
@@ -88,19 +91,17 @@ function addUs(user, pwd) {
         try {
             let users = await client.db("Users").collection("UserList").find({}).toArray();
             if (findUs(user) === -1) {
-                if (users[0] === undefined) {
-                    console.log("no users, adding user");
-                    let newUser = {'uid': 1, 'user': user, 'pwd': pwd};
-                    console.log(newUser);
-                    await client.db("Users").collection("UserList").insertOne(newUser);
-                    return true;
-                } else {
-                    console.log("adding user");
-                    let newUser = {'uid': users.length + 1, 'user': user, 'pwd': pwd};
-                    console.log(newUser);
-                    await client.db("Users").collection("UserList").insertOne(newUser);
-                    return true;
-                }
+                console.log("adding user");
+                let newUser = {'uid': users.length + 1, 'user': user, 'pwd': pwd};
+                console.log(newUser);
+                await client.db("Users").collection("UserList").insertOne(newUser);
+                return true;
+            } else if (findUs(user) === -2) {
+                console.log("adding user");
+                let newUser = {'uid': 1, 'user': user, 'pwd': pwd};
+                console.log(newUser);
+                await client.db("Users").collection("UserList").insertOne(newUser);
+                return true;
             }
             console.log("this user already exists");
             return false;
