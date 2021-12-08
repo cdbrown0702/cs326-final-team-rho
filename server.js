@@ -48,57 +48,63 @@ serv.use(exp.urlencoded({'extended': true}));
 // Authentication Functions
 function findUs(user) {
     return (async() => {
-        let users = await client.db("Users").collection("UserList").find({}).toArray();
-        console.log(users);
-        for (let i = 0; i < users.length; i++) {
-            if (users[i]['name'] === user) {
-                console.log("user found");
-                return i;
+        try {
+            let users = await client.db("Users").collection("UserList").find({}).toArray();
+            console.log(users);
+            if (users = []) {
+                console.log("no users found");
+                return -1;
+            } 
+            for (let i = 0; i < users.length; i++) {
+                if (users[i]['name'] === user) {
+                    console.log("user found");
+                    return i;
+                }
             }
-        }
-        return -1;
+            return -1;
+        } catch (err) { console.error(err); }
     })();
 };
 function valPass(user, pwd) {
     return (async() => {
-        let i = findUs(user);
-        let users = await client.db("Users").collection("UserList").find({}).toArray();
-        if (users === undefined) {
-            console.log("no users");
-            return false;
-        }
-        if (i === -1) {
-            console.log("not a user");
-            return false;
-        }
-        if (users[i]['pwd'] !== pwd) {
-            console.log("password bad");
-            return false;
-        }
-        console.log("password good");
-        return true;
+        try {
+            let i = findUs(user);
+            let users = await client.db("Users").collection("UserList").find({}).toArray();
+            if (i === -1) {
+                console.log("not a user");
+                return false;
+            }
+            if (users[i]['pwd'] !== pwd) {
+                console.log("password bad");
+                return false;
+            }
+            console.log("password good");
+            return true;
+        } catch (err) { console.error(err); }
     })();
 };
 function addUs(user, pwd) {
     return (async() => {
-        let users = await client.db("Users").collection("UserList").find({}).toArray();
-        if (findUs(user) === -1) {
-            if (users[0] === undefined) {
-                console.log("no users, adding user");
-                let newUser = {'uid': 1, 'user': user, 'pwd': pwd};
-                console.log(newUser);
-                await client.db("Users").collection("UserList").insertOne(newUser);
-                return true;
-            } else {
-                console.log("adding user");
-                let newUser = {'uid': users.length + 1, 'user': user, 'pwd': pwd};
-                console.log(newUser);
-                await client.db("Users").collection("UserList").insertOne(newUser);
-                return true;
+        try {
+            let users = await client.db("Users").collection("UserList").find({}).toArray();
+            if (findUs(user) === -1) {
+                if (users[0] === undefined) {
+                    console.log("no users, adding user");
+                    let newUser = {'uid': 1, 'user': user, 'pwd': pwd};
+                    console.log(newUser);
+                    await client.db("Users").collection("UserList").insertOne(newUser);
+                    return true;
+                } else {
+                    console.log("adding user");
+                    let newUser = {'uid': users.length + 1, 'user': user, 'pwd': pwd};
+                    console.log(newUser);
+                    await client.db("Users").collection("UserList").insertOne(newUser);
+                    return true;
+                }
             }
-        }
-        console.log("this user already exists");
-        return false;
+            console.log("this user already exists");
+            return false;
+        } catch (err) { console.error(err); }
     })();
 };
 function checkLoggedIn(req, res, next) {
@@ -148,39 +154,41 @@ checkLoggedIn,
     let newID, userID;//, users = getUsers(), reports = getReports();
 
     (async() => {
-        let users = await client.db("Users").collection("UserList").find({}).toArray();
-        let reports = await client.db("Reports").collection("Submission").find({}).toArray();
+        try {
+            let users = await client.db("Users").collection("UserList").find({}).toArray();
+            let reports = await client.db("Reports").collection("Submission").find({}).toArray();
 
-        let userInd = findUs(req.user);
+            let userInd = findUs(req.user);
 
-        if (userInd === -1) { // if not logged in, no submission
-            alert("You're not logged in!");
-            res.sendFile('client/login.html');
-        } else {
-            userID = users[userInd]['uid'];
-        }
-        if (reports.length === 0) {
-            newID = 1;
-        } else {
-            newID = reports.length + 1;
-        }
-        let body = '';
-        req.on('data', data => body += data);
-        req.on('end', () => {
-            const data = JSON.parse(body);
-            let newReport = {
-                'uid': userID,
-                'rid': newID,
-                'name': data.name,
-                'category': data.category,
-                'date': data.date,
-                'coords': data.coords,
-                'desc': data.desc
+            if (userInd === -1) { // if not logged in, no submission
+                alert("You're not logged in!");
+                res.sendFile('client/login.html');
+            } else {
+                userID = users[userInd]['uid'];
             }
-            (async() => {
-                await client.db("Reports").collection("Submission").insertOne(newReport); 
-            })();
-        });
+            if (reports.length === 0) {
+                newID = 1;
+            } else {
+                newID = reports.length + 1;
+            }
+            let body = '';
+            req.on('data', data => body += data);
+            req.on('end', () => {
+                const data = JSON.parse(body);
+                let newReport = {
+                    'uid': userID,
+                    'rid': newID,
+                    'name': data.name,
+                    'category': data.category,
+                    'date': data.date,
+                    'coords': data.coords,
+                    'desc': data.desc
+                }
+                (async() => {
+                    await client.db("Reports").collection("Submission").insertOne(newReport); 
+                })();
+            });
+        } catch (err) { console.error(err); }
     })();
 });
 serv.post('/delete',
@@ -191,37 +199,39 @@ checkLoggedIn,
     //let users = getUsers();
 
     (async() => {
-        let users = await client.db("Users").collection("UserList").find({}).toArray();
+        try {
+            let users = await client.db("Users").collection("UserList").find({}).toArray();
 
-        if (userInd === -1) {
-            res.redirect('/login'); 
-        } else {
-            userID = users[userInd]['uid'];
-        }
-        let body = '';
-        req.on('data', data => body += data);
-        req.on('end', () => {
-            const data = JSON.parse(body);
-            // data needs to contain user ID to make sure the user isn't deleting someone else's report
-            // also needs to contain report ID in order to remove it from the database
-            let uid = data['uid'];
-            let rid = data['rid'];
-            if (uid === userID) {
-                // if the user ID of the report is the same as the user ID that made the request
-                // then report can be deleted
-                // filter database in order to remove report with matching RID, then set it equal to the database again
-                (async() => {
-                    try {
-                        await client.db("Reports").collection("Submission").deleteOne( {"rid": rid} );
-                    } catch (err) { console.error(err); }
-                })();
-                // refresh page so the deletion shows up
-                res.sendFile('client/listview.html', { 'root' : __dirname });
+            if (userInd === -1) {
+                res.redirect('/login'); 
             } else {
-                // don't delete
-                alert("cannot delete reports made by other users!");
+                userID = users[userInd]['uid'];
             }
-        });
+            let body = '';
+            req.on('data', data => body += data);
+            req.on('end', () => {
+                const data = JSON.parse(body);
+                // data needs to contain user ID to make sure the user isn't deleting someone else's report
+                // also needs to contain report ID in order to remove it from the database
+                let uid = data['uid'];
+                let rid = data['rid'];
+                if (uid === userID) {
+                    // if the user ID of the report is the same as the user ID that made the request
+                    // then report can be deleted
+                    // filter database in order to remove report with matching RID, then set it equal to the database again
+                    (async() => {
+                        try {
+                            await client.db("Reports").collection("Submission").deleteOne( {"rid": rid} );
+                        } catch (err) { console.error(err); }
+                    })();
+                    // refresh page so the deletion shows up
+                    res.sendFile('client/listview.html', { 'root' : __dirname });
+                } else {
+                    // don't delete
+                    alert("cannot delete reports made by other users!");
+                }
+            });
+        } catch (err) { console.error(err); }
     })();
 });
 serv.post('/update'),
