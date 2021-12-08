@@ -63,7 +63,7 @@ function valPass(user, pwd) {
     return (async() => {
         let i = findUs(user);
         let users = await client.db("Users").collection("UserList").find({}).toArray();
-        if (users === NULL) {
+        if (users === undefined) {
             console.log("no users");
             return false;
         }
@@ -83,7 +83,7 @@ function addUs(user, pwd) {
     return (async() => {
         let users = await client.db("Users").collection("UserList").find({}).toArray();
         if (findUs(user) === -1) {
-            if (users === NULL) {
+            if (users[0] === undefined) {
                 console.log("no users, adding user");
                 let newUser = {'uid': 1, 'user': user, 'pwd': pwd};
                 console.log(newUser);
