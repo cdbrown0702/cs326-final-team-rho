@@ -56,17 +56,19 @@ function findUs(user) {
                 return i;
             }
         }
+        return -1;
     })();
-    return -1;
 };
 function valPass(user, pwd) {
     (async() => {
         let i = findUs(user);
         let users = await client.db("Users").collection("UserList").find({}).toArray();
         if (i === -1) {
+            console.log("not a user");
             return false;
         }
         if (users[i]['pwd'] !== pwd) {
+            console.log("password bad");
             return false;
         }
     })();
@@ -79,6 +81,7 @@ function addUs(user, pwd) {
         if (findUs(user) === -1) {
             console.log("adding user");
             let newUser = {'uid': users.length + 1, 'user': user, 'pwd': pwd};
+            console.log(newUser);
             await client.db("Users").collection("UserList").insertOne(newUser);
             return true;
         }
@@ -106,6 +109,7 @@ serv.get('/login',
 				   { 'root' : __dirname }));
 serv.get('/logout', (req, res) => {
     req.session.destroy(function (err) {
+        console.log("logged out");
         res.redirect('/login');
     });
 });
