@@ -136,15 +136,17 @@ serv.post('/register',
     const password = req.body['password'];
     // TODO
     // Check if we successfully added the user.
-    let result = addUs(username, password);
-    // If so, redirect to '/login'
-    if (result === true) { res.redirect('/login'); }
-    // If not, redirect to '/register'.
-    if (result === false) { res.redirect('/register'); }
+    (async() => {
+        let result = await addUs(username, password);
+        // If so, redirect to '/login'
+        if (result === true) { res.redirect('/login'); }
+        // If not, redirect to '/register'.
+        if (result === false) { res.redirect('/register.html'); }
+    })();
 });
-serv.get('/register',
-(req, res) => res.sendFile('client/register.html',
-                { 'root' : __dirname }));
+// serv.get('/register',
+// (req, res) => res.sendFile('client/register.html',
+//                 { 'root' : __dirname }));
 // Creates report
 serv.post('/createReport',
 checkLoggedIn,
