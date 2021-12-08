@@ -65,7 +65,7 @@ function addReport(id, imageURL, title, descText, location, date) {
 // gets reports from JSON file
 console.log("attempting to fetch");
 // won't fetch here for some reason but the rest of this should work in theory
-fetch('./scripts/events.json')
+fetch('/getReports')
     .then(response => response.json())
     .then(data => {
       for (let i = 0, l = data.length; i < l; i++) {
