@@ -160,7 +160,9 @@ checkLoggedIn,
                 'coords': data.coords,
                 'desc': data.desc
             }
-            addReport(newReport);
+            try {
+                await client.db("Reports").collection("Submission").insertOne(newReport)); 
+            }
         });
     })();
 });
@@ -192,7 +194,7 @@ checkLoggedIn,
                 // then report can be deleted
                 // filter database in order to remove report with matching RID, then set it equal to the database again
                 try {
-                    await client.db("Reports").collection("Submission").deleteOne( {"rid": rid});
+                    await client.db("Reports").collection("Submission").deleteOne( {"rid": rid} );
                 } catch (err) { console.error(err); }
                 
                 // refresh page so the deletion shows up
