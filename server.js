@@ -178,6 +178,12 @@ checkLoggedIn,
         } catch (err) { console.error(err); }
     })();
 });
+serv.get('/getReports',
+(req,res) => {
+    (async() => {
+        res.send(await MongoReports.find({}).toArray());
+    })();
+})
 serv.post('/delete',
 checkLoggedIn,
 (req, res) => {
