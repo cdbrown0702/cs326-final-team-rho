@@ -82,6 +82,10 @@ fetch('/getReports')
 
         document.getElementById(`updateBtn${e['rid']}`).addEventListener('click', () => {
           console.log("update now!");
+          fetch('/update', {
+            method: 'POST',
+            body: JSON.stringify({'uid': e['uid'], 'rid': e['rid']})
+          });
         });
       }
 
