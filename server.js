@@ -24,10 +24,10 @@ const ses = {
 // constructs Passport for username authentication
 const strat = new LocalStrategy(
     async (username, password, done) => {
-        if (!findUs(username)) { //user doesn't exist
+        if (!await findUs(username)) { //user doesn't exist
             return done(null, false, { 'message': 'Incorrect Username' });
         }
-        if (!valPass(username, password)) {
+        if (!await valPass(username, password)) {
             return done(null, false, { 'message': 'Incorrect Password'});
         }
         return done(null, username);
