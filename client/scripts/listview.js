@@ -80,7 +80,7 @@ fetch('./scripts/events.json')
           });
         });
 
-        document.getElementById(`updateBtn${e['id']}`).addEventListener('click', () => {
+        document.getElementById(`updateBtn${e['rid']}`).addEventListener('click', () => {
           console.log("update now!");
         });
       }
