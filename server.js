@@ -51,7 +51,7 @@ serv.use(exp.urlencoded({'extended': true}));
 // Authentication Functions
 async function findUs(user) {
     try {
-        let u = await MongoUsers.find({}).toArray();
+        let u = await client.db("Users").collection("UserList").find({}).toArray();
         console.log("users we get from mongo (findus): " + u);
         if (u.length === 0) {
             console.log("no users found");
