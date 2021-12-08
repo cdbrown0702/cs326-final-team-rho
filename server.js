@@ -198,12 +198,12 @@ checkLoggedIn,
 (req, res) => {
     let userInd = findUs(req.user);
     let userID; 
-    //let users = getUsers();
+    console.log("do we make it here");
 
     (async() => {
         try {
             let users = await MongoUsers.find({}).toArray();
-
+            console.log("how bout here");
             if (userInd === -1) {
                 res.redirect('/login'); 
             } else {
