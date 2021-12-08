@@ -47,7 +47,7 @@ serv.use(exp.urlencoded({'extended': true}));
 
 // Authentication Functions
 function findUs(user) {
-    (async() => {
+    return (async() => {
         let users = await client.db("Users").collection("UserList").find({}).toArray();
         console.log(users);
         for (let i = 0; i < users.length; i++) {
@@ -56,11 +56,11 @@ function findUs(user) {
                 return i;
             }
         }
+        return -1;
     })();
-    return -1;
 };
 function valPass(user, pwd) {
-    (async() => {
+    return (async() => {
         let i = findUs(user);
         let users = await client.db("Users").collection("UserList").find({}).toArray();
         if (i === -1) {
@@ -71,12 +71,12 @@ function valPass(user, pwd) {
             console.log("password bad");
             return false;
         }
+        console.log("password good");
+        return true;
     })();
-    console.log("password good");
-    return true;
 };
 function addUs(user, pwd) {
-    (async() => {
+    return (async() => {
         let users = await client.db("Users").collection("UserList").find({}).toArray();
         if (findUs(user) === -1) {
             console.log("adding user");
@@ -85,8 +85,9 @@ function addUs(user, pwd) {
             await client.db("Users").collection("UserList").insertOne(newUser);
             return true;
         }
+        console.log("this user exists");
+        return false;
     })();
-    return false;
 };
 function checkLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
