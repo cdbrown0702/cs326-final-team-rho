@@ -51,7 +51,7 @@ function findUs(user) {
         try {
             let users = await client.db("Users").collection("UserList").find({}).toArray();
             console.log(users);
-            if (users = []) {
+            if (users === []) {
                 console.log("no users found");
                 return -2;
             } 
