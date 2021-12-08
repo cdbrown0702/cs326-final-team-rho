@@ -96,12 +96,13 @@ async function addUs(user, pwd) {
         if (await findUs(user)) {
             console.log("this user already exists");
             return false;
+        } else {
+            console.log("adding user");
+            let newUser = {'uid': users.length + 1, 'user': user, 'pwd': pwd};
+            console.log(newUser);
+            await MongoUsers.insertOne(newUser);
+            return true;
         }
-        console.log("adding user");
-        let newUser = {'uid': users.length + 1, 'user': user, 'pwd': pwd};
-        console.log(newUser);
-        await MongoUsers.insertOne(newUser);
-        return true;
     } catch (err) { console.error(err); }
 };
 function checkLoggedIn(req, res, next) {
