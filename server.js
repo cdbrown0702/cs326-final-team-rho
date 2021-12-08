@@ -63,6 +63,10 @@ function valPass(user, pwd) {
     return (async() => {
         let i = findUs(user);
         let users = await client.db("Users").collection("UserList").find({}).toArray();
+        if (users === NULL) {
+            console.log("no users");
+            return false;
+        }
         if (i === -1) {
             console.log("not a user");
             return false;
@@ -79,13 +83,21 @@ function addUs(user, pwd) {
     return (async() => {
         let users = await client.db("Users").collection("UserList").find({}).toArray();
         if (findUs(user) === -1) {
-            console.log("adding user");
-            let newUser = {'uid': users.length + 1, 'user': user, 'pwd': pwd};
-            console.log(newUser);
-            await client.db("Users").collection("UserList").insertOne(newUser);
-            return true;
+            if (users === NULL) {
+                console.log("no users, adding user");
+                let newUser = {'uid': 1, 'user': user, 'pwd': pwd};
+                console.log(newUser);
+                await client.db("Users").collection("UserList").insertOne(newUser);
+                return true;
+            } else {
+                console.log("adding user");
+                let newUser = {'uid': users.length + 1, 'user': user, 'pwd': pwd};
+                console.log(newUser);
+                await client.db("Users").collection("UserList").insertOne(newUser);
+                return true;
+            }
         }
-        console.log("this user exists");
+        console.log("this user already exists");
         return false;
     })();
 };
