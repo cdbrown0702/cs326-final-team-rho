@@ -93,15 +93,15 @@ async function valPass(user, pwd) {
 async function addUs(user, pwd) {
     try {
         let users = await MongoUsers.find({}).toArray();
-        if (!findUs(user)) {
-            console.log("adding user");
-            let newUser = {'uid': users.length + 1, 'user': user, 'pwd': pwd};
-            console.log(newUser);
-            await MongoUsers.insertOne(newUser);
-            return true;
+        if (await findUs(user)) {
+            console.log("this user already exists");
+            return false;
         }
-        console.log("this user already exists");
-        return false;
+        console.log("adding user");
+        let newUser = {'uid': users.length + 1, 'user': user, 'pwd': pwd};
+        console.log(newUser);
+        await MongoUsers.insertOne(newUser);
+        return true;
     } catch (err) { console.error(err); }
 };
 function checkLoggedIn(req, res, next) {
