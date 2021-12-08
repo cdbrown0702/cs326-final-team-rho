@@ -51,19 +51,18 @@ function findUs(user) {
         try {
             let u = await client.db("Users").collection("UserList").find({"user": user}).toArray();
             console.log("user we get from mongo (findus): " + u);
-            if (u === null) {
+            if (u === undefined) {
                 console.log("user not found");
-                return -1;
+                return false;
             }
-            return 0;
+            return true;
         } catch (err) { console.error(err); }
     })();
 };
 function valPass(user, pwd) {
     return (async() => {
         try {
-            let i = findUs(user);
-            if (i === -1) {
+            if (!findUs(user)) {
                 return false;
             } else {
                 let u = await client.db("Users").collection("UserList").find({"user": user}).toArray();
@@ -81,7 +80,7 @@ function addUs(user, pwd) {
     return (async() => {
         try {
             let users = await client.db("Users").collection("UserList").find({}).toArray();
-            if (findUs(user) === -1) {
+            if (!findUs(user)) {
                 console.log("adding user");
                 let newUser = {'uid': users.length + 1, 'user': user, 'pwd': pwd};
                 console.log(newUser);
