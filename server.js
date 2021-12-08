@@ -144,9 +144,11 @@ serv.post('/register',
         if (result === false) { res.redirect('/register.html'); }
     })();
 });
-// serv.get('/register',
-// (req, res) => res.sendFile('client/register.html',
-//                 { 'root' : __dirname }));
+serv.get('/submission',
+checkLoggedIn,
+(req, res) => {
+    res.redirect('/pageReport.html');
+})
 // Creates report
 serv.post('/createReport',
 checkLoggedIn,
