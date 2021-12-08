@@ -58,7 +58,7 @@ async function findUs(user) {
             return false;
         }
         for (let i = 0; i < u.length; i++) {
-            if (JSON.stringify(u)[i]['user'] === user) {
+            if (u[i]['user'] === user) {
                 console.log("user found: " + user);
                 return true;
             }
@@ -74,7 +74,14 @@ async function valPass(user, pwd) {
             return false;
         } else {
             let u = await MongoUsers.find({}).toArray();
-            if (JSON.stringify(u)[user]['pwd'] !== pwd) {
+            let ind;
+            for (let i = 0; i < u.length; i++) {
+                if (u[i]['user'] === user) {
+                    ind = i;
+                    break;
+                }
+            }
+            if (u[ind]['pwd'] !== pwd) {
                 console.log("password bad");
                 return false;
             }
