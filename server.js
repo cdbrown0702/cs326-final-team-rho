@@ -64,7 +64,7 @@ function findUs(user) {
                     return true;
                 }
             }
-            console.log("user not found: " user);
+            console.log("user not found: " + user);
             return false;
         } catch (err) { console.error(err); }
     })();
