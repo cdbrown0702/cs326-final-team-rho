@@ -125,8 +125,10 @@ serv.get('/login',
 	(req, res) => res.sendFile('client/login.html',
 				   { 'root' : __dirname }));
 serv.get('/logout', (req, res) => {
-    req.logout();
-    res.redirect('/login');
+    req.session.destroy(function (err) {
+        console.log("logged out");
+        res.redirect('/login');
+    });
 });
 serv.post('/register',
 (req, res) => {
@@ -238,6 +240,7 @@ checkLoggedIn,
 serv.post('/update'),
 checkLoggedIn,
 (req, res) => {
+    console.log("cant tell if posting but probably not");
     let userInd = findUs(req.user);
     let userID; 
 
