@@ -52,7 +52,6 @@ serv.use(exp.urlencoded({'extended': true}));
 async function findUs(user) {
     try {
         let u = await MongoUsers.find({}).toArray();
-        console.log("users we get from mongo (findus): " + JSON.stringify(u));
         if (u.length === 0) {
             console.log("no users found");
             return false;
@@ -69,25 +68,18 @@ async function findUs(user) {
 };
 async function valPass(user, pwd) {
     try {
-        if (!findUs(user)) {
-            console.log("passwords: user wasnt found");
-            return false;
-        } else {
-            let u = await MongoUsers.find({}).toArray();
-            let ind;
-            for (let i = 0; i < u.length; i++) {
-                if (u[i]['user'] === user) {
-                    ind = i;
-                    break;
+        let u = await MongoUsers.find({}).toArray();
+        for (let i = 0; i < u.length; i++) {
+            if (u[i]['user'] === user) {
+                if (u[i]['pwd'] !== pwd) {
+                    console.log("password bad");
+                    return false;
                 }
+                break;
             }
-            if (u[ind]['pwd'] !== pwd) {
-                console.log("password bad");
-                return false;
-            }
-            console.log("password good");
-            return true;
         }
+        console.log("password good");
+        return true; 
     } catch (err) { console.error(err); }
 };
 async function addUs(user, pwd) {
@@ -97,9 +89,8 @@ async function addUs(user, pwd) {
             console.log("this user already exists");
             return false;
         } else {
-            console.log("adding user");
             let newUser = {'uid': users.length + 1, 'user': user, 'pwd': pwd};
-            console.log(newUser);
+            console.log("adding user: " + newUser);
             await MongoUsers.insertOne(newUser);
             return true;
         }
@@ -146,38 +137,31 @@ serv.get('/submission',
 checkLoggedIn,
 (req, res) => {
     res.redirect('/pageReport.html');
-})
+});
 // Creates report
 serv.post('/createReport',
 checkLoggedIn,
 (req, res) => {
-    let newID, userID;//, users = getUsers(), reports = getReports();
-
     (async() => {
         try {
             let users = await MongoUsers.find({}).toArray();
             let reports = await MongoReports.find({}).toArray();
+            let userID;
 
-            let userInd = findUs(req.user);
+            for (let i = 0; i < users.length; i++) {
+                if (users[i]['user'] === req.user) {
+                    userID = users[i]['uid'];
+                    break;
+                }
+            }
 
-            if (userInd === -1) { // if not logged in, no submission
-                alert("You're not logged in!");
-                res.sendFile('client/login.html');
-            } else {
-                userID = users[userInd]['uid'];
-            }
-            if (reports.length === 0) {
-                newID = 1;
-            } else {
-                newID = reports.length + 1;
-            }
             let body = '';
             req.on('data', data => body += data);
             req.on('end', () => {
                 const data = JSON.parse(body);
                 let newReport = {
                     'uid': userID,
-                    'rid': newID,
+                    'rid': reports.length + 1,
                     'name': data.name,
                     'category': data.category,
                     'date': data.date,
@@ -185,7 +169,8 @@ checkLoggedIn,
                     'desc': data.desc
                 }
                 (async() => {
-                    await MongoReports.insertOne(newReport); 
+                    await MongoReports.insertOne(newReport);
+                    res.redirect('client/map.html');
                 })();
             });
         } catch (err) { console.error(err); }
@@ -194,39 +179,40 @@ checkLoggedIn,
 serv.post('/delete',
 checkLoggedIn,
 (req, res) => {
-    let userInd = findUs(req.user);
-    let userID; 
-    console.log("do we make it here");
-
     (async() => {
         try {
             let users = await MongoUsers.find({}).toArray();
             console.log("how bout here");
-            if (userInd === -1) {
-                res.redirect('/login'); 
-            } else {
-                userID = users[userInd]['uid'];
+            
+            let userID;
+
+            for (let i = 0; i < users.length; i++) {
+                if (users[i]['user'] === req.user) {
+                    userID = users[i]['uid'];
+                    break;
+                }
             }
+
             let body = '';
             req.on('data', data => body += data);
             req.on('end', () => {
                 const data = JSON.parse(body);
                 // data needs to contain user ID to make sure the user isn't deleting someone else's report
                 // also needs to contain report ID in order to remove it from the database
-                let uid = data['uid'];
+                let reportUID = data['uid'];
                 let rid = data['rid'];
-                console.log("posting " + uid + " " + rid);
-                if (uid === userID) {
+
+                console.log("posting " + reportUID + " " + rid);
+                if (reportUID === userID) {
                     // if the user ID of the report is the same as the user ID that made the request
                     // then report can be deleted
                     // filter database in order to remove report with matching RID, then set it equal to the database again
                     (async() => {
                         try {
                             await MongoReports.deleteOne( {"rid": rid} );
+                            res.redirect('client/listview.html');
                         } catch (err) { console.error(err); }
                     })();
-                    // refresh page so the deletion shows up
-                    res.sendFile('client/listview.html', { 'root' : __dirname });
                 } else {
                     // don't delete
                     alert("cannot delete reports made by other users!");
@@ -238,18 +224,19 @@ checkLoggedIn,
 serv.post('/update'),
 checkLoggedIn,
 (req, res) => {
-    let userInd = findUs(req.user);
-    let userID; 
-
     (async() => {
         let users = await MongoUsers.find({}).toArray();
         let reports = await MongoReports.find({}).toArray();
 
-        if (userInd === -1) {
-            res.redirect('/login'); 
-        } else {
-            userID = users[userInd]['uid'];
+        let userID;
+
+        for (let i = 0; i < users.length; i++) {
+            if (users[i]['user'] === req.user) {
+                userID = users[i]['uid'];
+                break;
+            }
         }
+
         let body = '';
         req.on('data', data => body += data);
         req.on('end', () => {
@@ -257,10 +244,10 @@ checkLoggedIn,
             // insert code to check if userid = uid in the report they want to update,
             // redirect to submit with fields auto-filled... HANG ON TO PREVIOUS REPORT ID SO YOU CAN UPDATE 
             // TODO
-            let uid = data['uid'];
+            let reportUID = data['uid'];
             let rid = data['rid'];
-            if (uid === userID) {
-                res.redirect(`/submitReport?id=${rid}`);
+            if (reportUID === userID) {
+                res.redirect(`/submitReport?id=${reportUID}`);
             } else {
                 // don't update
                 alert("cannot update reports made by other users!");
