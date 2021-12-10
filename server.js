@@ -178,10 +178,11 @@ checkLoggedIn,
                     'desc': data.desc
                 }
                 MongoReports.insertOne(newReport);
-                res.redirect('client/map.html');
+                return;
             });
         } catch (err) { console.error(err); }
     })();
+    res.redirect('/map.html');
 });
 serv.get('/getReports',
 (req,res) => {
