@@ -6,6 +6,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 const MongoUsers = client.db("Users").collection("UserList");
 const MongoReports = client.db("Reports").collection("Submission");
+const alert = requires('alert');
 
 // Pulls in necessary pieces for server functionality
 const exp = require('express');
