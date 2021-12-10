@@ -121,7 +121,6 @@ function checkLoggedIn(req, res, next) { // Check if user is logged in
         next();
     } else {
         res.redirect('/login');
-        alert('Please Log In');
     }
 }
 
