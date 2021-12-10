@@ -208,7 +208,7 @@ checkLoggedIn,
                         // Inserts report into database and redirects to map
                         await MongoReports.insertOne(newReport);
 
-                        res.redirect('/map.html');
+                        res.redirect('/client/map.html');
                     } catch (err) { console.error(err); }
                 })();  
             });
