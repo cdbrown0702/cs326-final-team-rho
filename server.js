@@ -212,12 +212,11 @@ checkLoggedIn,
                     // Inserts report into database and redirects to map
                     await MongoReports.insertOne(newReport);
 
-                } catch (err) { console.error(err); } 
-                finally { res.sendFile('client/map.html',{ 'root' : __dirname }); }
+                } catch (err) { console.error(err); }
             });
         } catch (err) { console.error(err); }
     })();
-    
+    res.redirect('client/map.html');
 });
 serv.get('/getReports',
 (req,res) => {
