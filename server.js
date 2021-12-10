@@ -177,10 +177,8 @@ checkLoggedIn,
                     'coords': data.coords,
                     'desc': data.desc
                 }
-                (async() => {
-                    await MongoReports.insertOne(newReport);
-                    res.redirect('client/map.html');
-                })();
+                MongoReports.insertOne(newReport);
+                res.redirect('client/map.html');
             });
         } catch (err) { console.error(err); }
     })();
