@@ -1,14 +1,4 @@
 const listGroup = document.getElementById("list-group");
-console.log(listGroup)
-// adding random reports to test
-/*
-for (let i = 0; i < 10; i++) {
-    // init divs
-    const text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-    addReport("https://www.umass.edu/ipo/sites/default/files/styles/simplecrop/public/11_018_073_6.jpg", "test", text, "42 -73", "11/4/21");
-    addReport("https://static01.nyt.com/images/2021/09/30/multimedia/30xp-umass/30xp-umass-mobileMasterAt3x.jpg", "test", text, "42 -73", "11/4/21");
-}
-*/
 
 function addReport(id, imageURL, title, descText, location, date) {
     // init divs
@@ -88,5 +78,4 @@ fetch('/getReports')
           });
         });
       }
-
   });

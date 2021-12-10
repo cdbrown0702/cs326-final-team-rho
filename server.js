@@ -117,7 +117,6 @@ async function addUs(user, pwd) { // Add user (register)
 
 function checkLoggedIn(req, res, next) { // Check if user is logged in
     if (req.isAuthenticated()) {
-        document.getElementsByID("login").style.visibility = "hidden";
         next();
     } else {
         res.redirect('/login');
@@ -171,6 +170,9 @@ serv.get('/reportCheck',
 checkLoggedIn,
 (req, res) => {
     res.redirect('/pageReport.html');
+    if (req.isAuthenticated()) {
+        document.getElementById("login").style.visibility = "hidden";
+    }
 });
 
 // Creates a report (provided logged in)
