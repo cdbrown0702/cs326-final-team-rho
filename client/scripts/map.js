@@ -17,10 +17,6 @@ const map = new mapboxgl.Map({
   maxBounds: mapBounds
 });
 
-map.on('idle', function() {
-  map.resize();
-});
-
 // Fetches all input events from a local JSON file, creating markers with ind. popups
 fetch('/getReports')
     .then(response => response.json())
