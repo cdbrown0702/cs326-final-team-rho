@@ -8,13 +8,13 @@ const MongoUsers = client.db("Users").collection("UserList");
 const MongoReports = client.db("Reports").collection("Submission");
 
 // Pulls in necessary pieces for server functionality
-//require('dotenv').config();
 const exp = require('express');
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const serv = exp();
 const port = process.env.PORT || 3000;
+
 const ses = {
     secret: process.env.SECRET || 'secret',
     resave: false,
@@ -24,11 +24,13 @@ const ses = {
 // constructs Passport for username authentication
 const strat = new LocalStrategy(
     async (username, password, done) => {
-        if (!await findUs(username)) { //user doesn't exist
+        if (!await findUs(username)) { // user doesn't exist
+
             await new Promise((r) => setTimeout(r, 2000)); // two second delay
             return done(null, false, { 'message': 'Incorrect Username' });
         }
-        if (!await valPass(username, password)) {
+        if (!await valPass(username, password)) { // password is incorrect
+
             await new Promise((r) => setTimeout(r, 2000)); // two second delay
             return done(null, false, { 'message': 'Incorrect Password'});
         }
@@ -45,96 +47,116 @@ serv.use(session(ses));
 passport.use(strat);
 serv.use(passport.initialize());
 serv.use(passport.session());
-passport.serializeUser((user, done) => {
-    done(null, user);
-});
-passport.deserializeUser((uid, done) => {
-    done(null, uid);
-});
+passport.serializeUser((user, done) => { done(null, user); });
+passport.deserializeUser((uid, done) => { done(null, uid); });
 serv.use(exp.json());
 serv.use(exp.urlencoded({'extended': true}));
 
 // Authentication Functions
-async function findUs(user) {
+async function findUs(user) { // Find username
     try {
-        let u = await MongoUsers.find({}).toArray();
-        if (u.length === 0) {
-            console.log("no users found");
+        // Pull list of users from database
+        let users = await MongoUsers.find({}).toArray();
+        // If no users, user doesn't exist
+        if (users.length === 0) {
             return false;
         }
-        for (let i = 0; i < u.length; i++) {
-            if (u[i]['user'] === user) {
-                console.log("user found: " + user);
+        // Otherwise, iterate through users until you find user
+        for (let i = 0; i < users.length; i++) {
+            if (users[i]['user'] === user) {
                 return true;
             }
         }
-        console.log("user not found: " + user);
+        // If not found, doesn't exist
         return false;
     } catch (err) { console.error(err); }
 };
-async function valPass(user, pwd) {
+
+async function valPass(user, pwd) { // Validate user password
     try {
-        let u = await MongoUsers.find({}).toArray();
-        for (let i = 0; i < u.length; i++) {
-            if (u[i]['user'] === user) {
-                if (!mc.check(pwd, u[i]['salt'], u[i]['hash'])) {
-                    console.log("password bad");
+        // Pull list of users from database
+        let users = await MongoUsers.find({}).toArray();
+
+        // Iterate through users until user is found
+        for (let i = 0; i < users.length; i++) {
+
+            if (users[i]['user'] === user) {
+                // Check if password matches using user's salt
+                if (!mc.check(pwd, users[i]['salt'], users[i]['hash'])) {
                     return false;
                 }
                 break;
             }
         }
-        console.log("password good");
         return true; 
+
     } catch (err) { console.error(err); }
 };
-async function addUs(user, pwd) {
+
+async function addUs(user, pwd) { // Add user (register)
     try {
+        // Pull list of users from database
         let users = await MongoUsers.find({}).toArray();
+
+        // Check to see if user exists
         if (await findUs(user)) {
-            console.log("this user already exists");
+
             return false;
-        } else {
+
+        } else { // If so, create salt and has for their password
             const [salt, hash] = mc.hash(pwd);
+            
+            // Add user with its salt and has to database (secure authentication)
             let newUser = {'uid': users.length + 1, 'user': user, 'salt': salt, 'hash': hash};
-            console.log("adding user: " + JSON.stringify(newUser));
             await MongoUsers.insertOne(newUser);
+
             return true;
         }
     } catch (err) { console.error(err); }
 };
-function checkLoggedIn(req, res, next) {
+
+function checkLoggedIn(req, res, next) { // Check if user is logged in
     if (req.isAuthenticated()) {
         next();
     } else {
         res.redirect('/login');
     }
 }
+
 // Authentication Endpoints
-serv.get('/', (req,res) => {
+serv.get('/', (req,res) => { // Redirect to login page on access of application
     res.redirect('/login');
 });
+
 serv.post('/login',
     passport.authenticate('local' , {     // use username/password authentication
         'successRedirect' : '/map.html',   // when we login, go to /html 
         'failureRedirect' : '/login'      // otherwise, back to login
-    }));
+    })
+);
+
+// If login endpoint received, send to login page
 serv.get('/login',
-	(req, res) => res.sendFile('client/login.html',
-				   { 'root' : __dirname }));
+	(req, res) => res.sendFile('client/login.html',{ 'root' : __dirname })
+);
+
+// Logout endpoint received, destroy user's session and direct to login page
 serv.get('/logout', (req, res) => {
     req.session.destroy(function (err) {
-        console.log("logged out");
         res.redirect('/login');
     });
 });
+
+// Register endpoint received (from register submission button), add user
 serv.post('/register',
 (req, res) => {
+
+    // Grab provided username and password from form
     const username = req.body['username'];
     const password = req.body['password'];
-    // TODO
-    // Check if we successfully added the user.
+
     (async() => {
+        // Check if we successfully added the user.
         let result = await addUs(username, password);
         // If so, redirect to '/login'
         if (result === true) { res.redirect('/login'); }
@@ -142,32 +164,35 @@ serv.post('/register',
         if (result === false) { res.redirect('/register.html'); }
     })();
 });
+
+// Checks to see if user is logged in before allowing access to submission page
 serv.get('/reportCheck',
 checkLoggedIn,
 (req, res) => {
     res.redirect('/pageReport.html');
 });
-// Creates report
+
+// Creates a report (provided logged in)
 serv.post('/createReport',
 checkLoggedIn,
 (req, res) => {
     (async() => {
         try {
-            let users = await MongoUsers.find({}).toArray();
+            // Get user in question and reports from the database
+            let user = await MongoUsers.find({ 'user' : req.user }).toArray();
             let reports = await MongoReports.find({}).toArray();
-            let userID;
-
-            for (let i = 0; i < users.length; i++) {
-                if (users[i]['user'] === req.user) {
-                    userID = users[i]['uid'];
-                    break;
-                }
-            }
+    
+            // Pulls user's ID from database
+            let userID = user['uid'];
 
             let body = '';
             req.on('data', data => body += data);
             req.on('end', () => {
+
+                // Grabs data from submission form
                 const data = JSON.parse(body);
+                
+                // Creates new report object
                 let newReport = {
                     'uid': userID,
                     'rid': reports.length + 1,
@@ -177,11 +202,17 @@ checkLoggedIn,
                     'coords': data.coords,
                     'desc': data.desc
                 }
-                await MongoReports.insertOne(newReport);
-                return;
+
+                (async() => {
+                    try {
+                        // Inserts report into database and redirects to map
+                        await MongoReports.insertOne(newReport);
+
+                        res.redirect('/map.html');
+                    } catch (err) { console.error(err); }
+                })();  
             });
         } catch (err) { console.error(err); }
-        finally { res.redirect('/map.html'); }
     })();
     
 });
