@@ -292,7 +292,7 @@ checkLoggedIn,
         req.on('end', () => {
 
             // Takes the user ID associated with the report, and the user ID of the user logged in
-            const data = JSON.parse(body);\
+            const data = JSON.parse(body);
             let reportUID = data['uid'];
             let rid = data['rid'];
 
