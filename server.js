@@ -173,7 +173,6 @@ checkLoggedIn,
     res.redirect('/pageReport.html');
 });
 
-
 // Creates a report (provided logged in)
 serv.post('/createReport',
 checkLoggedIn,
@@ -220,22 +219,26 @@ checkLoggedIn,
     })();
 });
 
+// Pulls reports from the database to be used in the mapview and listview pages
 serv.get('/getReports',
 (req,res) => {
     (async() => {
+        // Sends a promise containing all reports within the database as of page access
         res.send(await MongoReports.find({}).toArray());
     })();
 })
 
+// Allows a user to delete report (provided they actually posted the report, and they are logged in)
 serv.post('/delete',
 checkLoggedIn,
 (req, res) => {
     (async() => {
         try {
+            // Pulls a list of users from the database
             let users = await MongoUsers.find({}).toArray();
             
+            // Pulls user's ID from the database
             let userID;
-
             for (let i = 0; i < users.length; i++) {
                 if (users[i]['user'] === req.user) {
                     userID = users[i]['uid'];
@@ -246,18 +249,17 @@ checkLoggedIn,
             let body = '';
             req.on('data', data => body += data);
             req.on('end', () => {
+
+                // Takes the user ID associated with the report, and the user ID of the user logged in
                 const data = JSON.parse(body);
-                // data needs to contain user ID to make sure the user isn't deleting someone else's report
-                // also needs to contain report ID in order to remove it from the database
                 let reportUID = data['uid'];
                 let rid = data['rid'];
 
+                // If the user who posted the report is trying to delete, we allow it
                 if (reportUID === userID) {
-                    // if the user ID of the report is the same as the user ID that made the request
-                    // then report can be deleted
-                    // filter database in order to remove report with matching RID, then set it equal to the database again
                     (async() => {
                         try {
+                            // Delete the report from the database, and refresh the page
                             await MongoReports.deleteOne( {"rid": rid} );
                             res.redirect('client/listview.html');
                         } catch (err) { console.error(err); }
@@ -268,14 +270,16 @@ checkLoggedIn,
     })();
 });
 
+// Allows a user to update their report (provided they posted the report, and they are logged in)
 serv.post('/update'),
 checkLoggedIn,
 (req, res) => {
     (async() => {
+        // Get list of users from the database
         let users = await MongoUsers.find({}).toArray();
         let userID;
 
-        // get ID of the user that is making the request
+        // Get UserID from the database
         for (let i = 0; i < users.length; i++) {
             if (users[i]['user'] === req.user) {
                 userID = users[i]['uid'];
@@ -286,13 +290,14 @@ checkLoggedIn,
         let body = '';
         req.on('data', data => body += data);
         req.on('end', () => {
-            const data = JSON.parse(body);
-            // data contains UID of report to compare with the user that's trying to update
-            // also contains RID so we can redirect to update page with the correct report
 
+            // Takes the user ID associated with the report, and the user ID of the user logged in
+            const data = JSON.parse(body);\
             let reportUID = data['uid'];
             let rid = data['rid'];
-            if (reportUID === userID) { // go to report page and send ID
+
+            // If the user who posted the report is trying to update, allow it
+            if (reportUID === userID) {
                 res.redirect(`/pageReport?id=${rid}`);
             } else {
                 // don't update
@@ -305,7 +310,6 @@ checkLoggedIn,
 serv.get('/pageReport', 
     (req,res) => {
         console.log("attempted to GET " + req.query.id);
-	res.send(req.query.id);
     }
 );
 
