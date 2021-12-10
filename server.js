@@ -142,7 +142,7 @@ serv.post('/register',
         if (result === false) { res.redirect('/register.html'); }
     })();
 });
-serv.get('/pageReport.html',
+serv.get('/reportCheck',
 checkLoggedIn,
 (req, res) => {
     res.redirect('/pageReport.html');
