@@ -295,7 +295,8 @@ checkLoggedIn,
             const data = JSON.parse(body);
             let reportUID = data['uid'];
             let rid = data['rid'];
-	    res.sendFile(`/report?id=${rid}`);
+	    res.sendFile(`/pageReport.html`);
+            window.document.getElementById('eventName') = "test"
 
             // If the user who posted the report is trying to update, allow it
             if (reportUID === userID) {
