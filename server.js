@@ -295,10 +295,11 @@ checkLoggedIn,
             const data = JSON.parse(body);
             let reportUID = data['uid'];
             let rid = data['rid'];
+	    res.sendFile(`/report?id=${rid}`);
 
             // If the user who posted the report is trying to update, allow it
             if (reportUID === userID) {
-                res.redirect(`/report?id=${rid}`);
+                
             } else {
                 // don't update
                 console.log("update failed");
