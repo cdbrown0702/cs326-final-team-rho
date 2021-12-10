@@ -25,14 +25,20 @@ const ses = {
 const strat = new LocalStrategy(
     async (username, password, done) => {
         if (!await findUs(username)) { //user doesn't exist
+            await new Promise((r) => setTimeout(r, 2000)); // two second delay
             return done(null, false, { 'message': 'Incorrect Username' });
         }
         if (!await valPass(username, password)) {
+            await new Promise((r) => setTimeout(r, 2000)); // two second delay
             return done(null, false, { 'message': 'Incorrect Password'});
         }
         return done(null, username);
     }
 );
+
+// password encryption method
+const minicrypt = require('scripts/minicrypt.js');
+const mc = new minicrypt();
 
 // Passport setup
 serv.use(session(ses));
@@ -71,7 +77,7 @@ async function valPass(user, pwd) {
         let u = await MongoUsers.find({}).toArray();
         for (let i = 0; i < u.length; i++) {
             if (u[i]['user'] === user) {
-                if (u[i]['pwd'] !== pwd) {
+                if (!mc.check(pwd, u[i]['salt'], u[i]['hash'])) {
                     console.log("password bad");
                     return false;
                 }
@@ -89,7 +95,8 @@ async function addUs(user, pwd) {
             console.log("this user already exists");
             return false;
         } else {
-            let newUser = {'uid': users.length + 1, 'user': user, 'pwd': pwd};
+            const [salt, hash] = mc.hash(pwd);
+            let newUser = {'uid': users.length + 1, 'user': user, 'salt': salt, 'hash': hash};
             console.log("adding user: " + JSON.stringify(newUser));
             await MongoUsers.insertOne(newUser);
             return true;
@@ -135,7 +142,7 @@ serv.post('/register',
         if (result === false) { res.redirect('/register.html'); }
     })();
 });
-serv.get('/submission',
+serv.get('/pageReport.html',
 checkLoggedIn,
 (req, res) => {
     res.redirect('/pageReport.html');
