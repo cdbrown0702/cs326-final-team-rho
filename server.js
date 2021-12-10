@@ -295,7 +295,7 @@ checkLoggedIn,
             const data = JSON.parse(body);
             let reportUID = data['uid'];
             let rid = data['rid'];
-	    res.sendFile(`/pageReport.html`);
+	    res.sendFile(`/report.html`);
             window.document.getElementById('eventName') = "test"
 
             // If the user who posted the report is trying to update, allow it
@@ -312,7 +312,8 @@ checkLoggedIn,
 serv.get('/report', 
     (req,res) => {
         console.log("attempted to GET " + req.query.id);
-	res.send(req.query.id);
+	res.sendFile('/report.html');
+	window.document.getElementById('eventName') = "test"
     }
 );
 
