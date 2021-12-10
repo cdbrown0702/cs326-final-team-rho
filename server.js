@@ -310,6 +310,7 @@ checkLoggedIn,
 serv.get('/report', 
     (req,res) => {
         console.log("attempted to GET " + req.query.id);
+	res.send(req.query.id);
     }
 );
 
