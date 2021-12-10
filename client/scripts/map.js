@@ -1,5 +1,3 @@
-const { mkdtempSync } = require("fs");
-
 // Defines constants for map initialization
 const campus    = L.latLng(42.38922, -72.52650),
       southWest = L.latLng(42.37519, -72.53988),
