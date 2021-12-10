@@ -302,6 +302,12 @@ checkLoggedIn,
     })();
 }
 
+serv.get('/pageReport', 
+    (req,res) => {
+        console.log("attempted to GET " + req.query.id);
+    }
+);
+
 // READ is within map.js and listview.js
 // sets our directory to client
 serv.use(exp.static('client'));
