@@ -37,7 +37,7 @@ const strat = new LocalStrategy(
 );
 
 // password encryption method
-const minicrypt = require('Resources/miniCrypt.js');
+const minicrypt = require('./miniCrypt');
 const mc = new minicrypt();
 
 // Passport setup
