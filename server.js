@@ -170,9 +170,6 @@ serv.get('/reportCheck',
 checkLoggedIn,
 (req, res) => {
     res.redirect('/pageReport.html');
-    if (req.isAuthenticated()) {
-        document.getElementById("login").style.visibility = "hidden";
-    }
 });
 
 // Creates a report (provided logged in)
