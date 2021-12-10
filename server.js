@@ -172,6 +172,7 @@ checkLoggedIn,
     res.redirect('/pageReport.html');
 });
 
+
 // Creates a report (provided logged in)
 serv.post('/createReport',
 checkLoggedIn,
@@ -217,12 +218,14 @@ checkLoggedIn,
         } catch (err) { console.error(err); }
     })();
 });
+
 serv.get('/getReports',
 (req,res) => {
     (async() => {
         res.send(await MongoReports.find({}).toArray());
     })();
 })
+
 serv.post('/delete',
 checkLoggedIn,
 (req, res) => {
@@ -263,6 +266,7 @@ checkLoggedIn,
         } catch (err) { console.error(err); }
     })();
 });
+
 serv.post('/update'),
 checkLoggedIn,
 (req, res) => {
@@ -283,13 +287,10 @@ checkLoggedIn,
         req.on('data', data => body += data);
         req.on('end', () => {
             const data = JSON.parse(body);
-            // insert code to check if userid = uid in the report they want to update,
-            // redirect to submit with fields auto-filled... HANG ON TO PREVIOUS REPORT ID SO YOU CAN UPDATE 
-            // TODO
             let reportUID = data['uid'];
             let rid = data['rid'];
             if (reportUID === userID) {
-                res.redirect(`/pageReport?id=${rid}`);
+                res.redirect(`/pageReport.html/?id=${rid}`);
             } else {
                 // don't update
                 console.log("update failed");
