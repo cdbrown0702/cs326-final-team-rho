@@ -37,7 +37,7 @@ img.centered {
 }
 #map {
     position: absolute;
-    height: auto;
+    height: 1440px;
     width: 100%;
 }
 #map-small {
