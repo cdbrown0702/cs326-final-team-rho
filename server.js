@@ -274,10 +274,9 @@ checkLoggedIn,
 (req, res) => {
     (async() => {
         let users = await MongoUsers.find({}).toArray();
-        //let reports = await MongoReports.find({}).toArray();
-
         let userID;
 
+        // get ID of the user that is making the request
         for (let i = 0; i < users.length; i++) {
             if (users[i]['user'] === req.user) {
                 userID = users[i]['uid'];
@@ -289,10 +288,13 @@ checkLoggedIn,
         req.on('data', data => body += data);
         req.on('end', () => {
             const data = JSON.parse(body);
+            // data contains UID of report to compare with the user that's trying to update
+            // also contains RID so we can redirect to update page with the correct report
+
             let reportUID = data['uid'];
             let rid = data['rid'];
-            if (reportUID === userID) {
-                res.redirect(`/pageReport.html/?id=${rid}`);
+            if (reportUID === userID) { // go to report page and send ID
+                res.redirect(`/pageReport?id=${rid}`);
             } else {
                 // don't update
                 console.log("update failed");
