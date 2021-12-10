@@ -213,7 +213,7 @@ checkLoggedIn,
                     await MongoReports.insertOne(newReport);
 
                 } catch (err) { console.error(err); } 
-                finally { res.redirect('/map.html'); }
+                finally { res.sendFile('client/map.html',{ 'root' : __dirname }); }
             });
         } catch (err) { console.error(err); }
     })();
