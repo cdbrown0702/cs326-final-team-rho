@@ -178,13 +178,18 @@ checkLoggedIn,
 (req, res) => {
     (async() => {
         try {
-            // Get user in question and reports from the database
-            let user = await MongoUsers.find({ 'user' : req.user }).toArray();
+            // Get users and reports from the database
+            let users = await MongoUsers.find({}).toArray();
             let reports = await MongoReports.find({}).toArray();
     
             // Pulls user's ID from database
-            let userID = user['uid'];
-
+            let userID;
+            for (let i = 0; i < users.length; i++) {
+                if (users[i]['user'] === req.user) {
+                    userID = users[i]['uid'];
+                }
+            }
+            
             let body = '';
             req.on('data', data => body += data);
             req.on('end', async() => {
