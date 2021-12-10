@@ -1,7 +1,7 @@
-// // determines whether the page should be autofilled
-// // this pathway will send an ID, if ID is -1 then don't autofill anything
-// // otherwise, autofill all fields with values from report
-// fetch('/update').then(data => { const autofillRID = data });
+const { app } = require("faker/lib/locales/en");
+
+// get ID from url, if it's not -1 then find it in database and fill in the fields accordingly
+console.log(window.location.search())
 
 // let e;
 // if (autofillRID != -1) {
