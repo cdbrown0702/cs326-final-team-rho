@@ -187,7 +187,7 @@ checkLoggedIn,
 
             let body = '';
             req.on('data', data => body += data);
-            req.on('end', () => {
+            req.on('end', async() => {
 
                 // Grabs data from submission form
                 const data = JSON.parse(body);
@@ -203,14 +203,12 @@ checkLoggedIn,
                     'desc': data.desc
                 }
 
-                (async() => {
-                    try {
-                        // Inserts report into database and redirects to map
-                        await MongoReports.insertOne(newReport);
+                try {
+                    // Inserts report into database and redirects to map
+                    await MongoReports.insertOne(newReport);
 
-                        res.redirect('/client/map.html');
-                    } catch (err) { console.error(err); }
-                })();  
+                    res.redirect('/client/map.html');
+                } catch (err) { console.error(err); } 
             });
         } catch (err) { console.error(err); }
     })();
