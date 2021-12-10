@@ -117,6 +117,7 @@ async function addUs(user, pwd) { // Add user (register)
 
 function checkLoggedIn(req, res, next) { // Check if user is logged in
     if (req.isAuthenticated()) {
+        document.getElementsByID("login").style.visibility = "hidden";
         next();
     } else {
         res.redirect('/login');
@@ -216,7 +217,6 @@ checkLoggedIn,
             });
         } catch (err) { console.error(err); }
     })();
-    res.redirect('client/map.html');
 });
 serv.get('/getReports',
 (req,res) => {
@@ -230,7 +230,6 @@ checkLoggedIn,
     (async() => {
         try {
             let users = await MongoUsers.find({}).toArray();
-            console.log("how bout here");
             
             let userID;
 
@@ -250,7 +249,6 @@ checkLoggedIn,
                 let reportUID = data['uid'];
                 let rid = data['rid'];
 
-                console.log("posting " + reportUID + " " + rid);
                 if (reportUID === userID) {
                     // if the user ID of the report is the same as the user ID that made the request
                     // then report can be deleted
@@ -261,9 +259,6 @@ checkLoggedIn,
                             res.redirect('client/listview.html');
                         } catch (err) { console.error(err); }
                     })();
-                } else {
-                    // don't delete
-                    console.log("delete failed");
                 }
             });
         } catch (err) { console.error(err); }
