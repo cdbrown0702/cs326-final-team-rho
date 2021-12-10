@@ -261,7 +261,7 @@ checkLoggedIn,
                         try {
                             // Delete the report from the database, and refresh the page
                             await MongoReports.deleteOne( {"rid": rid} );
-                            res.redirect('client/listview.html');
+                            res.redirect(req.get('referer'));
                         } catch (err) { console.error(err); }
                     })();
                 }
@@ -313,10 +313,10 @@ serv.get('/report',
     }
 );
 
-// READ is within map.js and listview.js
 // sets our directory to client
 serv.use(exp.static('client'));
 
+// Connects to database, and on success, server listens
 client.connect(err => {
     if (err) {
         console.error(err);
