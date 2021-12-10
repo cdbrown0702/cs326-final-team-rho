@@ -170,7 +170,7 @@ serv.post('/register',
 serv.get('/reportCheck',
 checkLoggedIn,
 (req, res) => {
-    res.redirect('/pageReport.html');
+    res.redirect('/report.html');
 });
 
 // Creates a report (provided logged in)
@@ -298,7 +298,7 @@ checkLoggedIn,
 
             // If the user who posted the report is trying to update, allow it
             if (reportUID === userID) {
-                res.redirect(`/pageReport?id=${rid}`);
+                res.redirect(`/report?id=${rid}`);
             } else {
                 // don't update
                 console.log("update failed");
@@ -307,7 +307,7 @@ checkLoggedIn,
     })();
 }
 
-serv.get('/pageReport', 
+serv.get('/report', 
     (req,res) => {
         console.log("attempted to GET " + req.query.id);
     }
