@@ -1,3 +1,5 @@
+const { mkdtempSync } = require("fs");
+
 // Defines constants for map initialization
 const campus    = L.latLng(42.38922, -72.52650),
       southWest = L.latLng(42.37519, -72.53988),
@@ -13,6 +15,10 @@ const map = new mapboxgl.Map({
   zoom: 16, // starting zoom
   maxZoom: 18,
   maxBounds: mapBounds
+});
+
+map.on('idle', function() {
+  map.resize();
 });
 
 // Fetches all input events from a local JSON file, creating markers with ind. popups
