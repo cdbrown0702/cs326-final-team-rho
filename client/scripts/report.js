@@ -1,7 +1,5 @@
-const { app } = require("faker/lib/locales/en");
-
 // get ID from url, if it's not -1 then find it in database and fill in the fields accordingly
-console.log(window.location.search())
+// console.log(window.location.search())
 
 // let e;
 // if (autofillRID != -1) {
