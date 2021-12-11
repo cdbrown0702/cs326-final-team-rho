@@ -1,13 +1,11 @@
 const listGroup = document.getElementById("list-group");
 
-function addReport(id, imageURL, title, descText, location, date) {
+function addReport(id, title, descText, location, date) {
     // init divs
     const container = document.createElement("div");
     const row = document.createElement("div");
-    const col1 = document.createElement("div");
     const col2 = document.createElement("div");
     const col3 = document.createElement("div");
-    const img = document.createElement("img");
     const body = document.createElement("div");
     const header = document.createElement("h2");
     const desc = document.createElement("p");
@@ -21,11 +19,8 @@ function addReport(id, imageURL, title, descText, location, date) {
     container.id = id;
     container.classList = `list-group-item ${id}`;
     row.classList = "row";
-    col1.classList = "col-auto";
     col2.classList = "col";
     col3.classList = "col-1";
-    img.src = imageURL;
-    img.classList = "list-image";
     header.textContent = title;
     desc.textContent = descText;
     loc.textContent = location;
@@ -41,27 +36,23 @@ function addReport(id, imageURL, title, descText, location, date) {
     body.appendChild(desc);
     body.appendChild(loc)
     body.appendChild(dateText);
-    col1.appendChild(img);
     col2.appendChild(body);
     col3.appendChild(deleteBtn);
     col3.appendChild(updateBtn);
-    row.appendChild(col1);
     row.appendChild(col2);
     row.appendChild(col3);
     container.appendChild(row);
     listGroup.appendChild(container);
 }
 
-// gets reports from JSON file
-console.log("attempting to fetch");
-// won't fetch here for some reason but the rest of this should work in theory
+// gets reports from database
 fetch('/getReports')
     .then(response => response.json())
     .then(data => {
       for (let i = 0, l = data.length; i < l; i++) {
         let e = data[i];
         let locString = `${e['coords'][0]}, ${e['coords'][1]}`;
-        addReport(e['rid'], "https://www.umass.edu/ipo/sites/default/files/styles/simplecrop/public/11_018_073_6.jpg", e['name'], e['desc'], locString, e['date']);
+        addReport(e['rid'], e['name'], e['desc'], locString, e['date']);
         document.getElementById(`deleteBtn${e['rid']}`).addEventListener('click', () => {
           console.log("delete now!");
           fetch('/delete', {
