@@ -296,7 +296,6 @@ checkLoggedIn,
                     })();
                 }
 
-                res.sendFile('client/listview.html');
                 res.end();
             });
         } catch (err) { console.error(err); }
