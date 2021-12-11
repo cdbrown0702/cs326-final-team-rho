@@ -350,11 +350,13 @@ serv.get('/getUser',
                 let users = await MongoUsers.find({}).toArray();
 
                 let currUser;
+
                 for (let i = 0; i < users.length; i++) {
-                    if (users[i]['name'] = req.user) {
+                    if (users[i]['name'] === req.user) {
                         currUser = users[i]['rid'];
                     }
                 }
+
                 res.send(currUser);
             } catch (err) { console.error(err); }
         })();
