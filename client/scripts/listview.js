@@ -58,38 +58,39 @@ fetch('/getReports')
         addReport(e['rid'], e['name'], e['desc'], locString, e['date']);
         
         document.getElementById(`deleteBtn${e['rid']}`).addEventListener('click', () => {
-          let currRID;
 
-          fetch('/getUser').then(data => currRID = data);
-          
-          if (currRID === e['rid']) {
-            fetch('/delete', {
-              method: 'POST',
-              body: JSON.stringify({'uid': e['uid'], 'rid': e['rid']})
-            });
-            location.reload();
-          } else {
-            alert("This is not your report!");
-          }
+          fetch('/getUser').then(data => {
+
+            console.log(data);
+            
+            if (data === e['rid']) {
+              fetch('/delete', {
+                method: 'POST',
+                body: JSON.stringify({'uid': e['uid'], 'rid': e['rid']})
+              });
+              location.reload();
+            } else {
+              alert("This is not your report!");
+            }
+          });
         });
 
         document.getElementById(`updateBtn${e['rid']}`).addEventListener('click', () => {
-          let currRID;
-
-          fetch('/getUser').then(data => currRID = data);
-
-          console.log(currRID);
-          console.log(data);
+          fetch('/getUser').then(data => {
+            // console.log(currRID);
+            console.log(data);
           
-          if (currRID === e['rid']) {
-            fetch('/delete', {
-              method: 'POST',
-              body: JSON.stringify({'uid': e['uid'], 'rid': e['rid']})
-            });
-            window.location.href = "https://ualert.herokuapp.com/report.html";
-          } else {
-            alert("This is not your report!");
-          }
+            if (data === e['rid']) {
+              fetch('/delete', {
+                method: 'POST',
+                body: JSON.stringify({'uid': e['uid'], 'rid': e['rid']})
+              });
+              window.location.href = "https://ualert.herokuapp.com/report.html";
+            } else {
+              alert("This is not your report!");
+            }
+          });
+
         });
       }
   });
