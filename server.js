@@ -191,7 +191,7 @@ checkLoggedIn,
             }
 
             let reportID;
-            for (let i = 0; i < reports.length; i++) {
+            for (let i = 1; i < reports.length; i++) {
                 if (reports[i]['rid'] === i) {
                     continue;
                 } else {
