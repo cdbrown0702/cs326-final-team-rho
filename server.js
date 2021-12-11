@@ -222,6 +222,8 @@ checkLoggedIn,
                     await MongoReports.insertOne(newReport);
 
                 } catch (err) { console.error(err); }
+
+                res.end();
             });
         } catch (err) { console.error(err); }
     })();
