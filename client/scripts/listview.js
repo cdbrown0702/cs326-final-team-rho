@@ -52,16 +52,16 @@ fetch('/getReports')
     .then(response => response.json())
     .then(data => {
 
-      let currRID;
-
-      fetch('/getUser').then(data => currRID = data);
-
       for (let i = 0, l = data.length; i < l; i++) {
         let e = data[i];
         let locString = `${e['coords'][0]}, ${e['coords'][1]}`;
         addReport(e['rid'], e['name'], e['desc'], locString, e['date']);
         
         document.getElementById(`deleteBtn${e['rid']}`).addEventListener('click', () => {
+          let currRID;
+
+          fetch('/getUser').then(data => currRID = data);
+          
           if (currRID === e['rid']) {
             fetch('/delete', {
               method: 'POST',
@@ -74,6 +74,13 @@ fetch('/getReports')
         });
 
         document.getElementById(`updateBtn${e['rid']}`).addEventListener('click', () => {
+          let currRID;
+
+          fetch('/getUser').then(data => currRID = data);
+
+          console.log(currRID);
+          console.log(data);
+          
           if (currRID === e['rid']) {
             fetch('/delete', {
               method: 'POST',
