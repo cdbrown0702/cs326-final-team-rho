@@ -298,9 +298,9 @@ checkLoggedIn,
             let reportUID = data['uid'];
             let rid = data['rid'];
             console.log("update fetch went through");
-            res.sendFile('/client/report.html');
+            res.sendFile('/client/report.html', { 'root' : __dirname });
             if (reportUID === userID) { // go to report page and send ID
-                res.sendFile('/client/report.html');
+                res.sendFile('/client/report.html', { 'root' : __dirname });
             } else {
                 // don't update
                 console.log("update failed");
