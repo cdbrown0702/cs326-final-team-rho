@@ -6,7 +6,6 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 const MongoUsers = client.db("Users").collection("UserList");
 const MongoReports = client.db("Reports").collection("Submission");
-const alert = require('alert');
 
 // Pulls in necessary pieces for server functionality
 const exp = require('express');
@@ -261,7 +260,6 @@ checkLoggedIn,
                         try {
                             // Delete the report from the database, and refresh the page
                             await MongoReports.deleteOne( {"rid": rid} );
-                            res.redirect(req.get('referer'));
                         } catch (err) { console.error(err); }
                     })();
                 }
@@ -271,16 +269,15 @@ checkLoggedIn,
 });
 
 // Allows a user to update their report (provided they posted the report, and they are logged in)
-serv.post('/update',
+serv.post('/update'),
 checkLoggedIn,
 (req, res) => {
-    console.log("do we make it here");
     (async() => {
+        // Get list of users from the database
         let users = await MongoUsers.find({}).toArray();
         let userID;
-	console.log("how bout here");
 
-        // get ID of the user that is making the request
+        // Get UserID from the database
         for (let i = 0; i < users.length; i++) {
             if (users[i]['user'] === req.user) {
                 userID = users[i]['uid'];
@@ -291,29 +288,26 @@ checkLoggedIn,
         let body = '';
         req.on('data', data => body += data);
         req.on('end', () => {
-            const data = JSON.parse(body);
-            // data contains UID of report to compare with the user that's trying to update
-            // also contains RID so we can redirect to update page with the correct report
 
+            // Takes the user ID associated with the report, and the user ID of the user logged in
+            const data = JSON.parse(body);
             let reportUID = data['uid'];
             let rid = data['rid'];
-            console.log("update fetch went through");
-            res.redirect('/report.html');
-            if (reportUID === userID) { // go to report page and send ID
-                res.redirect('/report.html');
+
+            // If the user who posted the report is trying to update, allow it
+            if (reportUID === userID) {
+                res.redirect(`/report?id=${rid}`);
             } else {
                 // don't update
                 console.log("update failed");
             }
         });
     })();
-});
+}
 
 serv.get('/report', 
     (req,res) => {
         console.log("attempted to GET " + req.query.id);
-	res.sendFile('/report.html');
-	window.document.getElementById('eventName') = "test"
     }
 );
 
