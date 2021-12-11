@@ -346,19 +346,16 @@ checkLoggedIn,
 serv.get('/getUser',
     (req,res) => {
         (async() => {
-            try {
-                let users = await MongoUsers.find({}).toArray();
+            let users = await MongoUsers.find({}).toArray();
+            let currUser;
 
-                let currUser;
-
-                for (let i = 0; i < users.length; i++) {
-                    if (users[i]['name'] === req.user) {
-                        currUser = users[i]['rid'];
-                    }
+            for (let i = 0; i < users.length; i++) {
+                if (users[i]['name'] === req.user) {
+                    currUser = users[i];
                 }
+            }
 
-                res.send(currUser);
-            } catch (err) { console.error(err); }
+            res.send(currUser);
         })();
     }
 );

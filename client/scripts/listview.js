@@ -57,9 +57,10 @@ fetch('/getReports')
         document.getElementById(`deleteBtn${e['rid']}`).addEventListener('click', () => {
 
           fetch('/getUser')
+          .then(response => response.json())
           .then(data => {
 
-            console.log(data);
+            console.log(JSON.stringify(data));
 
             if (data === e['rid']) {
               fetch('/delete', {
