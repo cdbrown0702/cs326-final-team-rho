@@ -302,7 +302,7 @@ checkLoggedIn,
             window.document.getElementById('eventName') = "test"
             if (reportUID === userID) { // go to report page and send ID
                 res.redirect('/client/pageReport.html');
-                window.document.getElementById('eventName') = "test"
+                document.getElementById('eventName') = "test"
             } else {
                 // don't update
                 console.log("update failed");
