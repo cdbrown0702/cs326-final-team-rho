@@ -305,7 +305,6 @@ checkLoggedIn,
                 // don't update
                 console.log("update failed");
             }
-	    res.end();
         });
     })();
 });
