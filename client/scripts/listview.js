@@ -59,10 +59,12 @@ fetch('/getReports')
         
         document.getElementById(`deleteBtn${e['rid']}`).addEventListener('click', () => {
 
-          fetch('/getUser').then(data => {
+          fetch('/getUser')
+          .then(response => response.json())
+          .then(data => {
 
             console.log(data);
-            
+
             if (data === e['rid']) {
               fetch('/delete', {
                 method: 'POST',
@@ -76,10 +78,12 @@ fetch('/getReports')
         });
 
         document.getElementById(`updateBtn${e['rid']}`).addEventListener('click', () => {
-          fetch('/getUser').then(data => {
+          fetch('/getUser')
+          .then(response => response.json())
+          .then(data => {
             // console.log(currRID);
-            console.log(data);
-          
+            alert(data);
+
             if (data === e['rid']) {
               fetch('/delete', {
                 method: 'POST',
