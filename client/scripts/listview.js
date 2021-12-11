@@ -47,28 +47,42 @@ function addReport(id, title, descText, location, date) {
 
 // gets reports from JSON file
 console.log("attempting to fetch");
-// won't fetch here for some reason but the rest of this should work in theory
+
 fetch('/getReports')
     .then(response => response.json())
     .then(data => {
+
+      let currRID;
+
+      fetch('/getUser').then(data => currRID = data);
+
       for (let i = 0, l = data.length; i < l; i++) {
         let e = data[i];
         let locString = `${e['coords'][0]}, ${e['coords'][1]}`;
         addReport(e['rid'], e['name'], e['desc'], locString, e['date']);
         
         document.getElementById(`deleteBtn${e['rid']}`).addEventListener('click', () => {
-          fetch('/delete', {
-            method: 'POST',
-            body: JSON.stringify({'uid': e['uid'], 'rid': e['rid']})
-          });
+          if (currRID === e['rid']) {
+            fetch('/delete', {
+              method: 'POST',
+              body: JSON.stringify({'uid': e['uid'], 'rid': e['rid']})
+            });
+            location.reload();
+          } else {
+            alert("This is not your report!");
+          }
         });
 
         document.getElementById(`updateBtn${e['rid']}`).addEventListener('click', () => {
-          fetch('/delete', {
-            method: 'POST',
-            body: JSON.stringify({'uid': e['uid'], 'rid': e['rid']})
-          });
-          window.location.href = "report.html";
+          if (currRID === e['rid']) {
+            fetch('/delete', {
+              method: 'POST',
+              body: JSON.stringify({'uid': e['uid'], 'rid': e['rid']})
+            });
+            window.location.href = "https://ualert.herokuapp.com/report.html";
+          } else {
+            alert("This is not your report!");
+          }
         });
       }
   });

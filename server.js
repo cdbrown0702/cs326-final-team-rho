@@ -337,18 +337,29 @@ checkLoggedIn,
             } else {
                 res.send("Not Correct");
             }
-
-            // res.redirect('/report.html');
-            // if (reportUID === userID) { // go to report page and send ID
-            //     res.redirect('/report.html');
-            // } else {
-            //     // don't update
-            // }
-
             res.end();
         });
     })();
 });
+
+// Endpoint used to acquire the current user's id, used in the listview page
+serv.get('/getUser',
+    (req,res) => {
+        (async() => {
+            try {
+                let users = await MongoUsers.find({}).toArray();
+
+                let currUser;
+                for (let i = 0; i < users.length; i++) {
+                    if (users[i]['name'] = req.user) {
+                        currUser = users[i]['rid'];
+                    }
+                }
+                res.send(currUser);
+            } catch (err) { console.error(err); }
+        })();
+    }
+);
 
 serv.get('/report', 
     (req,res) => {
