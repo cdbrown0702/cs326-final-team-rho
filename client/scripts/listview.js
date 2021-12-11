@@ -45,9 +45,6 @@ function addReport(id, title, descText, location, date) {
     listGroup.appendChild(container);
 }
 
-// gets reports from JSON file
-console.log("attempting to fetch");
-
 fetch('/getReports')
     .then(response => response.json())
     .then(data => {
@@ -60,7 +57,6 @@ fetch('/getReports')
         document.getElementById(`deleteBtn${e['rid']}`).addEventListener('click', () => {
 
           fetch('/getUser')
-          .then(response => response.json())
           .then(data => {
 
             console.log(data);
