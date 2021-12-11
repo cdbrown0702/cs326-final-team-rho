@@ -16,6 +16,7 @@
 ### Map View Page  __/20
 - View reports created by other users, shown on different areas of campus
 - Reports are pulled from database
+- Events are displayed with different colors, representing different types of events
 - Clicking on a marker shows limited information about the report
 - Can scroll around map to view all of campus and surrounding area
 
@@ -28,7 +29,7 @@
 
 ### Submit Report Page __/25
 - Can only be used if you are actually logged in as a registered user
-- Contains fields where user can input information about a report
+- Contains fields where user can input information about a report (Location coordinates, event name, category, date and description)
 - Once submit button is clicked, report is sent to database
 - User is sent to map view page where they can see their new report
 
