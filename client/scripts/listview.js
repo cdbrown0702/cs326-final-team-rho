@@ -57,7 +57,6 @@ fetch('/getReports')
         addReport(e['rid'], e['name'], e['desc'], locString, e['date']);
         
         document.getElementById(`deleteBtn${e['rid']}`).addEventListener('click', () => {
-          console.log("delete now!");
           fetch('/delete', {
             method: 'POST',
             body: JSON.stringify({'uid': e['uid'], 'rid': e['rid']})
@@ -65,7 +64,6 @@ fetch('/getReports')
         });
 
         document.getElementById(`updateBtn${e['rid']}`).addEventListener('click', () => {
-          console.log("update now!");
           fetch('/delete', {
             method: 'POST',
             body: JSON.stringify({'uid': e['uid'], 'rid': e['rid']})
