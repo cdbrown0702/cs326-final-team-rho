@@ -106,8 +106,15 @@ async function addUs(user, pwd) { // Add user (register)
         } else { // If so, create salt and has for their password
             const [salt, hash] = mc.hash(pwd);
             
+            let userID;
+            for (let i = 0; i < users.length; i++) {
+                if (users[i]['uid'] !== i) {
+                    userID = i;
+                }
+            }
+
             // Add user with its salt and has to database (secure authentication)
-            let newUser = {'uid': users.length + 1, 'user': user, 'salt': salt, 'hash': hash};
+            let newUser = {'uid': userID, 'user': user, 'salt': salt, 'hash': hash};
             await MongoUsers.insertOne(newUser);
 
             return true;
@@ -193,8 +200,6 @@ checkLoggedIn,
             let reportID;
             for (let i = 1; i < reports.length; i++) {
                 if (reports[i]['rid'] === i) {
-                    continue;
-                } else {
                     reportID = i;
                 }
             }
