@@ -1,6 +1,3 @@
-// get ID from url, if it's not -1 then find it in database and fill in the fields accordingly
-// console.log(window.location.search())
-
 // let e;
 // if (autofillRID != -1) {
 //   // get report
@@ -75,3 +72,6 @@ document.getElementById('sub').addEventListener('click', () => {
 
   fetch("/createReport", {method: "POST", body: JSON.stringify(obj)});
 });
+
+// get ID from url, if it's not -1 then find it in database and fill in the fields accordingly
+console.log(window.location.search());
