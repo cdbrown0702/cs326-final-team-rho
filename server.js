@@ -269,15 +269,15 @@ checkLoggedIn,
 });
 
 // Allows a user to update their report (provided they posted the report, and they are logged in)
-serv.post('/update'),
+serv.post('/update',
 checkLoggedIn,
 (req, res) => {
     (async() => {
-        // Get list of users from the database
+        
         let users = await MongoUsers.find({}).toArray();
         let userID;
 
-        // Get UserID from the database
+        // get ID of the user that is making the request
         for (let i = 0; i < users.length; i++) {
             if (users[i]['user'] === req.user) {
                 userID = users[i]['uid'];
@@ -288,22 +288,23 @@ checkLoggedIn,
         let body = '';
         req.on('data', data => body += data);
         req.on('end', () => {
-
-            // Takes the user ID associated with the report, and the user ID of the user logged in
             const data = JSON.parse(body);
+            // data contains UID of report to compare with the user that's trying to update
+            // also contains RID so we can redirect to update page with the correct report
+
             let reportUID = data['uid'];
             let rid = data['rid'];
-
-            // If the user who posted the report is trying to update, allow it
-            if (reportUID === userID) {
-                res.redirect(`/report?id=${rid}`);
+            console.log("update fetch went through");
+            res.redirect('/report.html');
+            if (reportUID === userID) { // go to report page and send ID
+                res.redirect('/report.html');
             } else {
                 // don't update
                 console.log("update failed");
             }
         });
     })();
-}
+});
 
 serv.get('/report', 
     (req,res) => {
