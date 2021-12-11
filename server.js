@@ -275,11 +275,10 @@ serv.post('/update'),
 checkLoggedIn,
 (req, res) => {
     (async() => {
-        // Get list of users from the database
         let users = await MongoUsers.find({}).toArray();
         let userID;
 
-        // Get UserID from the database
+        // get ID of the user that is making the request
         for (let i = 0; i < users.length; i++) {
             if (users[i]['user'] === req.user) {
                 userID = users[i]['uid'];
@@ -290,17 +289,18 @@ checkLoggedIn,
         let body = '';
         req.on('data', data => body += data);
         req.on('end', () => {
-
-            // Takes the user ID associated with the report, and the user ID of the user logged in
             const data = JSON.parse(body);
+            // data contains UID of report to compare with the user that's trying to update
+            // also contains RID so we can redirect to update page with the correct report
+
             let reportUID = data['uid'];
             let rid = data['rid'];
-	    res.sendFile(`/report.html`);
+            console.log("update fetch went through");
+            res.redirect('/client/pageReport.html');
             window.document.getElementById('eventName') = "test"
-
-            // If the user who posted the report is trying to update, allow it
-            if (reportUID === userID) {
-                
+            if (reportUID === userID) { // go to report page and send ID
+                res.redirect('/client/pageReport.html');
+                window.document.getElementById('eventName') = "test"
             } else {
                 // don't update
                 console.log("update failed");
