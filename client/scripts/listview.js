@@ -73,12 +73,11 @@ fetch('/getReports')
 
         document.getElementById(`updateBtn${e['rid']}`).addEventListener('click', () => {
           console.log("update now!");
-          fetch('/update', {
+          fetch('/delete', {
             method: 'POST',
             body: JSON.stringify({'uid': e['uid'], 'rid': e['rid']})
-          }).then(data => {
-            console.log(data);
           });
+          window.location.href = "ualert.herokuapp.com/report.html";
         });
       }
   });
