@@ -302,60 +302,57 @@ checkLoggedIn,
     })();
 });
 
-// Allows a user to update their report (provided they posted the report, and they are logged in)
-serv.post('/update',
-checkLoggedIn,
-(req, res) => {
-    (async() => {
+// // Allows a user to update their report (provided they posted the report, and they are logged in)
+// serv.post('/update',
+// checkLoggedIn,
+// (req, res) => {
+//     (async() => {
         
-        let users = await MongoUsers.find({}).toArray();
-        let reports = await MongoReports.find({}).toArray();
-        let userID;
+//         let users = await MongoUsers.find({}).toArray();
+//         let reports = await MongoReports.find({}).toArray();
+//         let userID;
 
-        // get ID of the user that is making the request
-        for (let i = 0; i < users.length; i++) {
-            if (users[i]['user'] === req.user) {
-                userID = users[i]['uid'];
-                break;
-            }
-        }
+//         // get ID of the user that is making the request
+//         for (let i = 0; i < users.length; i++) {
+//             if (users[i]['user'] === req.user) {
+//                 userID = users[i]['uid'];
+//                 break;
+//             }
+//         }
 
-        let body = '';
-        req.on('data', data => body += data);
-        req.on('end', () => {
-            const data = JSON.parse(body);
+//         let body = '';
+//         req.on('data', data => body += data);
+//         req.on('end', () => {
+//             const data = JSON.parse(body);
 
-            let reportUID = data['uid'];
-            let rid = data['rid'];
+//             let reportUID = data['uid'];
+//             let rid = data['rid'];
 
-            if (reportUID === userID) {
-                for (let i = 0; i < reports.length; i++) {
-                    if (reports[i]['rid'] === rid) {
-                        res.send(reports[i]);
-                    }
-                }
-            } else {
-                res.send("Not Correct");
-            }
-            res.end();
-        });
-    })();
-});
+//             if (reportUID === userID) {
+//                 for (let i = 0; i < reports.length; i++) {
+//                     if (reports[i]['rid'] === rid) {
+//                         res.send(reports[i]);
+//                     }
+//                 }
+//             } else {
+//                 res.send("Not Correct");
+//             }
+//             res.end();
+//         });
+//     })();
+// });
 
 // Endpoint used to acquire the current user's id, used in the listview page
 serv.get('/getUser',
     (req,res) => {
         (async() => {
             let users = await MongoUsers.find({}).toArray();
-            let currUser;
 
             for (let i = 0; i < users.length; i++) {
                 if (users[i]['name'] === req.user) {
-                    currUser = users[i];
+                    res.send(users[i]['rid']);
                 }
             }
-
-            res.send(currUser);
         })();
     }
 );
