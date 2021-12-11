@@ -271,7 +271,7 @@ checkLoggedIn,
 });
 
 // Allows a user to update their report (provided they posted the report, and they are logged in)
-serv.post('/update'),
+serv.post('/update',
 checkLoggedIn,
 (req, res) => {
     (async() => {
@@ -307,7 +307,7 @@ checkLoggedIn,
             }
         });
     })();
-}
+});
 
 serv.get('/report', 
     (req,res) => {
