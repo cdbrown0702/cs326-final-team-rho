@@ -274,9 +274,11 @@ checkLoggedIn,
 serv.post('/update',
 checkLoggedIn,
 (req, res) => {
+    console.log("do we make it here");
     (async() => {
         let users = await MongoUsers.find({}).toArray();
         let userID;
+	console.log("how bout here");
 
         // get ID of the user that is making the request
         for (let i = 0; i < users.length; i++) {
