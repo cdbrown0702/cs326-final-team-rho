@@ -77,7 +77,7 @@ fetch('/getReports')
             method: 'POST',
             body: JSON.stringify({'uid': e['uid'], 'rid': e['rid']})
           });
-          window.location.href = "ualert.herokuapp.com/report.html";
+          window.location.href = "report.html";
         });
       }
   });
