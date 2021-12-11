@@ -189,6 +189,15 @@ checkLoggedIn,
                     userID = users[i]['uid'];
                 }
             }
+
+            let reportID;
+            for (let i = 0; i < reports.length; i++) {
+                if (reports[i]['rid'] === i) {
+                    continue;
+                } else {
+                    reportID = i;
+                }
+            }
             
             let body = '';
             req.on('data', data => body += data);
@@ -200,7 +209,7 @@ checkLoggedIn,
                 // Creates new report object
                 let newReport = {
                     'uid': userID,
-                    'rid': reports.length + 1,
+                    'rid': reportID,
                     'name': data.name,
                     'category': data.category,
                     'date': data.date,
