@@ -107,10 +107,18 @@ async function addUs(user, pwd) { // Add user (register)
             const [salt, hash] = mc.hash(pwd);
             
             let userID;
-            for (let i = 0; i < users.length; i++) {
-                if (users[i]['uid'] !== i) {
-                    userID = i;
+            
+            if (users.length === 0) { userID = 1; }
+            else {
+                let max = 0;
+
+                for (let i = 0; i < users.length; i++) {
+                    if (users[i]['uid'] > max) {
+                        max = users[i]['uid'];
+                    }
                 }
+
+                userID = max;
             }
 
             // Add user with its salt and has to database (secure authentication)
@@ -198,10 +206,18 @@ checkLoggedIn,
             }
 
             let reportID;
-            for (let i = 1; i < reports.length; i++) {
-                if (reports[i]['rid'] === i) {
-                    reportID = i;
+
+            if (reports.length === 0) { reportID = 1; }
+            else {
+                let max = 0;
+
+                for (let i = 0; i < reports.length; i++) {
+                    if (reports[i]['rid'] > max) {
+                        max = reports[i]['rid'];
+                    }
                 }
+
+                reportID = max + 1;
             }
             
             let body = '';
