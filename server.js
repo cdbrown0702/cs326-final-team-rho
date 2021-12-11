@@ -295,6 +295,8 @@ checkLoggedIn,
                         } catch (err) { console.error(err); }
                     })();
                 }
+
+                res.end();
             });
         } catch (err) { console.error(err); }
     })();
@@ -342,6 +344,8 @@ checkLoggedIn,
             // } else {
             //     // don't update
             // }
+
+            res.end();
         });
     })();
 });
