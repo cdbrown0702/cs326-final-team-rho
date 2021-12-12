@@ -16,8 +16,8 @@ UAlert is an application that allows UMass students the ability to document any 
 ## URL Routes / Mappings
 | Route      | Description |
 | ----------- | ----------- |
-| /login.html  | d       |
-| /register.html  | d       |
-| /listview.html  | d       |
-| /report.html  | d       |
-| /map.html  | d       |
+| /login.html  | Allows the user to log in      |
+| /register.html  | ALlows the user to make a new account with username and password, redirects to login when done       |
+| /listview.html  | Allows the user to view reports on a feed, redirects to login if user is not logged in       |
+| /report.html  | Allows the user to submit a report, redirects to login if user is not logged in       |
+| /map.html  | Allows user to view reports on map       |
