@@ -14,7 +14,7 @@ UAlert is an application that allows UMass students the ability to document any 
 
 ## User Interface
 The user will be brought to a login screen where they can either login or create a new account. 
-![login View](login:create.png)
+![login View](logincreate.png)
 Then, the user will be immediately be brought to the map view.
 ![Map View](mapview.png)
 Here, the user will see reports on specific coordinates on the map. The user can click on the location icon to get in-depth details on the report. The user has the option to view all of the reports through the list view. 
