@@ -15,20 +15,22 @@ const subMap = new mapboxgl.Map({
   maxBounds: mapBounds
 });
 
+// Creates a draggable marker, centered at campus pond
 const marker = new mapboxgl.Marker({
   color: 'black',
   draggable: true
 })
 marker.setLngLat([-72.52650, 42.38922]).addTo(subMap);
 
+// Function that, when the marker stops being dragged, the location of the marker is displayed
 function onDragEnd() {
   const lnglat = marker.getLngLat();
   document.getElementById('lat').innerHTML = `${lnglat.lat}`;
   document.getElementById('long').innerHTML = `${lnglat.lng}`;
 }
-
 marker.on('dragend', onDragEnd);
 
+// When the button is pressed, take form data and perform a POST request to submit the report
 document.getElementById('sub').addEventListener('click', () => {
   let name = document.getElementById('eventName').value;
   let category = document.getElementById('category').value;

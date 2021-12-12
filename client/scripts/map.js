@@ -16,7 +16,7 @@ const map = new mapboxgl.Map({
 });
 
 // Fetches all input events from a local JSON file, creating markers with ind. popups
-fetch('/getReports')
+fetch('/getInfo')
     .then(response => response.json())
     .then(data => {
       for (let i = 0, l = data[0].length; i < l; i++) {

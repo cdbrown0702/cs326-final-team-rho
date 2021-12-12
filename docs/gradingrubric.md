@@ -22,9 +22,9 @@
 
 ### List View Page  __/25
 - Reports are shown in a feed with more information (date, description, etc.), also pulled from database
-- Each report contains a delete and update button which can be clicked to either remove the report or update the fields in the submit report page
+- Each report contains a delete and update button which can be clicked to either remove the report or update the report with a new one
 - Delete button removes report and refreshes the page
-- Update button directs you to submission page with fields auto-filled; submission updates the report
+- Update button directs you to submission page, where you will submit a replacement report
 - Reports can only be updated or deleted by the user they were created by
 
 ### Submit Report Page __/25

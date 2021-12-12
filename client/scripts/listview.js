@@ -1,11 +1,14 @@
+// Creates a group for the entire listview
 const listGroup = document.getElementById("list-group");
 
 function addReport(id, title, descText, location, date) {
-    // init divs
+    // Creates container and row functionality
     const container = document.createElement("div");
     const row = document.createElement("div");
     const col2 = document.createElement("div");
     const col3 = document.createElement("div");
+
+    // Creates locations for several different features of each row
     const body = document.createElement("div");
     const header = document.createElement("h2");
     const desc = document.createElement("p");
@@ -15,7 +18,8 @@ function addReport(id, title, descText, location, date) {
     deleteBtn.id = `deleteBtn${id}`;
     const updateBtn = document.createElement("button");
     updateBtn.id = `updateBtn${id}`;
-    // add stuff to divs
+
+    // Adds identification and class structure to previous divs 
     container.id = id;
     container.classList = `list-group-item ${id}`;
     row.classList = "row";
@@ -31,7 +35,8 @@ function addReport(id, title, descText, location, date) {
     deleteBtn.textContent = "Delete Report";
     updateBtn.classList = "btn btn-primary";
     updateBtn.textContent = "Update Report";
-    // put divs together
+
+    // Combines the different elements into individual pieces
     body.appendChild(header);
     body.appendChild(desc);
     body.appendChild(loc)
@@ -45,7 +50,8 @@ function addReport(id, title, descText, location, date) {
     listGroup.appendChild(container);
 }
 
-fetch('/getReports')
+// Gets reports, users and current user
+fetch('/getInfo')
     .then(response => response.json())
     .then(data => {
 
@@ -53,6 +59,7 @@ fetch('/getReports')
       let users = data[1];
       let reqUser = data[2];
 
+      // Gets the id of the current user
       let uid;
       for (let i = 0; i < users.length; i++) {
         if (users[i]['user'] === reqUser) {
@@ -60,19 +67,16 @@ fetch('/getReports')
         }
       }
 
-      console.log(uid);
-      console.log(data[0]);
-      console.log(data[1]);
-      console.log(data[2]);
-
+      // Iterates through every current report, creating an element for it
       for (let i = 0, l = reports.length; i < l; i++) {
         let e = reports[i];
-
         let locString = `${e['coords'][0]}, ${e['coords'][1]}`;
         addReport(e['rid'], e['name'], e['desc'], locString, e['date']);
         
+        // Adds a button function for deleting said report
         document.getElementById(`deleteBtn${e['rid']}`).addEventListener('click', () => {
 
+            // If the user who posted the report presses it, delete the report and refresh
             if (uid === e['uid']) {
 
               fetch('/delete', {
@@ -81,24 +85,24 @@ fetch('/getReports')
               });
 
               location.reload();
-            } else {
+            } else { // Otherwise, alert them that they are not the user
 
               alert("This is not your report!");
             }
         });
 
+        // Adds a button function for updating said report
         document.getElementById(`updateBtn${e['rid']}`).addEventListener('click', () => {
            
+            // If the user who posted the report presses it, delete the report and send the user to submit a new report
             if (uid === e['uid']) {
 
               fetch('/delete', {
                 method: 'POST',
                 body: JSON.stringify({'uid': e['uid'], 'rid': e['rid']})
               });
-
               window.location.href = "https://ualert.herokuapp.com/report.html";
-
-            } else {
+            } else { // Otherwise, alert them that they are not the user
 
               alert("This is not your report!");
             }

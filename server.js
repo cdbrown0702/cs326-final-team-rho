@@ -106,18 +106,16 @@ async function addUs(user, pwd) { // Add user (register)
         } else { // If so, create salt and has for their password
             const [salt, hash] = mc.hash(pwd);
             
+            // Generates an ID for the user
             let userID;
-            
             if (users.length === 0) { userID = 1; }
             else {
                 let max = 0;
-
                 for (let i = 0; i < users.length; i++) {
                     if (users[i]['uid'] > max) {
                         max = users[i]['uid'];
                     }
                 }
-
                 userID = max;
             }
 
@@ -187,6 +185,15 @@ checkLoggedIn,
     res.redirect('/report.html');
 });
 
+// Pulls reports from the database to be used in the mapview and listview pages
+serv.get('/getInfo',
+(req,res) => {
+    (async() => {
+        // Sends a promise containing all reports within the database as of page access
+        res.send([await MongoReports.find({}).toArray(), await MongoUsers.find({}).toArray(), req.user]);
+    })();
+})
+
 // Creates a report (provided logged in)
 serv.post('/createReport',
 checkLoggedIn,
@@ -205,18 +212,16 @@ checkLoggedIn,
                 }
             }
 
+            // Generates a new report ID for the report
             let reportID;
-
             if (reports.length === 0) { reportID = 1; }
             else {
                 let max = 0;
-
                 for (let i = 0; i < reports.length; i++) {
                     if (reports[i]['rid'] > max) {
                         max = reports[i]['rid'];
                     }
                 }
-
                 reportID = max + 1;
             }
             
@@ -249,15 +254,6 @@ checkLoggedIn,
         } catch (err) { console.error(err); }
     })();
 });
-
-// Pulls reports from the database to be used in the mapview and listview pages
-serv.get('/getReports',
-(req,res) => {
-    (async() => {
-        // Sends a promise containing all reports within the database as of page access
-        res.send([await MongoReports.find({}).toArray(), await MongoUsers.find({}).toArray(), req.user]);
-    })();
-})
 
 // Allows a user to delete report (provided they actually posted the report, and they are logged in)
 serv.post('/delete',
@@ -295,68 +291,11 @@ checkLoggedIn,
                         } catch (err) { console.error(err); }
                     })();
                 }
-
                 res.end();
             });
         } catch (err) { console.error(err); }
     })();
 });
-
-// // Allows a user to update their report (provided they posted the report, and they are logged in)
-// serv.post('/update',
-// checkLoggedIn,
-// (req, res) => {
-//     (async() => {
-        
-//         let users = await MongoUsers.find({}).toArray();
-//         let reports = await MongoReports.find({}).toArray();
-//         let userID;
-
-//         // get ID of the user that is making the request
-//         for (let i = 0; i < users.length; i++) {
-//             if (users[i]['user'] === req.user) {
-//                 userID = users[i]['uid'];
-//                 break;
-//             }
-//         }
-
-//         let body = '';
-//         req.on('data', data => body += data);
-//         req.on('end', () => {
-//             const data = JSON.parse(body);
-
-//             let reportUID = data['uid'];
-//             let rid = data['rid'];
-
-//             if (reportUID === userID) {
-//                 for (let i = 0; i < reports.length; i++) {
-//                     if (reports[i]['rid'] === rid) {
-//                         res.send(reports[i]);
-//                     }
-//                 }
-//             } else {
-//                 res.send("Not Correct");
-//             }
-//             res.end();
-//         });
-//     })();
-// });
-
-// Endpoint used to acquire the current user's id, used in the listview page
-serv.get('/getUser',
-    checkLoggedIn,
-    (req,res) => {
-        (async() => {
-            res.send(await MongoUsers.find({}).toArray());
-        })();
-    }
-);
-
-serv.get('/report', 
-    (req,res) => {
-        console.log("attempted to GET " + req.query.id);
-    }
-);
 
 // sets our directory to client
 serv.use(exp.static('client'));
