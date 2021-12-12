@@ -61,7 +61,8 @@ fetch('/getReports')
       }
 
       for (let i = 0, l = data[0].length; i < l; i++) {
-        let e = reports[i];
+        let e = data[0][i];
+
         let locString = `${e['coords'][0]}, ${e['coords'][1]}`;
         addReport(e['rid'], e['name'], e['desc'], locString, e['date']);
         
@@ -91,7 +92,7 @@ fetch('/getReports')
               });
 
               window.location.href = "https://ualert.herokuapp.com/report.html";
-              
+
             } else {
 
               alert("This is not your report!");
