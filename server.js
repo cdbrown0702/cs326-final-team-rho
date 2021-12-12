@@ -351,7 +351,7 @@ serv.get('/getUser',
 
             for (let i = 0; i < users.length; i++) {
                 if (users[i]['name'] === req.user) {
-                    res.send(users[i]['rid']);
+                    res.send([users, i]);
                 }
             }
 
