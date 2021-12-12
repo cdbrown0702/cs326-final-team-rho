@@ -12,3 +12,12 @@ UAlert is an application that allows UMass students the ability to document any 
 * Nitant Rimal (@nrimalAI)
 
 ## User Interface
+
+## URL Routes / Mappings
+| Route      | Description |
+| ----------- | ----------- |
+| /login.html  | d       |
+| /register.html  | d       |
+| /listview.html  | d       |
+| /report.html  | d       |
+| /map.html  | d       |
