@@ -347,15 +347,7 @@ serv.get('/getUser',
     checkLoggedIn,
     (req,res) => {
         (async() => {
-            let users = await MongoUsers.find({}).toArray();
-
-            for (let i = 0; i < users.length; i++) {
-                if (users[i]['name'] === req.user) {
-                    res.send([users, i]);
-                }
-            }
-
-            res.end();
+            res.send(await MongoUsers.find({}).toArray());
         })();
     }
 );
