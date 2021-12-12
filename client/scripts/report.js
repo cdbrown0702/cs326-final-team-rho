@@ -1,24 +1,3 @@
-// let e;
-// if (autofillRID != -1) {
-//   // get report
-//   fetch('./scripts/events.json')
-//     .then(response => response.json())
-//     .then(data => {
-//       // iterate through reports and find the one that matches the one to be autofilled
-//       for (let i = 0, l = data.length; i < l; i++) {
-//         e = data[i];
-//         if (e['rid'] == autofillRID) {
-//           // found report
-//           // fill in values
-//           document.getElementById('eventName').innerHTML = e["name"];
-//           document.getElementById('category').innerHTML = e["category"];
-//           document.getElementById('dateInput').innerHTML = e["date"];
-//           document.getElementById('descriptInput').innerHTML = e["desc"];
-//         }
-//       }
-//     });
-// }
-
 // Defines constants for map initialization
 const campus    = L.latLng(42.38922, -72.52650),
       southWest = L.latLng(42.37519, -72.53988),
@@ -41,13 +20,6 @@ const marker = new mapboxgl.Marker({
   draggable: true
 })
 marker.setLngLat([-72.52650, 42.38922]).addTo(subMap);
-
-// // if autofill, set marker to location of previous report. otherwise leave as default
-// if (autofillRID != -1) {
-//   marker.setLngLat([-72.52650, 42.38922]).addTo(subMap);
-// } else {
-//   marker.setLngLat([e['coords'][0], e['coords'][1]]);
-// }
 
 function onDragEnd() {
   const lnglat = marker.getLngLat();
@@ -72,6 +44,3 @@ document.getElementById('sub').addEventListener('click', () => {
 
   fetch("/createReport", {method: "POST", body: JSON.stringify(obj)});
 });
-
-// get ID from url, if it's not -1 then find it in database and fill in the fields accordingly
-console.log(window.location.search());
