@@ -54,7 +54,7 @@ fetch('/getReports')
       currUser = data[2];
 
       let rid;
-      for (let i = 0; i < user.length; i++) {
+      for (let i = 0; i < users.length; i++) {
         if (users[i]['name'] === currUser) {
           rid = users[i]['rid'];
         }
