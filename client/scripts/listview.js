@@ -49,14 +49,10 @@ fetch('/getReports')
     .then(response => response.json())
     .then(data => {
 
-      reports = data[0];
-      users = data[1];
-      currUser = data[2];
-
       let rid;
-      for (let i = 0; i < users.length; i++) {
-        if (users[i]['name'] === currUser) {
-          rid = users[i]['rid'];
+      for (let i = 0; i < data[1].length; i++) {
+        if (data[1][i]['name'] === data[2]) {
+          rid = data[1][i]['rid'];
         }
       }
 
@@ -68,9 +64,6 @@ fetch('/getReports')
         
         document.getElementById(`deleteBtn${e['rid']}`).addEventListener('click', () => {
 
-            console.log(rid);
-            console.log(e['rid']);
-            
             if (rid === e['rid']) {
 
               fetch('/delete', {
