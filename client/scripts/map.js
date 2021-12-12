@@ -19,8 +19,8 @@ const map = new mapboxgl.Map({
 fetch('/getReports')
     .then(response => response.json())
     .then(data => {
-      for (let i = 0, l = data.length; i < l; i++) {
-        let e = data[i];
+      for (let i = 0, l = data[0].length; i < l; i++) {
+        let e = data[0][i];
         let popup = new mapboxgl.Popup({offset: 25}).setHTML(
           'Name: ' + e['name'] + '<br>Date: ' + e['date'] + '<br>Description: ' + e['desc'] 
         );

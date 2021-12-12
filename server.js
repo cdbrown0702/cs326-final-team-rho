@@ -255,7 +255,7 @@ serv.get('/getReports',
 (req,res) => {
     (async() => {
         // Sends a promise containing all reports within the database as of page access
-        res.send(await MongoReports.find({}).toArray());
+        res.send([await MongoReports.find({}).toArray(), await MongoUsers.find({}).toArray(), req.user]);
     })();
 })
 

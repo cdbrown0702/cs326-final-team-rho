@@ -49,27 +49,29 @@ fetch('/getReports')
     .then(response => response.json())
     .then(data => {
 
-      for (let i = 0, l = data.length; i < l; i++) {
-        let e = data[i];
+      reports = data[0];
+      users = data[1];
+      currUser = data[2];
+
+      for (let i = 0, l = data[0].length; i < l; i++) {
+        let e = data[0][i];
         let locString = `${e['coords'][0]}, ${e['coords'][1]}`;
         addReport(e['rid'], e['name'], e['desc'], locString, e['date']);
         
         document.getElementById(`deleteBtn${e['rid']}`).addEventListener('click', () => {
 
-          fetch('/getUser')
-          .then(data => {
+            console.log(data[1]);
+            console.log(data[2]);
 
-            console.log(JSON.stringify(data));
-
-            if (data === e['rid']) {
-              fetch('/delete', {
-                method: 'POST',
-                body: JSON.stringify({'uid': e['uid'], 'rid': e['rid']})
-              });
-              location.reload();
-            } else {
-              alert("This is not your report!");
-            }
+            // if (data === e['rid']) {
+            //   fetch('/delete', {
+            //     method: 'POST',
+            //     body: JSON.stringify({'uid': e['uid'], 'rid': e['rid']})
+            //   });
+            //   location.reload();
+            // } else {
+            //   alert("This is not your report!");
+            // }
           });
         });
 
