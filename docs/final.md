@@ -18,6 +18,25 @@ UAlert is an application that allows UMass students the ability to document any 
 
 ## Database
 
+Datatype: Report
+{  
+  + uid: <ObjectId1>, // id of the user who submitted
+  + rid: <ObjectId2>, // id of the report
+  + title: String, // basic description of event 
+  + category: String, // color that shows urgency of event (corresponds to a category)    
+  + date: String, // date of the event
+  + location: Float Array[] // latitude and longitude (in [lng,lat] format) of event which can be displayed on the map 
+  + description: String, // more detailed description of event with further info  
+}
+
+Datetype: User
+{
+  + uid: <ObjectId1>, // id of the user
+  + user: String, // username of the user
+  + hash: String // encrypted password
+  + salt: String / hide hash, extra layer of protection
+}
+
 ## URL Routes/Mappings
 
 * "/listview.html" - This page contains an updated feed of all current reports, including the name, the description of it, and the coordinates of the event.
