@@ -49,10 +49,14 @@ fetch('/getReports')
     .then(response => response.json())
     .then(data => {
 
-      let rid;
-      for (let i = 0; i < data[1].length; i++) {
-        if (data[1][i]['name'] === data[2]) {
-          rid = data[1][i]['rid'];
+      let reports = data[0];
+      let users = data[1];
+      let reqUser = data[2];
+
+      let uid;
+      for (let i = 0; i < users.length; i++) {
+        if (users[i]['name'] === reqUser) {
+          uid = users[i]['uid'];
         }
       }
 
@@ -61,15 +65,15 @@ fetch('/getReports')
       console.log(data[1]);
       console.log(data[2]);
 
-      for (let i = 0, l = data[0].length; i < l; i++) {
-        let e = data[0][i];
+      for (let i = 0, l = reports.length; i < l; i++) {
+        let e = reports[i];
 
         let locString = `${e['coords'][0]}, ${e['coords'][1]}`;
         addReport(e['rid'], e['name'], e['desc'], locString, e['date']);
         
         document.getElementById(`deleteBtn${e['rid']}`).addEventListener('click', () => {
 
-            if (rid === e['rid']) {
+            if (uid === e['uid']) {
 
               fetch('/delete', {
                 method: 'POST',
