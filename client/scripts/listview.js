@@ -89,7 +89,7 @@ fetch('/getReports')
 
         document.getElementById(`updateBtn${e['rid']}`).addEventListener('click', () => {
            
-            if (rid === e['rid']) {
+            if (uid === e['uid']) {
 
               fetch('/delete', {
                 method: 'POST',
