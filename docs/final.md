@@ -25,7 +25,6 @@ UAlert is an application that allows UMass students the ability to document any 
 * '/delete' - POST. This endpoint for the listview page is used in two different ways. This endpoint is used for both UPDATE and DELETE CRUD functions. It takes the report provided and deletes it from the database of reports.
 
 ## Database
-
 Datatype: Report
 {  
   + uid: <ObjectId1>, // id of the user who submitted
@@ -44,6 +43,7 @@ Datetype: User
   + hash: String // encrypted password
   + salt: String / hide hash, extra layer of protection
 }
+
 
 ## URL Routes/Mappings
 
