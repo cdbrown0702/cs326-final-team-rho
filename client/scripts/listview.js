@@ -56,6 +56,11 @@ fetch('/getReports')
         }
       }
 
+      console.log(rid);
+      console.log(data[0]);
+      console.log(data[1]);
+      console.log(data[2]);
+
       for (let i = 0, l = data[0].length; i < l; i++) {
         let e = data[0][i];
 
