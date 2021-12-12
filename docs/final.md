@@ -14,7 +14,6 @@ UAlert is an application that allows UMass students the ability to document any 
 
 ## User Interface
 
-<<<<<<< HEAD
 ## APIs
 
 ## Database
@@ -40,13 +39,3 @@ When a user registers their account, their password is encrypted into a hash val
 ## Conclusion
 
 We, the creators of UAlert, learned an immense amount about web programming, APIs, routing and in general how much work goes into even the simplest of webpages. From the ground up, into frameworks, into actually layering new bits and pieces on top until you have a polished product, we've been able to take control of every step and see how everything blends together. We encountered many setbacks along the way; this included general time management, the ability to put together our work in a timely and efficient manner. It was probably our biggest problem throughout the process of putting everything together, and at the finish line we can see the progress we've made. We have also each refined our ability to process information and have become more resourceful about growing as developers. We wish we could have had a little more experience with certain tools, such as REST APIs, beforehand, but we were able to put two and two together to really wrap everything up nicely., given time of course. We would hope to add more UI, including the ability to post pictures of an incident, the have individual report pages, and even a user-specific page showcasing your past reports. We also envisioned a liking/disliking system that unfortunately did not come to fruition. Despite that, this has been an intense learning experience that borderline felt as though we were on the frontlines of a true, industry occupation. Our growth as a team speaks just as much for our growth as individual computer scientists, and we hope that we can take this application further in the future.
-=======
-## URL Routes / Mappings
-| Route      | Description |
-| ----------- | ----------- |
-| /login.html  | Allows the user to log in      |
-| /register.html  | Allows the user to make a new account with username and password, redirects to login when done       |
-| /listview.html  | Allows the user to view reports on a feed, redirects to login if user is not logged in       |
-| /report.html  | Allows the user to submit a report, redirects to login if user is not logged in       |
-| /map.html  | Allows user to view reports on map       |
->>>>>>> 29bb26f1c9a5059c649024193e103036160e0c1f
