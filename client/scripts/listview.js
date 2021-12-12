@@ -72,7 +72,7 @@ fetch('/getReports')
             // } else {
             //   alert("This is not your report!");
             // }
-          });
+          // });
         });
 
         document.getElementById(`updateBtn${e['rid']}`).addEventListener('click', () => {
