@@ -344,6 +344,7 @@ checkLoggedIn,
 
 // Endpoint used to acquire the current user's id, used in the listview page
 serv.get('/getUser',
+    checkLoggedIn,
     (req,res) => {
         (async() => {
             let users = await MongoUsers.find({}).toArray();
@@ -353,6 +354,8 @@ serv.get('/getUser',
                     res.send(users[i]['rid']);
                 }
             }
+
+            res.end();
         })();
     }
 );
