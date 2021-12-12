@@ -16,6 +16,14 @@ UAlert is an application that allows UMass students the ability to document any 
 
 ## APIs
 
+* '/login' - POST and GET usages. POST authenticates a user, with either a success or a failure. Success redirects to the map page, while failure refreshes the page. The GET request simply sends you to the login page, used when access is denied.
+* '/logout' - GET usage. This endpoint for the logout link destroys the current session and redirects to the login page, effectively logging out the current user.
+* '/register' - POST. This endpoint for the register page registers the user, pulling the entered username and password, checking if the user entered already exists. Iff it doesn't, the user is added to the database and they are directed to login. Otherwise, you must try again.
+* '/reportCheck' - GET. This endpoint is activated when any customer tries to access the "Submit Report" page. If the user is unauthenticated, they will be denied access and sent to the login page instead. If they are authenticated, they will be directed to the page they wanted ('report.html').
+* '/getInfo' - GET. This endpoint is used on both the map and feed pages. It functions as a way to receive the list of reports, users and the current, authenticated user. It is used in conjunction with other endpoints to perform UI-oriented functions: populating the map, the feed, and supporting the deleting or updating of reports.
+* '/createReport' - POST. This endpoint for the report page grabs the users and reports from the database, and generates a report ID for the report written. It then pulls form data from the submission page, creating a new report, and inserts into the database for reports.
+* '/delete' - POST. This endpoint for the listview page is used in two different ways. This endpoint is used for both UPDATE and DELETE CRUD functions. It takes the report provided and deletes it from the database of reports.
+
 ## Database
 
 Datatype: Report
