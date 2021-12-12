@@ -60,7 +60,7 @@ fetch('/getReports')
         }
       }
 
-      console.log(rid);
+      console.log(uid);
       console.log(data[0]);
       console.log(data[1]);
       console.log(data[2]);
