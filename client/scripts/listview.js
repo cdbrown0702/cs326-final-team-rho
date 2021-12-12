@@ -68,6 +68,9 @@ fetch('/getReports')
         
         document.getElementById(`deleteBtn${e['rid']}`).addEventListener('click', () => {
 
+            console.log(rid);
+            console.log(e['rid']);
+            
             if (rid === e['rid']) {
 
               fetch('/delete', {
